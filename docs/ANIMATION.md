@@ -1,56 +1,65 @@
-# Workbench animation
+# Profile hero
 
-A 12-second transparent animation combines a articulated industrial robot arm, a tuning dial, an EVB name tile, a component tray, a PCB and a feedback display.
+The README opens with one transparent composition: outlined Bricolage Grotesque lettering on the left and a compact cobalt robot on the upper right. The robot keeps the approved design, materials and viewpoint. A larger PCB and its components sit visibly in the foreground on a fixture; the control-response monitor is on the right. There are no scanning triangles, scan fills, projected beams or holograms. The original separate name banner, gyroscope and full-width workbench are no longer used in the README.
 
-## Motion
+## Timing
 
-The arm turns the dial and the displayed response settles toward a reference. It then aligns the name tile, picks up a component, seats it on the board and returns it to the tray. After seating the component, the arm brings its inspection camera forward, briefly turns toward the viewer and shows a small triangular scan before returning to the board. The acknowledgement happens once per loop; it does not detect visitors, access a camera or respond to pointer movement. All objects return to their starting state before the loop repeats.
+A short startup sequence lowers the gripper onto the control button. The name appears character by character from left to right, with a temporary block cursor, and finishes at 1.8 seconds. The startup lasts 2.25 seconds; the name is then complete while the robot begins its independent repeating schedule. There is no 132-second introduction or wait to use the profile. The clock starts when the image is ready to animate; network and image-decoding time are additional.
 
-The arm uses spatial inverse kinematics with a rotating base, shoulder, elbow and compensating wrist. Fifth-order easing gives each move zero endpoint velocity and acceleration. It is a precomputed animation, not a real-time physics simulation. The display is an illustrative response, not a measured project result.
+The robot reuses a 16-second work clip and a separate 5-second glance clip. Its 132-second schedule is:
 
-The PCB's 28 edge indicators use activity levels from the public GitHub contribution calendar. The source, dates and refresh date are recorded in `assets/workbench-data.json`. The robot's placement cycle is illustrative; placing a component does not claim a new contribution occurred.
+`work → glance → work → work → glance → work → glance → work → work → work → glance`
 
-## Display and performance
+This is seven work clips and four glances. The gaps between glances vary because of this fixed schedule; they are not actually random. The name does not reset when the schedule repeats.
 
-- The desktop and mobile scenes have separate compositions.
-- Identity and toolkit colors adapt to the theme. The scene artwork is identical and its surrounding background remains transparent.
-- A picture element selects one variant. The page does not download a 3D engine or run the renderer.
-- Each animation is rendered from 288 frames at 24 fps; identical frames are merged during encoding. The duration stays 12 seconds. Name and profile content are visible from the first frame.
-- Reduced-motion preferences select a static WebP instead of the animation. Browsers without WebP support receive a transparent PNG. The Still version link opens an explicitly static README.
-- The README contains no scripts. Blocking JavaScript does not hide its content or disable image playback.
+SVG declarative animation drives the two timelines. There is no client-side JavaScript, WebGL engine, pointer tracking or camera access. Reloading the image or selecting another theme can create a new image instance and replay its startup.
+
+The repeating sequence preserves several physical interactions:
+
+- The gripper picks up a chip from the foreground PCB, carries it to the tray, releases it, then picks it up and returns it to the PCB. This is a visible component transfer rather than an empty-gripper inspection.
+- The gripper approaches, grasps and slowly rotates the tuning knob. The monitor displays an illustrative second-order response whose damping changes from 0.12 to 1 as the knob is adjusted.
+- During the separate glance clip, the physical arm reaches toward the reader and receives localized depth emphasis in its own foreground layer. The stereo-camera head makes a quick inquisitive tilt of about 17 degrees, holds and returns smoothly. The station, PCB, screen and button keep their fixed projection and framing. This is a rendered gesture, without visitor detection or camera access.
+- The underline beneath the name responds to calibration within the shared header animation. The name remains complete while this smaller response repeats.
+
+The robot uses spatial inverse kinematics, fifth-order motion easing and a compensating wrist. A lateral elbow shaft separates the two arm shells; the startup button sits on an extension in front of the base. In the reusable source timeline, the knob turns from +0.75 to −0.85 radians during 13.00–14.25 seconds, holds for one second, and restores during 15.25–16.40 seconds while the gripper remains in contact. These are source-clip times, not new delays imposed on every page visit. The monitor shows an illustrative response, not a measured project result. No custom contribution statistics are displayed; GitHub's native contribution calendar remains the profile's activity indicator.
+
+The station uses the original stationary orthographic projection. For the glance, only the arm foreground uses a depth/perspective treatment calibrated to the fixed shoulder anchor. It is composited over an unchanged background containing the steady dial, response graph, chip and other props. This is an artistic layered composition, not a single-camera physical projection of the entire scene. A lens change in that foreground render affects only the arm; there is no whole-scene zoom or movement of the PCB, screen or button.
+
+## Static state and compatibility
+
+The static hero contains the complete name, no typing cursor, a steady underline and a lossless full-scene steady-state PNG. The foreground PCB and right-hand monitor remain visible. The same composition and letter outlines are used in the animated hero. Light/dark variants change text/accent colors only; the robot frames and geometry are identical.
+
+Reduced-motion preferences select a nonanimated SVG with the lossless full-scene PNG. Outer PNG sources provide the image-format fallback, and the explicit Still version offers a completely static README. The animated hero embeds individual still WebP frames with transparency; SVG SMIL switches their referenced IDs at 24 fps. Startup and work foregrounds are layered over one shared static background to save bytes. The glance reuses a separate unchanged station background, with only its arm foreground animated and given localized depth emphasis. There is no nested animated WebP or external frame request. If the embedded images decode but declarative SVG animation is unavailable, the unanimated defaults contain the full name and steady robot pose. The outer image-format fallback cannot detect unsupported WebP decoding inside an otherwise supported SVG; use the explicit Still version in that case.
+
+The source sequence has 559 rendered frames at 24 fps, including a closing boundary frame. The animation tracks use 54 intro frames, 384 work frames and 120 glance frames. The 132-second schedule reuses those clip IDs rather than embedding extra image sets for every repetition; identical raster frames are stored once. The builder targets a 9.9 MB budget per selected animated SVG; final quality and measured build sizes are recorded in `.render/hero-build.json` after rebuilding. Only the selected picture source loads. This trades a larger image payload for synchronized native GitHub animation without a runtime engine. Firefox/WebKit and physical-device rendering have not been tested.
+
+GitHub strips positioning CSS, so this is an upper-right composition inside the header image, not a sticky object that follows the browser viewport.
 
 ## Rebuild
 
-Use Blender 4.5 LTS and Python with Pillow installed. The renderer uses a local Bahnschrift font when available and Blender's bundled font otherwise. No font file is distributed.
+Use Blender 4.5 LTS, Python with Pillow and fontTools, and Node with the dependency in package.json. The font and OFL license are bundled in assets/fonts; visitors need no installed font.
 
 ```sh
-python scripts/build_workbench.py --blender /path/to/blender --refresh
-```
-
-The refresh step reads only the public contribution calendar. If its format changes or fewer than 28 valid days are available, it fails without replacing the existing snapshot. Temporary frames are stored in the ignored `.render` directory.
-
-Toolkit labels are maintained in `assets/toolkit.json`. To regenerate its four transparent SVG variants:
-
-```sh
+python -m pip install pillow fonttools
+npm install
+blender --background --python scripts/render_portrait.py -- --out /absolute/path/to/repo/.render/portrait --layered
+python scripts/build_hero.py
+npm run posters
 python scripts/build_toolkit.py
+python scripts/build_static.py
 ```
 
-The toolkit builder synchronizes its README alternative text. After editing the README, run `python scripts/build_static.py` to update the static edition. Learning levels remain manually maintained. New engineering work can be added independently using the maintenance guide.
+The builder reads source frames from `.render/portrait`. The required `--layered` render also writes `.render/portrait-background.png`, `.render/portrait-glance-background.png` and `.render/portrait-steady.png` beside that directory. The glance background contains the stationary props in their steady state. Preserve all three background and steady-state files when rebuilding. The original workbench renderer is retained as the procedural model source and can generate the earlier engineering scene independently. Its dated activity snapshot is not used in the profile hero.
 
-## Contribution privacy and alignment
-
-Private contributions are disabled in the account's native GitHub contribution settings (verified 2026-11-08). Keep that setting off: GitHub can include anonymized private activity in its public calendar when it is enabled.
-
-The refresh script makes an unauthenticated request without cookies or a token. It never queries private repositories. Each PCB edge indicator represents one day's contribution intensity from the same public calendar as GitHub, with 28 dates in chronological order. These are contributions, not a separate commit total. No repository names, counts or private activity are stored.
-
-The board is a dated snapshot, not a live counter. GitHub's native calendar remains authoritative as new activity arrives. Rebuilding with `--refresh` updates both scene compositions together; changing the JSON alone does not update rendered images.
-
-## Visual construction
-
-The identity and toolkit are transparent SVGs with outlined typography, independent of the animation codec. The scene is rendered at 1440 px on desktop and 1080 px on mobile, using 128 Eevee samples and WebP quality 90 with inter-frame size optimization. Static WebP posters use lossless encoding. Dark and light scenes share the same 3D artwork; theme-specific identity/toolkit variants preserve contrast. No browser font download is required.
-
-The identity and toolkit builders require `fonttools`. Set `PROFILE_FONT` or pass `--font` to a compatible local variable font when rebuilding outside Windows. Generated SVGs contain outlines, so visitors do not need that font installed.
+After changing the motion or composition, regenerate the affected source frames before rebuilding the hero, posters and static README. Do not package or publish a header built from an earlier render: asset checks must apply to the final rendered sequence.
 
 ## Verification
 
-`python scripts/check_assets.py` decodes every animation frame, checks transparent margins and loop closure, compares dark/light vector geometry and canonical shared scene sources, and verifies lossless PNG/WebP poster equivalence. Run the motion check through Blender with `--background --python scripts/check_motion.py`; it covers the base, shoulder, elbow, wrist, inspection camera and gripper transitions across 1,441 samples.
+```sh
+python scripts/check_hero.py
+blender --background --python scripts/check_portrait.py
+```
+
+The asset check validates every source frame, every embedded raster, all local references, theme geometry, animation tracks, single-play name reveal and static defaults. The motion check samples 2,791 states at 120 Hz. Its source-clip joins at 2.25, 18.25 and 23.25 seconds have zero checked state error, allowing the work and glance clips to be reused in the schedule. It checks 30 nonadjacent shell pairs for surface intersections in all 559 source frames, including the chip, foreground PCB, monitor, camera, flange and gripper. Chip-transfer transitions are checked for positional continuity. The two illustrative damping settings produce a graph-peak difference of approximately 0.1505 scene units. The check also verifies that the PCB is visible and the scan objects are hidden. Intentional joints and button contact are excluded. These are scoped kinematic and visual checks, not a physics simulation, a complete collision model or hardware certification.
+
+The projection check confirms a fixed station and a shoulder-anchor error below 0.000006 in normalized screen coordinates. The background layers are shared lossless images. Repeat both projection and compositing checks after camera or render changes.

@@ -46,10 +46,14 @@ Yeni bir ilgi alanı için ayrı bölüm açmadan önce mevcut üç ana alandan 
 
 Bu rehberi README'ye kopyalamana gerek yok. README içinde bakım talimatı, HTML yorumu veya boş proje şablonu bulunmamalı.
 
-## Atölye görseli
+## Üst görsel ve tipografi
 
-Yeni proje eklemek animasyonu yeniden üretmeyi gerektirmez. Katkı PCB'sini veya sahneyi yenilemek istersen `ANIMATION.md` dosyasındaki komutu kullan. `IDEA-POOL.md`, birlikte uygulanan ve ileride eklenebilecek hareketleri kaydeder.
+Yeni proje eklemek animasyonu yeniden üretmeyi gerektirmez. Üst görselin zamanlaması, statik sürümü ve yeniden üretim komutları ANIMATION.md içinde. İsim tek kez yazılır; robotun devam eden döngüsü bunu tekrar başlatmaz.
 
-## Tipografi
+Kimlik ve araç yazıları Bricolage Grotesque ile üretilir. Font ve OFL lisansı assets/fonts içinde bulunur; ziyaretçinin font yüklemesi gerekmez. Araç etiketleri assets/toolkit.json üzerinden değiştirilir. Ardından python scripts/build_toolkit.py ve python scripts/build_static.py komutlarını çalıştır.
 
-Kimlik ve araç görselleri `build_identity.py` ve `build_toolkit.py` ile üretilir. Yeniden üretmek için `python -m pip install fonttools` gerekir. Windows dışında `--font PATH` veya `PROFILE_FONT` ile uygun bir yerel değişken font seç. SVG çıktıları harfleri çizim olarak saklar; ziyaretçinin fontu yüklemesi gerekmez.
+JavaScript veya sticky CSS'i README'ye ekleme: GitHub bunları kaldırır. Bu davranışları sadece yerel önizlemeye ekleyip GitHub'da varmış gibi sunma.
+
+## Profile views
+
+The Socials row uses [Komarev](https://github.com/antonkomarev/github-profile-views-counter) with the public username. It counts image requests through GitHub’s proxy, not unique visitors or historical account traffic. Previewing or reloading can affect the count; caching can delay updates. No base offset is added. This widget does not read repositories or contributions, including private activity. Keep the same username parameter to retain the counter.
