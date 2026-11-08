@@ -34,7 +34,7 @@ def check_svg(path, mobile, still, expected_steady, decode_images=False, expecte
     expected_backgrounds=expected_backgrounds or {}
     tree=ET.parse(path)
     root=tree.getroot()
-    width,height=(720,360) if mobile else (1280,460)
+    width,height=(720,440) if mobile else (1280,540)
     assert root.get('viewBox')==f'0 0 {width} {height}'
     nodes={node.get('id'):node for node in tree.iter() if node.get('id')}
     assert len(nodes)==sum(bool(node.get('id')) for node in tree.iter()),'duplicate IDs'
@@ -166,6 +166,7 @@ def main():
     assert all('-still.svg' in reference for reference in re.findall(r'(?:src|srcset)="([^"]*hero-[^"]*\.svg)"',static))
     for path in (ROOT/'README.md',ROOT/'docs/STATIC.md'):
         for reference in re.findall(r'(?:src|srcset)="([^"]+)"',path.read_text(encoding='utf-8')):
+            if reference.startswith('https://komarev.com/ghpvc/?username=efebedelcigil'): continue
             assert (path.parent/reference).is_file(),(path,reference)
     (ROOT/'.render/hero-checks.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report,indent=2))

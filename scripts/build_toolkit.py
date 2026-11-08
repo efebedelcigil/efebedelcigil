@@ -3,6 +3,8 @@ import html
 import json
 from pathlib import Path
 
+from vector_logos import logo
+from vector_logos import logo
 import build_identity
 from build_identity import lettering
 
@@ -11,9 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def mobile_lines(group):
     if group['name'] == 'Code':
-        return ['C Â· C++', 'Assembly']
+        return ['C Ã‚Â· C++', 'Assembly']
     if group['name'] == 'Simulation':
-        return ['MATLAB /', 'Simulink Â· PSIM']
+        return ['MATLAB /', 'Simulink Ã‚Â· PSIM']
     if group['name'] == 'Digital':
         return ['Quartus', 'ModelSim']
     return group['lines']
@@ -41,12 +43,13 @@ def build(theme, mobile, groups):
         parts.append(lettering(g['name'],x+34,y+18,21,primary,600))
         bx,by=x+12,y+38
         for label in g['tools']:
-            bw=len(label)*10.4+27
+            bw=len(label)*10.4+51
             if bx+bw>x+panel_width-4:bx=x+12;by+=44
             fill='#16263b' if dark else '#edf3fa'
             parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="34" rx="10" fill="{fill}" stroke="{line}"/>')
             parts.append(f'<path d="M{bx+1} {by+11}v12" stroke="{color}" stroke-width="2.5"/>')
-            parts.append(lettering(label,bx+13,by+23,19,primary,550,100,bw-22))
+            parts.append(logo(label,bx+10,by+8,muted))
+            parts.append(lettering(label,bx+35,by+23,19,primary,550,100,bw-44))
             bx+=bw+8
     parts.append('</svg>')
     name = 'toolkit-' + ('mobile-' if mobile else '') + theme + '.svg'

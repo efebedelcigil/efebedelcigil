@@ -61,3 +61,13 @@ The Socials row uses [Komarev](https://github.com/antonkomarev/github-profile-vi
 ## Tool modules
 
 Edit `assets/toolkit.json`: each category has a name, line icon, accent and list of tools. The builder wraps individual badges within three desktop columns or two mobile columns. Run `python scripts/build_toolkit.py` after edits. Keep each category to two badge rows; long additions may require a larger module height. Social links are independent linked images in README.md.
+
+## Content and public artwork
+
+`assets/profile.json` owns institution, discipline, status, working areas and learning interests. Edit the status string when graduating; the layout does not change. `assets/learning.json` and `assets/exploring.json` own the open tool lists. Run `python scripts/build_dashboard.py` after changes.
+
+`assets/public-profile.json` is a public-only snapshot. `scripts/refresh_public_profile.py` uses unauthenticated public GitHub endpoints. The contribution circuit maps dates to GitHub activity levels, not commit totals. GitHub's own graph remains the source; private-contribution display must stay off. No private repositories are requested or counted. The optional daily workflow refreshes public artwork after merging to the default branch; it has not run in this draft branch.
+
+Repository cards link to public repositories; they do not change GitHub's native pinned-repository selection. Edit README ordering to curate the card section. Icons are monochrome local vectors from Devicon and Simple Icons (their upstream licenses apply). Product logos unavailable in these sets use a shared circuit symbol. Autodesk and ST/Espressif marks represent their respective tool families. No logo implies endorsement.
+
+The tiny view counter is at the footer. SVG animation failure cannot be detected by README markup once SVG has been selected. The default unanimated frame and reduced-motion sources handle common static cases; the footer Still version remains an explicit alternative.

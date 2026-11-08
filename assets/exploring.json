@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Embedded & robotics",
+    "tools": [
+      "ROS 2",
+      "FreeRTOS",
+      "Raspberry Pi",
+      "NanoEdge AI Studio"
+    ]
+  },
+  {
+    "name": "Workflow",
+    "tools": [
+      "Git"
+    ]
+  }
+]

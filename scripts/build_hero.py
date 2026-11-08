@@ -53,7 +53,7 @@ def timeline(values,begin,duration):
 
 
 def make_svg(theme,mobile,images,sequence,background,steady,glance_background,still=False):
-    width,height=(720,360) if mobile else (1280,460)
+    width,height=(720,440) if mobile else (1280,540)
     ink='#edf2f8' if theme=='dark' else '#192a40'
     accent='#78a4ff' if theme=='dark' else '#214fc5'
     copper='#efa571' if theme=='dark' else '#b45e30'
@@ -79,8 +79,8 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
         if not still:
             start=.80 if n==0 else 1.25
             duration=.45 if n==0 else .55
-            times=[0,start]+[start+duration*i/(len(values)-1) for i in range(1,len(values))]+[38]+[38]
-            clips=[0,0]+[x+value for value in values[1:]]+[width]+[width]
+            times=[0,start]+[start+duration*i/(len(values)-1) for i in range(1,len(values))]+[38]+[38]+[38]+[38]
+            clips=[0,0]+[x+value for value in values[1:]]+[width]+[width]+[width]+[width]
             keytimes=';'.join(f'{t/38:.6f}' for t in times)
             parts.append(f'<animate attributeName="width" values="{";".join(f"{v:.3f}" for v in clips)}" keyTimes="{keytimes}" begin="0s" dur="38s" calcMode="discrete" repeatCount="indefinite"/>')
         parts.append('</rect></clipPath>')
@@ -110,7 +110,7 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
         parts.append(f'<animate attributeName="d" values="{shapes}" keyTimes="{times}" begin="2.25s" dur="132s" repeatCount="indefinite" calcMode="spline" keySplines="{splines}"/>')
     parts.append('</path>')
     parts.append(f'<circle cx="{end+22}" cy="{baseline}" r="{3 if mobile else 4.5}" fill="{copper}"/>')
-    rx,ry,rw=(300,-100,420) if mobile else (680,-153,585)
+    rx,ry,rw=(255,-130,470) if mobile else (550,-215,720)
     parts.append(f'<g clip-path="url(#heroBounds)"><g transform="translate({rx} {ry}) scale({rw/600})"><use id="robotTrack" href="#steady">')
     if not still:
         parts.append(timeline([f'#r{i}' for i in sequence[:54]],0,2.25))

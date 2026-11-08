@@ -1,0 +1,26 @@
+{
+  "institution": "Ege University",
+  "discipline": "Electrical & Electronics Engineering",
+  "status": "Final-year student",
+  "portfolio": "https://efebedelcigil.github.io/en/",
+  "areas": [
+    "Control systems",
+    "Robotics",
+    "Embedded systems",
+    "Power electronics",
+    "Mechatronics",
+    "IoT",
+    "Circuit design",
+    "3D printing"
+  ],
+  "learning_areas": [
+    "Machine learning",
+    "Motor control",
+    "Sensing"
+  ],
+  "exploring_areas": [
+    "DSP",
+    "PLC & automation",
+    "Renewable energy"
+  ]
+}
