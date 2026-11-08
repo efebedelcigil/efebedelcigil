@@ -37,6 +37,8 @@ assert maximum_error < 1e-5, maximum_error
 assert minimum_margin > .01, minimum_margin
 loop_error = max(abs(a-b) for a,b in zip(samples[0],samples[-1]))
 assert loop_error < 1e-5, loop_error
+maximum_joint_step=max(abs(b[axis]-a[axis]) for a,b in zip(samples,samples[1:]) for axis in (3,4))
+assert maximum_joint_step < .15, maximum_joint_step
 for t in (4.15,5.95,7.70,9.40):
     update((t-1e-6)*15+1)
     before=model['chip'].location.copy()
@@ -46,6 +48,9 @@ for t,_ in model['poses'][1:-1]:
     h=1e-5
     velocity=(state(t+h)-state(t-h))/(2*h)
     assert velocity.length < .02, (t,velocity.length)
+    h=.001
+    acceleration=(state(t+h)-2*state(t)+state(t-h))/(h*h)
+    assert acceleration.length < .8, (t,acceleration.length)
 report={
     'duration_seconds':12,
     'sample_rate_hz':120,
@@ -53,7 +58,8 @@ report={
     'maximum_ik_error':maximum_error,
     'minimum_workspace_margin':minimum_margin,
     'loop_state_error':loop_error,
-    'checked':['finite transforms','unclamped reachable targets','zero endpoint velocity',
+    'maximum_joint_step_rad_at_120_hz':maximum_joint_step,
+    'checked':['finite transforms','unclamped reachable targets','zero endpoint velocity and acceleration',
                'joint and camera loop closure','component handoffs','overlay fade closure'],
     'scope':'Kinematic continuity; not a physics or hardware safety certification.'
 }
