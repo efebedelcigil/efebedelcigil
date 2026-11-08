@@ -17,7 +17,7 @@ Prototip, Blender'da modellenip önceden hesaplanmış şeffaf WebP animasyonu o
 
 ## Sonraki aşama
 
-**Gerçek katkı verisi:** İlk sürümde PCB'nin 28 pedi, herkese açık katkı takvimindeki son 28 günün aktivite seviyelerini taşır. Veri kaynağı ve son güncelleme tarihi `assets/workbench-data.json` içinde kayıtlıdır. Yenileme ve yeniden render adımları `docs/ANIMATION.md` içinde anlatılır. Düzenli otomatik render henüz etkin değildir.
+**Gerçek katkı verisi:** İlk sürümde PCB'nin kenarındaki 28 gösterge, herkese açık katkı takvimindeki son 28 günün aktivite seviyelerini taşır. Veri kaynağı ve son güncelleme tarihi `assets/workbench-data.json` içinde kayıtlıdır. Yenileme ve yeniden render adımları `docs/ANIMATION.md` içinde anlatılır. Düzenli otomatik render henüz etkin değildir.
 
 **Ziyaretçi oylaması:** Ziyaretçiler robotun sonraki görevini veya bir sonraki atölye çalışmasını seçebilir. Oy verme, README'den bağlantıyla açılan bir sayfada yürütülür. Sonuçlar daha sonra sahnenin yeniden üretilmesine yansıtılabilir; mevcut prototip canlı oy toplamaz.
 
@@ -40,3 +40,5 @@ Snake, Pac-Man, bonsai ve bağımsız istatistik panelleri araştırma referansl
 Animasyon, kısa tanıtımı ve portföy bağlantılarını destekler. İsim ve teknik odak erişilebilir metinde de yer alır. Areas, Tools, In progress ve Interested in exploring bölümlerindeki seçili alanlar, araçlar ve seviyeler bu görsel değişikliğiyle değişmez. Sahnedeki bir nesne, tek başına yeni bir yetkinlik iddiası sayılmaz.
 
 Görsel varlıkların dosya düzeni ve yeniden üretim adımları `docs/ANIMATION.md` içinde bulunur.
+
+Açık/koyu kimlik ve araç görsellerinde yalnızca renkler değişir; vektör yolları ve yerleşimler aynı kalır. Robot sahnesi her iki temada aynı saydam dosyayı kullanır. Durgun sürüm, animasyonun 133. kaynak karesinden kayıpsız alınır.

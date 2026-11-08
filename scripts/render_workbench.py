@@ -13,10 +13,11 @@ def arguments():
     parser.add_argument('--out', required=True)
     parser.add_argument('--theme', choices=['light', 'dark'], default='dark')
     parser.add_argument('--frame', type=int)
+    parser.add_argument('--frames', help='Comma-separated inclusive ranges, for example 14:46,94:150.')
     parser.add_argument('--start', type=int, default=1)
-    parser.add_argument('--end', type=int, default=180)
+    parser.add_argument('--end', type=int, default=288)
     parser.add_argument('--width', type=int, default=1120)
-    parser.add_argument('--samples', type=int, default=32)
+    parser.add_argument('--samples', type=int, default=128)
     parser.add_argument('--mobile', action='store_true')
     parser.add_argument('--activity')
     return parser.parse_args(sys.argv[sys.argv.index('--') + 1:])
@@ -33,13 +34,13 @@ scene = bpy.context.scene
 scene.render.engine = 'BLENDER_EEVEE_NEXT'
 scene.render.film_transparent = True
 scene.render.resolution_x = args.width
-scene.render.resolution_y = round(args.width * (0.92 if args.mobile else 0.4))
+scene.render.resolution_y = round(args.width * (0.95 if args.mobile else 0.58))
 scene.render.resolution_percentage = 100
 scene.render.image_settings.file_format = 'PNG'
 scene.render.image_settings.color_mode = 'RGBA'
-scene.render.fps = 15
+scene.render.fps = 24
 scene.frame_start = 1
-scene.frame_end = 180
+scene.frame_end = 288
 scene.world.use_nodes = True
 scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0.42, 0.49, 0.58, 1)
 scene.world.node_tree.nodes['Background'].inputs[1].default_value = 0.45
@@ -90,17 +91,6 @@ scanmat.node_tree.links.new(emission.outputs[0],fade.inputs[2])
 scanmat.node_tree.links.new(fade.outputs[0],output.inputs['Surface'])
 screenmat = material('Screen', (0.012, 0.027, 0.041), 0.1, 0.36)
 gridmat = material('Screen grid', (0.12, 0.21, 0.24), 0, 0.5, 0.3)
-ink = material('Name', (0.84, 0.89, 0.93) if args.theme == 'dark' else (0.045, 0.07, 0.11), 0, 1, 1)
-muted = material('Subtitle', (0.42, 0.56, 0.62) if args.theme == 'dark' else (0.16, 0.30, 0.35), 0, 1, 1)
-if args.theme == 'light':
-    for mat,color in [(ink,(.006,.014,.022)),(muted,(.018,.05,.065))]:
-        nodes=mat.node_tree.nodes
-        nodes.clear()
-        surface=nodes.new('ShaderNodeEmission')
-        surface.inputs['Color'].default_value=(*color,1)
-        output=nodes.new('ShaderNodeOutputMaterial')
-        mat.node_tree.links.new(surface.outputs['Emission'],output.inputs['Surface'])
-
 
 def empty(name, loc=(0, 0, 0), parent=None):
     obj = bpy.data.objects.new(name, None)
@@ -136,7 +126,7 @@ def box(name, loc, scale, mat, parent=assembly, bevel=0.035):
 
 
 def cylinder(name, loc, radius, depth, mat, parent=assembly):
-    bpy.ops.mesh.primitive_cylinder_add(vertices=40, radius=radius, depth=depth)
+    bpy.ops.mesh.primitive_cylinder_add(vertices=80, radius=radius, depth=depth)
     obj = bpy.context.object
     obj.location = loc
     finish(obj, name, mat, parent)
@@ -171,7 +161,7 @@ def text(name, body, loc, size, mat, parent=assembly):
     curve.size = size
     curve.extrude = 0.001
     curve.resolution_u = 8
-    font = Path('C:/Windows/Fonts/trebuc.ttf')
+    font = Path('C:/Windows/Fonts/bahnschrift.ttf')
     if font.exists():
         curve.font = bpy.data.fonts.load(str(font), check_existing=True)
     obj = bpy.data.objects.new(name, curve)
@@ -182,48 +172,98 @@ def text(name, body, loc, size, mat, parent=assembly):
     return obj
 
 
-base = (-0.9, 0.35)
-box('Base plate', (*base, 0.1), (0.72, 0.66, 0.18), edge)
-cylinder('Base housing', (*base, 0.36), 0.26, 0.4, navy)
-cylinder('Base accent', (*base, 0.56), 0.265, 0.06, teal)
-cylinder('Shoulder casing', (*base, 0.77), 0.22, 0.36, silver)
-for x in [-0.25, 0.25]:
-    for y in [-0.22, 0.22]:
-        cylinder('Base bolt', (base[0]+x, base[1]+y, 0.2), 0.035, 0.014, navy)
+blue = material('Cobalt ceramic', (.012,.10,.48), .45,.22)
+polished = material('Polished fasteners', (.75,.82,.88), .88,.16)
+base = (-.9,.35)
+l1,l2=.98,.94
+box('Machined mounting shoe',(*base,.08),(.85,.76,.16),navy,bevel=.065)
+cylinder('Turntable',(*base,.20),.34,.15,polished)
+cylinder('Servo drive',(*base,.36),.29,.24,blue)
+for z in [.27,.46]:cylinder('Drive seal',(*base,z),.3,.025,navy)
+yaw = empty('Base yaw',(*base,.56))
+box('Shoulder yoke',(0,0,0),(.39,.48,.3),blue,yaw,.07)
+upper=empty('Shoulder',(0,0,0),yaw)
+def joint(parent,radius):
+ for side in [-1,1]:
+  ring=cylinder('Harmonic drive',(0,side*.19,0),radius,.09,navy,parent);ring.rotation_euler.x=math.pi/2
+  cover=cylinder('Encoder cap',(0,side*.245,0),radius*.76,.025,polished,parent);cover.rotation_euler.x=math.pi/2
+  trim=cylinder('Encoder insert',(0,side*.263,0),radius*.49,.015,blue,parent);trim.rotation_euler.x=math.pi/2
+  for i in range(6):
+   a=i*math.tau/6
+   bolt=cylinder('Cap screw',(radius*.59*math.cos(a),side*.264,radius*.59*math.sin(a)),.016,.02,navy,parent);bolt.rotation_euler.x=math.pi/2
 
-l1, l2 = 0.95, 0.85
-upper = empty('Shoulder', (*base, 0.98), assembly)
-box('Upper link', (l1/2, 0, 0), (l1, 0.24, 0.16), silver, upper)
-box('Upper inlay', (l1/2, 0, 0.083), (l1*0.57, 0.08, 0.009), navy, upper, 0.015)
-cylinder('Shoulder lid', (0, 0, 0.08), 0.17, 0.07, navy, upper)
-cylinder('Shoulder ring', (0, 0, 0.125), 0.13, 0.025, teal, upper)
-lower = empty('Elbow', (l1, 0, -0.12), upper)
-cylinder('Elbow housing', (0, 0, 0.06), 0.16, 0.28, navy, lower)
-cylinder('Elbow encoder', (0, 0, 0.215), 0.115, 0.035, teal, lower)
-box('Forearm', (l2/2, 0, 0), (l2, 0.19, 0.13), edge, lower)
-box('Forearm inlay', (l2/2, 0, 0.07), (l2*.56, 0.06, 0.012), teal, lower, 0.014)
-wrist = empty('Wrist', (l2, 0, 0), lower)
-cylinder('Wrist housing', (0, 0, -0.02), 0.12, 0.25, navy, wrist)
-inspection = empty('Inspection camera', (0, 0, .04), wrist)
-box('Camera enclosure', (0,-.14,0), (.16,.13,.11), navy, inspection, .018)
-lens = cylinder('Camera lens', (0,-.22,0), .045, .035, edge, inspection)
-lens.rotation_euler.x = math.pi/2
-glass = cylinder('Lens glass', (0,-.24,0), .032, .012, screenmat, inspection)
-glass.rotation_euler.x = math.pi/2
-slide = empty('Vertical slide', (0, 0, -0.15), wrist)
-cylinder('Linear axis', (0, 0, -0.12), 0.055, 0.4, silver, slide)
-box('Gripper body', (0, 0, -0.31), (0.23, 0.17, 0.12), navy, slide)
-finger_a = box('Left jaw', (-0.085, 0, -0.41), (0.045, 0.11, 0.17), silver, slide, 0.012)
-finger_b = box('Right jaw', (0.085, 0, -0.41), (0.045, 0.11, 0.17), silver, slide, 0.012)
+def shell(parent,length):
+ vertices=[]
+ for x,ry,rz in [(0,.12,.13),(.13,.19,.18),(length*.72,.145,.13),(length,.10,.09)]:
+  for i in range(12):
+   a=i*math.tau/12;vertices.append((x,ry*math.cos(a),rz*math.sin(a)))
+ faces=[]
+ for j in range(3):
+  for i in range(12):faces.append((j*12+i,j*12+(i+1)%12,(j+1)*12+(i+1)%12,(j+1)*12+i))
+ faces.extend([tuple(range(11,-1,-1)),tuple(range(36,48))])
+ mesh=bpy.data.meshes.new('Cast shell');mesh.from_pydata(vertices,[],faces);mesh.update()
+ obj=bpy.data.objects.new('Contoured robot link',mesh);scene.collection.objects.link(obj);finish(obj,'Contoured robot link',blue,parent)
+ bevel=obj.modifiers.new('Cast fillets','BEVEL');bevel.width=.035;bevel.segments=4;obj.modifiers.new('Shell normals','WEIGHTED_NORMAL')
+ for face in mesh.polygons:face.use_smooth=True
+ box('Service cover',(length*.48,-.145,.04),(length*.54,.025,.13),edge,parent,.025)
+ for x in [length*.24,length*.70]:
+  bolt=cylinder('Cover screw',(x,-.165,.04),.014,.02,navy,parent);bolt.rotation_euler.x=math.pi/2
+ line('Power harness',[(.05,.15,.12),(length*.22,.22,.24),(length*.65,.19,.22),(length-.04,.11,.11)],navy,.025,parent)
+ line('Sensor loom',[(.05,.18,.10),(length*.22,.25,.21),(length*.65,.22,.19),(length-.04,.14,.09)],amber,.01,parent)
+ for i in range(5):box('Cooling slot',(.25+i*.055,.01,.177),(.025,.16,.008),navy,parent,.004)
+
+joint(upper,.24);shell(upper,l1)
+lower=empty('Elbow',(l1,0,0),upper);joint(lower,.19);shell(lower,l2)
+wrist_pitch=empty('Wrist pitch',(l2,0,0),lower)
+joint(wrist_pitch,.12)
+wrist=empty('Tool rotation',(0,0,0),wrist_pitch)
+cylinder('Tool flange',(0,0,-.07),.13,.16,polished,wrist)
+cylinder('Tool seal',(0,0,-.14),.13,.025,navy,wrist)
+inspection=empty('Inspection camera',(0,0,-.06),wrist)
+box('Stereo inspection enclosure',(0,-.13,0),(.25,.12,.10),navy,inspection,.025)
+for x in [-.065,.065]:
+ lens=cylinder('Lens bezel',(x,-.20,0),.038,.035,polished,inspection);lens.rotation_euler.x=math.pi/2
+ glass=cylinder('Optical glass',(x,-.22,0),.027,.013,screenmat,inspection);glass.rotation_euler.x=math.pi/2
+slide=empty('Tool mount',(0,0,0),wrist)
+cylinder('Linear axis',(0,0,-.20),.055,.24,silver,slide)
+box('Electric gripper',(0,0,-.31),(.25,.18,.14),blue,slide,.025)
+for x in [-.055,.055]:box('Gripper rail',(x,-.10,-.31),(.025,.02,.10),polished,slide,.005)
+finger_a=box('Left jaw',(-.085,0,-.41),(.045,.11,.17),polished,slide,.012)
+finger_b=box('Right jaw',(.085,0,-.41),(.045,.11,.17),polished,slide,.012)
+for x in [-.3,.3]:
+ for y in [-.25,.25]:cylinder('Anchor bolt',(base[0]+x,base[1]+y,.18),.03,.025,polished)
 
 box('PCB', (0.43, -0.61, 0.13), (1.1, 0.72, 0.07), boardmat)
-for row in range(4):
-    for col in range(7):
-        x, y = 0.0+col*.13, -0.86+row*.15
-        padmat = activity_materials[activity['days'][row*7+col]['level']] if activity else teal
-        box('Activity pad', (x, y, 0.171), (.085, .09, .006), padmat, bevel=.006)
-        if col < 6:
-            line('PCB trace', [(x, y, .177),(x+.13,y,.177)], gold, .003)
+for index in range(28):
+    column=index%14
+    x=-.015+column*.068
+    y=-.89 if index<14 else -.32
+    ledmat=activity_materials[activity['days'][index]['level']] if activity else teal
+    cylinder('Public activity LED',(x,y,.177),.014,.014,ledmat)
+for x,y,w,h in [(.13,-.62,.16,.22),(.70,-.69,.16,.16),(.68,-.43,.12,.10)]:
+    box('Integrated circuit',(x,y,.205),(w,h,.055),navy,bevel=.009)
+    for side in [-1,1]:
+        for pin in range(5):
+            box('IC pin',(x+side*(w/2+.017),y-h*.38+pin*h*.19,.187),(.035,.018,.012),polished,bevel=.002)
+for index in range(5):
+    x=.24+index*.10
+    box('SMD resistor',(x,-.81,.186),(.046,.022,.018),navy,bevel=.003)
+    for side in [-1,1]:box('Resistor terminal',(x+side*.022,-.81,.186),(.012,.026,.02),polished,bevel=.002)
+for x,y in [(-.025,-.64),(-.025,-.43),(.87,-.65)]:
+    cylinder('Capacitor',(x,y,.225),.031,.10,navy)
+    cylinder('Capacitor top',(x,y,.278),.027,.007,edge)
+box('USB port housing',(.25,-.28,.21),(.14,.10,.075),polished,bevel=.008)
+box('USB socket',(.25,-.224,.213),(.105,.012,.041),navy,bevel=.004)
+for x in [.43,.49,.55,.61,.67,.73]:
+    box('Header insulator',(x,-.30,.20),(.045,.06,.05),navy,bevel=.004)
+    cylinder('Header pin',(x,-.30,.255),.008,.08,gold)
+for i in range(6):
+    y=-.76+i*.065
+    line('Signal trace',[(.22,y,.173),(.29,y,.173),(.33,y+.035,.173),(.57,y+.035,.173)],gold,.0025)
+for x,y in [(.34,-.62),(.44,-.62),(.34,-.50),(.44,-.50)]:
+    box('Test socket pad',(x,y,.178),(.028,.032,.009),gold,bevel=.004)
+for i in range(7):
+    cylinder('Plated via',(.82,-.80+i*.065,.173),.009,.008,gold)
 for x,y in [(-.04,-.9),(.9,-.9),(-.04,-.32),(.9,-.32)]:
     cylinder('Board mount', (x,y,.18), .025, .025, edge)
 
@@ -259,25 +299,16 @@ for i in range(4):
 
 bpy.ops.object.camera_add(location=(6,-9,7))
 camera=bpy.context.object
-target=Vector((0,0,.65))
+target=Vector((0,0,.88))
 camera.rotation_euler=(target-camera.location).to_track_quat('-Z','Y').to_euler()
 camera.data.type='ORTHO'
 camera.data.ortho_scale=8.2
 scene.camera=camera
 right=camera.rotation_euler.to_matrix()@Vector((1,0,0))
 up=camera.rotation_euler.to_matrix()@Vector((0,1,0))
-assembly.scale=(1.22,)*3
-assembly.location=right*1.9 + up*.0
-typography=[('Efe Varol',(-3.85,.62),.60,ink),('Bedelcigil',(-3.85,-.05),.60,ink),('Control systems / Robotics',(-3.82,-.59),.19,muted)]
-if args.mobile:
-    camera.data.ortho_scale=5.2
-    assembly.scale=(1.14,)*3
-    assembly.location=right*.05-up*1.12
-    typography=[('Efe Varol',(-2.35,1.55),.59,ink),('Bedelcigil',(-2.35,.89),.59,ink),('Control systems / Robotics',(-2.33,.40),.17,muted)]
-for body,xy,size,mat in typography:
-    obj=text('Profile '+body,body,target+right*xy[0]+up*xy[1],size,mat,None)
-    obj.rotation_euler=camera.rotation_euler
-
+assembly.scale=(1.0,)*3
+assembly.location=right*.0+up*.0
+camera.data.ortho_scale=4.5 if args.mobile else 5.1
 scan_center=Vector((.25,-.85,.72))+Vector((.25,-.38,.27))
 scan_outline=[(-.12,-.07),(.12,-.07),(0,.14),(-.12,-.07)]
 scan=line('Inspection scan', [scan_center+right*x+up*y for x,y in scan_outline], scanmat, .005)
@@ -323,16 +354,20 @@ def state(t):
 
 
 def update(frame):
-    t=(frame-1)/15
+    t=(frame-1)/24
     end=state(t)
     dx,dy=end.x-base[0],end.y-base[1]
-    cos_elbow=max(-.998,min(.998,(dx*dx+dy*dy-l1*l1-l2*l2)/(2*l1*l2)))
+    radius=math.hypot(dx,dy)
+    height=end.z+.49-.56
+    cos_elbow=max(-.998,min(.998,(radius*radius+height*height-l1*l1-l2*l2)/(2*l1*l2)))
     elbow=-math.acos(cos_elbow)
-    shoulder=math.atan2(dy,dx)-math.atan2(l2*math.sin(elbow),l1+l2*math.cos(elbow))
-    upper.rotation_euler.z=shoulder
-    lower.rotation_euler.z=elbow
-    wrist.rotation_euler.z=-(shoulder+elbow)
-    glance=smooth((t-6.50)/.16)*(1-smooth((t-7.02)/.16))
+    shoulder=math.atan2(height,radius)-math.atan2(l2*math.sin(elbow),l1+l2*math.cos(elbow))
+    yaw.rotation_euler.z=math.atan2(dy,dx)
+    upper.rotation_euler.y=-shoulder
+    lower.rotation_euler.y=-elbow
+    wrist_pitch.rotation_euler.y=shoulder+elbow
+    wrist.rotation_euler.z=-yaw.rotation_euler.z
+    glance=smooth((t-6.42)/.30)*(1-smooth((t-7.02)/.30))
     inspection.rotation_euler.z=-.7+1.29*glance
     visibility=smooth((t-6.66)/.16)*(1-smooth((t-7.02)/.16))
     fade.inputs[0].default_value=visibility
@@ -342,15 +377,17 @@ def update(frame):
     half_width=.12*(1-progress)
     for point,x in zip(scan_sweep.data.splines[0].points,[-half_width,half_width]):
         point.co=(*(scan_center+right*x+up*scan_y),1)
-    slide.location.z=end.z-.86+.49
+    slide.location.z=0
     holding=4.15<=t<5.95 or 7.70<=t<9.40
     tuning=.65<t<1.55 or 11.35<t<11.7
-    opening=.064 if holding else (.11 if tuning else .13)
+    grasp=sum(smooth((t-a)/.20)*(1-smooth((t-b)/.20)) for a,b in [(4.00,5.94),(7.55,9.39)])
+    touch=sum(smooth((t-a)/.15)*(1-smooth((t-b)/.20)) for a,b in [(.55,1.55),(11.20,11.70)])
+    opening=.13-.066*grasp-.020*touch
     finger_a.location.x=-opening
     finger_b.location.x=opening
     knob.rotation_euler.z=.7*smooth((t-.75)/.7)-.7*smooth((t-11.35)/.35)
-    if tuning:
-        wrist.rotation_euler.z+=knob.rotation_euler.z
+    turning=sum(smooth((t-a)/.15)*(1-smooth((t-b)/.28)) for a,b in [(.60,1.55),(11.20,11.70)])
+    wrist.rotation_euler.z+=knob.rotation_euler.z*turning
     plaque.location.x=-.48+.05*smooth((t-2.45)/.5)-.05*smooth((t-10.45)/.35)
     plaque.rotation_euler.z=.1*(1-smooth((t-2.45)/.5)) + .1*smooth((t-10.45)/.35)
     if holding:
@@ -367,6 +404,8 @@ def update(frame):
 
 
 frames=[args.frame] if args.frame else range(args.start,args.end+1)
+if args.frames:
+    frames=sorted({frame for span in args.frames.split(',') for frame in range(int(span.split(':')[0]),int(span.split(':')[-1])+1)})
 for frame in frames:
     update(frame)
     scene.render.filepath=str(out/f'{frame:04d}.png')

@@ -49,3 +49,7 @@ Bu rehberi README'ye kopyalamana gerek yok. README içinde bakım talimatı, HTM
 ## Atölye görseli
 
 Yeni proje eklemek animasyonu yeniden üretmeyi gerektirmez. Katkı PCB'sini veya sahneyi yenilemek istersen `ANIMATION.md` dosyasındaki komutu kullan. `IDEA-POOL.md`, birlikte uygulanan ve ileride eklenebilecek hareketleri kaydeder.
+
+## Tipografi
+
+Kimlik ve araç görselleri `build_identity.py` ve `build_toolkit.py` ile üretilir. Yeniden üretmek için `python -m pip install fonttools` gerekir. Windows dışında `--font PATH` veya `PROFILE_FONT` ile uygun bir yerel değişken font seç. SVG çıktıları harfleri çizim olarak saklar; ziyaretçinin fontu yüklemesi gerekmez.

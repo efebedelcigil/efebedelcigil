@@ -1,11 +1,9 @@
 <picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="../assets/workbench-mobile-dark.png">
-  <source media="(max-width: 600px)" srcset="../assets/workbench-mobile-light.png">
-  <source media="(prefers-color-scheme: dark)" srcset="../assets/workbench-dark.png">
-  <img src="../assets/workbench-light.png" width="1120" alt="Efe Varol Bedelcigil — a robot arm tunes a feedback loop, aligns an EVB name tile and tests a component on a PCB">
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="../assets/identity-mobile-dark.svg">
+  <source media="(max-width: 600px)" srcset="../assets/identity-mobile-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="../assets/identity-dark.svg">
+  <img src="../assets/identity-light.svg" width="1120" alt="Efe Varol Bedelcigil — Electrical &amp; Electronics Engineering, Control Systems &amp; Robotics">
 </picture>
-
-[Animated version](../README.md)
 
 Final-year Electrical & Electronics Engineering student at **Ege University**.
 
@@ -27,6 +25,13 @@ Circuit design · 3D printing
   <source media="(prefers-color-scheme: dark)" srcset="../assets/toolkit-dark.svg">
   <img src="../assets/toolkit-light.svg" width="1120" alt="Code: C · C++ · Assembly. Simulation: MATLAB / Simulink, PSIM. Embedded: STM32 · ESP32. Electronics: KiCad · EAGLE, LTspice · Proteus. Digital: Quartus · ModelSim. Environment: Linux.">
 </picture>
+
+<picture>
+  <source media="(max-width: 600px)" srcset="../assets/workbench-mobile.png">
+  <img src="../assets/workbench.png" width="1440" alt="An articulated robot arm tunes a feedback response, handles a component on a circuit board and turns its stereo inspection camera toward the reader">
+</picture>
+
+[Animated version](../README.md)
 
 ### In progress
 
