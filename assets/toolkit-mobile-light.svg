@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="488" viewBox="0 0 600 488" role="img" aria-labelledby="title desc">
+<title id="title">Engineering toolkit</title>
+<desc id="desc">Code: C · C++ · Assembly. Simulation: MATLAB / Simulink, PSIM. Embedded: STM32 · ESP32. Electronics: KiCad · EAGLE, LTspice · Proteus. Digital: Quartus · ModelSim. Environment: Linux</desc>
+<style>text{font-family:"Segoe UI",Arial,sans-serif}.heading{font-size:24px;font-weight:600;fill:#172d3d}.tools{font-size:22px;fill:#415d6c}.icon{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}</style>
+<g transform="translate(12 20)"><g class="icon" stroke="#a2543c"><path d="M11 6 2 16l9 10M27 6l9 10-9 10M22 3l-6 26"/></g>
+<text class="heading" x="56" y="20">Code</text>
+<text class="tools" x="56" y="56">C · C++ · Assembly</text>
+</g>
+<g transform="translate(312 20)"><g class="icon" stroke="#367b99"><path d="M2 29h34M4 30V2M4 19c4 0 4-13 8-13s4 20 8 20 4-16 8-16 4 9 8 9"/></g>
+<text class="heading" x="56" y="20">Simulation</text>
+<text class="tools" x="56" y="56">MATLAB / Simulink</text>
+<text class="tools" x="56" y="88">PSIM</text>
+</g>
+<g transform="translate(12 180)"><g class="icon" stroke="#167b6d"><rect x="7" y="4" width="24" height="24" rx="3"/><rect x="13" y="10" width="12" height="12" rx="1"/><path d="M13 0v4M19 0v4M25 0v4M13 28v4M19 28v4M25 28v4M3 10h4M3 16h4M3 22h4M31 10h4M31 16h4M31 22h4"/></g>
+<text class="heading" x="56" y="20">Embedded</text>
+<text class="tools" x="56" y="56">STM32 · ESP32</text>
+</g>
+<g transform="translate(312 180)"><g class="icon" stroke="#167b6d"><path d="M4 5h12v10h18M4 27h12V17M26 5v6M26 23v4"/><circle cx="3" cy="5" r="3"/><circle cx="3" cy="27" r="3"/><circle cx="26" cy="3" r="3"/><circle cx="26" cy="29" r="3"/><circle cx="35" cy="15" r="3"/></g>
+<text class="heading" x="56" y="20">Electronics</text>
+<text class="tools" x="56" y="56">KiCad · EAGLE</text>
+<text class="tools" x="56" y="88">LTspice · Proteus</text>
+</g>
+<g transform="translate(12 340)"><g class="icon" stroke="#367b99"><path d="M3 8h7M3 24h7M10 2v28h8a14 14 0 0 0 0-28ZM32 16h6"/></g>
+<text class="heading" x="56" y="20">Digital</text>
+<text class="tools" x="56" y="56">Quartus · ModelSim</text>
+</g>
+<g transform="translate(312 340)"><g class="icon" stroke="#a2543c"><rect x="1" y="3" width="36" height="27" rx="3"/><path d="m8 11 6 5-6 5M20 22h9"/></g>
+<text class="heading" x="56" y="20">Environment</text>
+<text class="tools" x="56" y="56">Linux</text>
+</g>
+</svg>

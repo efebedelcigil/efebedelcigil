@@ -1,13 +1,25 @@
 <picture>
-  <source media="(max-width: 600px)" srcset="assets/profile-mobile.svg">
-  <img src="assets/profile.svg" width="1120" alt="Efe Varol Bedelcigil — Control systems, robotics and mechatronics">
+  <source type="image/webp" media="(prefers-reduced-motion: reduce) and (max-width: 600px) and (prefers-color-scheme: dark)" srcset="assets/workbench-mobile-dark-still.webp">
+  <source type="image/webp" media="(prefers-reduced-motion: reduce) and (max-width: 600px)" srcset="assets/workbench-mobile-light-still.webp">
+  <source type="image/webp" media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/workbench-dark-still.webp">
+  <source type="image/webp" media="(prefers-reduced-motion: reduce)" srcset="assets/workbench-light-still.webp">
+  <source type="image/webp" media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="assets/workbench-mobile-dark.webp">
+  <source type="image/webp" media="(max-width: 600px)" srcset="assets/workbench-mobile-light.webp">
+  <source type="image/webp" media="(prefers-color-scheme: dark)" srcset="assets/workbench-dark.webp">
+  <source type="image/webp" srcset="assets/workbench-light.webp">
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="assets/workbench-mobile-dark.png">
+  <source media="(max-width: 600px)" srcset="assets/workbench-mobile-light.png">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/workbench-dark.png">
+  <img src="assets/workbench-light.png" width="1120" alt="Efe Varol Bedelcigil — a robot arm tunes a feedback loop, aligns an EVB name tile and tests a component on a PCB">
 </picture>
 
-Electrical & Electronics Engineering student at **Ege University**, approaching graduation.
+[Still version](docs/STATIC.md)
+
+Final-year Electrical & Electronics Engineering student at **Ege University**.
 
 [Portfolio](https://efebedelcigil.github.io/en/) · [LinkedIn](https://www.linkedin.com/in/efevarolbedelcigil/) · [Contact](https://efebedelcigil.github.io/en/contact/)
 
-## Focus
+### Areas
 
 **Control systems · Robotics**
 
@@ -15,16 +27,14 @@ Embedded systems · Power electronics · Mechatronics · IoT
 
 Circuit design · 3D printing
 
-## Toolkit
+### Tools
 
-| Group | Tools |
-| :--- | :--- |
-| Code | C, C++, Assembly |
-| Simulation | MATLAB / Simulink, PSIM |
-| Embedded | STM32, ESP32 |
-| Electronics | KiCad, EAGLE, LTspice, Proteus |
-| Digital | Quartus, ModelSim |
-| Environment | Linux |
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="assets/toolkit-mobile-dark.svg">
+  <source media="(max-width: 600px)" srcset="assets/toolkit-mobile-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/toolkit-dark.svg">
+  <img src="assets/toolkit-light.svg" width="1120" alt="Code: C · C++ · Assembly. Simulation: MATLAB / Simulink, PSIM. Embedded: STM32 · ESP32. Electronics: KiCad · EAGLE, LTspice · Proteus. Digital: Quartus · ModelSim. Environment: Linux.">
+</picture>
 
 ### In progress
 

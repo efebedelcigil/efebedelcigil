@@ -30,7 +30,9 @@ Durumu açıklamanın başında belirt: `In progress — ...`. Bitirme projesini
 
 ## Yetkinlikleri güncelleme
 
-Çalışma alanlarını Focus bölümünde, ana araçları Toolkit tablosunda tut. Öğrenmeye başladıkların In progress bölümünde, henüz başlamadıkların Interested in exploring bölümünde yer alır. Bu iki bölümde de Areas satırına genel alanları, Tools satırına araçları yaz. Bir aracı kullanmaya başladığında ana tabloya taşı. MATLAB alt araçları, IDE veya platform eklentileri için yeni kalem açmana gerek yok. İsimleri kısa tut; uzun konu açıklamaları, yüzde, yıldız veya seviye çubuğu ekleme.
+Çalışma alanlarını README'nin Areas bölümünde tut. Ana araçlar `assets/toolkit.json` dosyasındaki kısa gruplardan üretilir. Bir aracı ekledikten sonra `python scripts/build_toolkit.py` komutuyla açık/koyu ve mobil görselleri yenile. Alternatif metin de otomatik güncellenir. README değişikliklerinden sonra `python scripts/build_static.py` ile statik sürümü eşitle.
+
+Öğrenmeye başladıkların In progress bölümünde, henüz başlamadıkların Interested in exploring bölümünde yer alır. Bu iki bölümde de Areas satırına genel alanları, Tools satırına araçları yaz. Bir aracı kullanmaya başladığında ana araç grubuna taşı. MATLAB alt araçları, IDE veya platform eklentileri için yeni kalem açmana gerek yok. İsimleri kısa tut; uzun konu açıklamaları, yüzde, yıldız veya seviye çubuğu ekleme.
 
 Yeni bir ilgi alanı için ayrı bölüm açmadan önce mevcut üç ana alandan birine uyup uymadığına bak. Kısa ve okunabilir bir başlangıç bölümü koru.
 
@@ -43,3 +45,7 @@ Yeni bir ilgi alanı için ayrı bölüm açmadan önce mevcut üç ana alandan 
 - Mezun olduğunda tanıtımdaki öğrenci ifadesini güncelle.
 
 Bu rehberi README'ye kopyalamana gerek yok. README içinde bakım talimatı, HTML yorumu veya boş proje şablonu bulunmamalı.
+
+## Atölye görseli
+
+Yeni proje eklemek animasyonu yeniden üretmeyi gerektirmez. Katkı PCB'sini veya sahneyi yenilemek istersen `ANIMATION.md` dosyasındaki komutu kullan. `IDEA-POOL.md`, birlikte uygulanan ve ileride eklenebilecek hareketleri kaydeder.

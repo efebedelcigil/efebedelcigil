@@ -1,0 +1,8 @@
+[
+  {"name":"Code","icon":"code","color":"warm","lines":["C · C++ · Assembly"]},
+  {"name":"Simulation","icon":"wave","color":"blue","lines":["MATLAB / Simulink","PSIM"]},
+  {"name":"Embedded","icon":"chip","color":"teal","lines":["STM32 · ESP32"]},
+  {"name":"Electronics","icon":"circuit","color":"teal","lines":["KiCad · EAGLE","LTspice · Proteus"]},
+  {"name":"Digital","icon":"logic","color":"blue","lines":["Quartus · ModelSim"]},
+  {"name":"Environment","icon":"terminal","color":"warm","lines":["Linux"]}
+]
