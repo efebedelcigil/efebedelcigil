@@ -60,7 +60,7 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
     lines=[('Efe Varol',8,86,55,650,400),('Bedelcigil',8,166,67,800,400)] if mobile else [('Efe Varol',22,152,90,650,720),('Bedelcigil',22,283,112,800,720)]
     parts=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
            '<title id="title">Efe Varol Bedelcigil</title>',
-           '<desc id="desc">Control systems and robotics. A robot presses its control button, the name types in once, and the robot continues its own calibration cycle.</desc>',
+           '<desc id="desc">Control systems and robotics. A robot presses its control button, the name types in periodically, and the robot continues its own calibration cycle.</desc>',
            '<defs>']
     parts.append(f'<clipPath id="heroBounds"><rect x="0" y="0" width="{width}" height="{height}"/></clipPath>')
     parts.append(f'<image id="steady" width="600" height="720" href="data:image/png;base64,{steady}"/>')
@@ -79,11 +79,10 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
         if not still:
             start=.80 if n==0 else 1.25
             duration=.45 if n==0 else .55
-            times=[0,start]+[start+duration*i/(len(values)-1) for i in range(1,len(values))]
-            clips=[0,0]+[x+value for value in values[1:]]
-            keytimes=';'.join(f'{t/(start+duration):.6f}' for t in times)
-            parts.append(f'<animate attributeName="width" values="{";".join(f"{v:.3f}" for v in clips)}" keyTimes="{keytimes}" begin="0s" dur="{start+duration}s" calcMode="discrete" fill="freeze"/>')
-            parts.append(f'<set attributeName="width" to="{width}" begin="{start+duration}s" fill="freeze"/>')
+            times=[0,start]+[start+duration*i/(len(values)-1) for i in range(1,len(values))]+[38]+[38]
+            clips=[0,0]+[x+value for value in values[1:]]+[width]+[width]
+            keytimes=';'.join(f'{t/38:.6f}' for t in times)
+            parts.append(f'<animate attributeName="width" values="{";".join(f"{v:.3f}" for v in clips)}" keyTimes="{keytimes}" begin="0s" dur="38s" calcMode="discrete" repeatCount="indefinite"/>')
         parts.append('</rect></clipPath>')
     parts.append('</defs>')
     for n,(text,x,y,size,weight,maximum) in enumerate(lines):
@@ -134,7 +133,7 @@ def main():
     def resized(path):
         with Image.open(path) as image:
             if image.size!=(900,1080) or image.mode!='RGBA':
-                raise ValueError(f'Expected a 900×1080 RGBA source: {path}')
+                raise ValueError(f'Expected a 900Ãƒâ€”1080 RGBA source: {path}')
             return image.resize((600,720),Image.Resampling.LANCZOS)
     buffer=io.BytesIO()
     resized(steady_path).save(buffer,format='PNG',optimize=True)

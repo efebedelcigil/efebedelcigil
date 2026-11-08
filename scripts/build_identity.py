@@ -11,7 +11,7 @@ from fontTools.pens.transformPen import TransformPen
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
 
-FONT = Path(os.environ.get('PROFILE_FONT', str(ROOT/'assets/fonts/BricolageGrotesque.ttf')))
+FONT = Path(os.environ.get('PROFILE_FONT', str(ROOT/'assets/fonts/SpaceGrotesk.ttf')))
 
 
 @lru_cache(maxsize=12)

@@ -73,9 +73,9 @@ def check_svg(path, mobile, still, expected_steady, decode_images=False, expecte
         assert float(rectangle.get('width'))==width,'Name must be readable without SMIL'
         if not still:
             animation=rectangle.find('s:animate',NS)
-            assert animation is not None and not animation.get('repeatCount')
-            assert animation.get('fill')=='freeze' and animation.get('begin')=='0s'
-            assert float(animation.get('dur')[:-1])==(1.25 if name=='line0' else 1.8)
+            assert animation is not None and animation.get('repeatCount')=='indefinite'
+            assert animation.get('begin')=='0s'
+            assert float(animation.get('dur')[:-1])==38
     if still:
         assert not tree.findall('.//s:animate',NS) and not tree.findall('.//s:set',NS)
         assert set(nodes)=={'title','desc','heroBounds','steady','line0','line1','underline','robotTrack'}

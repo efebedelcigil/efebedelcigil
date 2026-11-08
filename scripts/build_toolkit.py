@@ -20,7 +20,7 @@ def mobile_lines(group):
 
 
 def build(theme, mobile, groups):
-    width, height = (600, 620) if mobile else (1120, 250)
+    width, height = (600, 410) if mobile else (1120, 270)
     dark = theme == 'dark'
     primary = '#eaf0fa' if dark else '#172a43'
     accents = {'teal': '#46d4ca', 'blue': '#8aa7ff', 'warm': '#e6a27d'} if dark else {'teal': '#007d78', 'blue': '#365dc1', 'warm': '#9c5635'}
@@ -30,15 +30,22 @@ def build(theme, mobile, groups):
              '<desc id="description">' + html.escape(description) + '</desc>']
     for index, group in enumerate(groups):
         row, column = divmod(index, 2)
-        x = 18 + (300 if mobile else 412) * column
-        y = 20 + (200 if mobile else 80) * row
-        label_size, tool_size = (25, 28) if mobile else (18, 28)
-        color = accents[group['color']]
-        parts.append(lettering(group['name'], x, y + label_size, label_size, color, 500, 100))
-        lines = mobile_lines(group) if mobile else [' · '.join(group['lines'])]
-        for line_index, line in enumerate(lines):
-            baseline = y + (78 + 42*line_index if mobile else 58)
-            parts.append(lettering(line, x, baseline, tool_size, primary, 600, 100))
+        x=8+(300 if mobile else 560)*column
+        y=12+(132 if mobile else 86)*row
+        color=accents[group['color']]
+        parts.append(lettering(group['name'],x,y+21,20,color,550))
+        cursor=x
+        lines=mobile_lines(group) if mobile else group['lines']
+        for j,label in enumerate(lines):
+            if mobile:
+                bx,by=x,y+35+j*36
+            else:
+                bx,by=cursor,y+34
+            bw=min(535,len(label)*12+24)
+            fill='#17283e' if dark else '#edf3fa'
+            parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="30" rx="7" fill="{fill}"/>')
+            parts.append(lettering(label,bx+11,by+22,20,primary,550,100,bw-22))
+            cursor+=bw+8
     parts.append('</svg>')
     name = 'toolkit-' + ('mobile-' if mobile else '') + theme + '.svg'
     (ROOT / 'assets' / name).write_text('\n'.join(parts) + '\n', encoding='utf-8')
