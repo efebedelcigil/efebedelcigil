@@ -13,7 +13,7 @@
   <img src="../assets/hero-light.png" width="1280" alt="Efe Varol Bedelcigil â€” control systems and robotics. The robot starts the name typing, then continues calibrating itself.">
 </picture>
 
-<a href="https://github.com/efebedelcigil"><picture><source media="(prefers-color-scheme: dark)" srcset="../assets/social-github-dark.svg"><img src="../assets/social-github-light.svg" width="160" alt="GitHub"></picture></a> <a href="https://www.linkedin.com/in/efevarolbedelcigil/"><picture><source media="(prefers-color-scheme: dark)" srcset="../assets/social-linkedin-dark.svg"><img src="../assets/social-linkedin-light.svg" width="160" alt="LinkedIn"></picture></a> <a href="https://efebedelcigil.github.io/en/"><picture><source media="(prefers-color-scheme: dark)" srcset="../assets/social-portfolio-dark.svg"><img src="../assets/social-portfolio-light.svg" width="160" alt="Portfolio"></picture></a>
+<a href="https://github.com/efebedelcigil"><picture><source media="(prefers-color-scheme: dark)" srcset="../assets/social-github-dark.svg"><img src="../assets/social-github-light.svg" width="138" alt="GitHub"></picture></a> <a href="https://www.linkedin.com/in/efevarolbedelcigil/"><picture><source media="(prefers-color-scheme: dark)" srcset="../assets/social-linkedin-dark.svg"><img src="../assets/social-linkedin-light.svg" width="138" alt="LinkedIn"></picture></a> <a href="https://efebedelcigil.github.io/en/"><picture><source media="(prefers-color-scheme: dark)" srcset="../assets/social-portfolio-dark.svg"><img src="../assets/social-portfolio-light.svg" width="138" alt="Portfolio"></picture></a>
 
 ![Total profile views](https://komarev.com/ghpvc/?username=efebedelcigil&label=Total+profile+views&color=276d8c&style=for-the-badge)
 

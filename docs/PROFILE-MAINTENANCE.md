@@ -57,3 +57,7 @@ JavaScript veya sticky CSS'i README'ye ekleme: GitHub bunları kaldırır. Bu da
 ## Profile views
 
 The Socials row uses [Komarev](https://github.com/antonkomarev/github-profile-views-counter) with the public username. It counts image requests through GitHub’s proxy, not unique visitors or historical account traffic. Previewing or reloading can affect the count; caching can delay updates. No base offset is added. This widget does not read repositories or contributions, including private activity. Keep the same username parameter to retain the counter.
+
+## Tool modules
+
+Edit `assets/toolkit.json`: each category has a name, line icon, accent and list of tools. The builder wraps individual badges within three desktop columns or two mobile columns. Run `python scripts/build_toolkit.py` after edits. Keep each category to two badge rows; long additions may require a larger module height. Social links are independent linked images in README.md.
