@@ -1,64 +1,64 @@
-<div align="center"><h1>
- <p><img align="center" src="https://github.com/nouseus/nouseus/blob/main/images/banner.gif"></p>
- 
- <img align="center" src="https://readme-typing-svg.demolab.com/?lines=Welcome+to+my+profile,+user!;This+page+is+mostly+about:+Embedded+systems+and+electronics.;Calm+down,+it+is+all+automated.;Just,+scroll+down+for+more!;And+don't+forget+to+follow+me+for+future.+Thanks!&center=true&vCenter=true&duration=2400&size=45&width=2000&heigh=60&ont=Fira+Code+Bold"></h1>
- 
- <p>Hi again! I'm an Electrical and Electronics Engineering student at Ege University now and. I'm a passionate learner and love taking part in projects about especially control systems. Follow me for more!</p>
+<picture>
+  <source media="(max-width: 600px)" srcset="assets/profile-mobile.svg">
+  <img src="assets/profile.svg" width="1120" alt="Efe Varol Bedelcigil — Control systems, robotics and mechatronics">
+</picture>
 
-<h2><img src="https://github.com/nouseus/nouseus/blob/main/images/social.gif" width="40" height="35">Socials<img class="image" src="https://github.com/nouseus/nouseus/blob/main/images/social.gif" width="40" height="35"></h2>
+Electrical & Electronics Engineering student at **Ege University**, approaching graduation.
 
- <a href="https://github.com/nouseus">
-  <img width="90" height="28" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a>   
- <a href="https://www.linkedin.com/in/efevarolbedelcigil/">
-  <img width="100" height="25" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a>
- <a href=https://efebedelcigil.github.io/">   
-  <img width="120" height="28" src="https://img.shields.io/badge/My_Portfolio-000000?style=flat&logo=vercel&logoColor=white"></a> <br></br>
+[Portfolio](https://efebedelcigil.github.io/en/) · [LinkedIn](https://www.linkedin.com/in/efevarolbedelcigil/) · [Contact](https://efebedelcigil.github.io/en/contact/)
 
-<h2><img src="https://github.com/nouseus/nouseus/blob/main/images/stack.gif" width="30" height="30">   My Tech Stack   <img src="https://github.com/nouseus/nouseus/blob/main/images/stack.gif" width="30" height="30"></p></h2>
+## Focus
 
-<img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white">
-<img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">
-<img src="https://img.shields.io/badge/-Arduino-00979D?style=for-the-badge&logo=Arduino&logoColor=white">
-<img src="https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white">   
-<img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white">
-<img src="https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white">
-<img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white">
-<img src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white">
-<br></br>
+**Control systems · Robotics**
 
-<img src="https://img.shields.io/badge/PCB Design-purple?style=for-the-badge">
-<br></br>
+Embedded systems · Power electronics · Mechatronics · IoT
 
-<h2><img src="https://github.com/nouseus/nouseus/blob/main/images/gears.gif" width="35" height="42">Still Learning<img src="https://github.com/nouseus/nouseus/blob/main/images/gears.gif" width="35" height="42"></h2>
+Circuit design · 3D printing
 
-<img src="https://img.shields.io/badge/Assembly-007AAC?style=for-the-badge&logo=assemblyscript&logoColor=white">
-<img src="https://img.shields.io/badge/VHDL-8A2BE2?style=for-the-badge">
-<img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54">
-<br></br>
-<img src="https://img.shields.io/badge/STM32-blue?style=for-the-badge">
-<img src="https://img.shields.io/badge/Embedded Systems-green?style=for-the-badge">
-<img src="https://img.shields.io/badge/Control Systems-purple?style=for-the-badge">
-<img src="https://img.shields.io/badge/MatLab-orange?style=for-the-badge">
-<img src="https://img.shields.io/badge/IoT-red?style=for-the-badge">
-<br></br>
+## Toolkit
 
-<h2> <p><img src="https://github.com/nouseus/nouseus/blob/main/images/chart.gif" width="40" height="40">   My Github Stats   <img src="https://github.com/nouseus/nouseus/blob/main/images/chart.gif" width="40" height="40"></p></h2><br>
+| Group | Tools |
+| :--- | :--- |
+| Code | C, C++, Assembly |
+| Simulation | MATLAB / Simulink, PSIM |
+| Embedded | STM32, ESP32 |
+| Electronics | KiCad, EAGLE, LTspice, Proteus |
+| Digital | Quartus, ModelSim |
+| Environment | Linux |
 
-<div class="stats" align="center">
-<img class="stats" align="left" width="450" src="https://github-readme-stats.vercel.app/api?username=nouseus&theme=github_dark&show_icons=true">
- <img class="stats" src="https://github-readme-stats.vercel.app/api/top-langs/?username=nouseus&theme=github_dark&layout=donut&langs_count=8">
- </div>
- <br></br>
+### In progress
 
-<img align="center" src="https://komarev.com/ghpvc/?username=nouseus">
-<br>
-<h2><p><img align="center" src="https://github.com/nouseus/nouseus/blob/main/images/snake.gif" width="30" height="19">   My Contribution Graph   <img align="center" src="https://github.com/nouseus/nouseus/blob/main/images/snake.gif" width="30" height="19"></p></h2>
-<img align="center" src="https://github.com/nouseus/nouseus/blob/output/github-snake-dark.svg"><br>
+**Areas** — Machine learning · Motor control · Sensing
 
-<h2><img src="https://github.com/nouseus/nouseus/blob/main/images/bolt.gif" width="15" height="30">   Pinned Repos   <img src="https://github.com/nouseus/nouseus/blob/main/images/bolt.gif" width="15" height="30"><p></p></h2>
+**Tools** — Python · VHDL / Verilog · Gazebo · SolidWorks / Fusion
 
-<img src="https://github-readme-stats.vercel.app/api/pin/?username=nouseus&repo=single-cycle-cpu&theme=github_dark&show_owner=true">&nbsp;&nbsp; 
-<img src="https://github-readme-stats.vercel.app/api/pin/?username=nouseus&repo=assembly-full-adder&theme=github_dark&show_owner=true">
+My graduation project explores TinyML for control systems.
 
-</div>
-</div>
+<details>
+<summary><b>Interested in exploring</b></summary>
+
+**Areas** — DSP · PLC & automation · Renewable energy
+
+**Tools** — ROS 2 · FreeRTOS · Raspberry Pi · NanoEdge AI Studio · Git
+
+</details>
+
+<details>
+<summary><b>Engineering work</b></summary>
+
+### Control & robotics
+
+- [STM32 gimbal](https://efebedelcigil.github.io/portfolio/en/stm32-gimbal/)
+- [Mavi İnci USV](https://efebedelcigil.github.io/portfolio/en/usv-mavi-inci/)
+
+### Embedded & digital
+
+- [Single-cycle CPU](https://github.com/efebedelcigil/single-cycle-cpu)
+- [4-bit full adder](https://github.com/efebedelcigil/assembly-full-adder)
+
+### Power electronics
+
+- [Linear power supply](https://efebedelcigil.github.io/portfolio/en/linear-power-supply/)
+- [DC-DC workshop](https://efebedelcigil.github.io/portfolio/en/dc-dc-converters-workshop/)
+
+</details>

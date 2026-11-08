@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="272" viewBox="0 0 1120 272" role="img" aria-labelledby="title desc">
+  <title id="title">Efe Varol Bedelcigil</title>
+  <desc id="desc">Control systems, robotics and mechatronics. A negative-feedback loop connects a controller, a physical system and a measured output.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#5fd4c7" stroke-width="1.5"/></marker>
+  </defs>
+  <rect width="1120" height="272" rx="16" fill="#101e30"/>
+  <path d="M48 48H88" stroke="#5fd4c7" stroke-width="4"/>
+  <text x="48" y="116" font-family="Segoe UI,Arial,sans-serif" font-size="48" font-weight="600" fill="#f1f5f9">Efe Varol Bedelcigil</text>
+  <text x="48" y="160" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#b9c8d6">Control systems</text>
+  <text x="48" y="196" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#b9c8d6">Robotics &amp; mechatronics</text>
+  <path d="M672 48V224" stroke="#2b3c4f"/>
+  <g fill="none" stroke="#5fd4c7" stroke-width="2">
+    <path d="M704 120H733" marker-end="url(#arrow)"/>
+    <circle cx="748" cy="120" r="14"/>
+    <path d="M762 120H788" marker-end="url(#arrow)"/>
+    <rect x="796" y="96" width="104" height="48" rx="4" stroke="#567081"/>
+    <path d="M900 120H922" marker-end="url(#arrow)"/>
+    <rect x="930" y="96" width="88" height="48" rx="4" stroke="#567081"/>
+    <path d="M1018 120H1072" marker-end="url(#arrow)"/>
+    <path d="M1044 120V196H748V139" marker-end="url(#arrow)"/>
+    <circle cx="1044" cy="120" r="3" fill="#5fd4c7" stroke="none"/>
+  </g>
+  <g font-family="Segoe UI,Arial,sans-serif" font-size="16" text-anchor="middle" fill="#dbe5ed">
+    <text x="848" y="126">Controller</text>
+    <text x="974" y="126">System</text>
+    <text x="748" y="124" font-size="14">+</text>
+    <text x="770" y="153" font-size="18">−</text>
+    <text x="896" y="228" fill="#a7bacb">Feedback</text>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">Efe Varol Bedelcigil</title>
+  <desc id="desc">Control systems, robotics and mechatronics.</desc>
+  <rect width="720" height="360" rx="16" fill="#101e30"/>
+  <path d="M40 48H88" stroke="#5fd4c7" stroke-width="4"/>
+  <g font-family="Segoe UI,Arial,sans-serif">
+    <text x="40" y="128" font-size="64" font-weight="600" fill="#f1f5f9">Efe Varol</text>
+    <text x="40" y="204" font-size="64" font-weight="600" fill="#f1f5f9">Bedelcigil</text>
+    <text x="40" y="268" font-size="32" fill="#b9c8d6">Control systems</text>
+    <text x="40" y="312" font-size="32" fill="#b9c8d6">Robotics &amp; mechatronics</text>
+  </g>
+</svg>
