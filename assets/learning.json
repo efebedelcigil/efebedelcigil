@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Methods",
+    "tools": [
+      "TinyML"
+    ]
+  },
+  {
+    "name": "Programming",
+    "tools": [
+      "Python",
+      "Verilog"
+    ]
+  },
+  {
+    "name": "Robotics",
+    "tools": [
+      "ROS 2",
+      "Gazebo"
+    ]
+  },
+  {
+    "name": "CAD",
+    "tools": [
+      "SolidWorks",
+      "Fusion"
+    ]
+  }
+]

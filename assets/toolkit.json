@@ -1,0 +1,64 @@
+[
+  {
+    "name": "Code",
+    "icon": "code",
+    "color": "warm",
+    "tools": [
+      "C",
+      "C++",
+      "Assembly"
+    ]
+  },
+  {
+    "name": "Simulation",
+    "icon": "wave",
+    "color": "blue",
+    "tools": [
+      "MATLAB / Simulink",
+      "PSIM",
+      "LTspice",
+      "Proteus"
+    ]
+  },
+  {
+    "name": "Embedded",
+    "icon": "chip",
+    "color": "teal",
+    "tools": [
+      "STM32",
+      "ESP32"
+    ]
+  },
+  {
+    "name": "Design & fabrication",
+    "icon": "circuit",
+    "color": "teal",
+    "tools": [
+      "KiCad",
+      "EAGLE",
+      "CAD",
+      "3D printing"
+    ],
+    "learning": [
+      "CAD"
+    ]
+  },
+  {
+    "name": "Digital",
+    "icon": "logic",
+    "color": "blue",
+    "tools": [
+      "VHDL",
+      "Quartus",
+      "ModelSim"
+    ]
+  },
+  {
+    "name": "Environment",
+    "icon": "terminal",
+    "color": "warm",
+    "tools": [
+      "Linux"
+    ]
+  }
+]

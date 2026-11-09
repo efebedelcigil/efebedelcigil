@@ -1,0 +1,22 @@
+{
+  "GitHub": "github",
+  "LinkedIn": "linkedin",
+  "C": "c",
+  "C++": "cplusplus",
+  "Python": "python",
+  "MATLAB / Simulink": "matlab",
+  "Linux": "linux",
+  "Git": "git",
+  "Gazebo": "gazebo",
+  "Verilog": "verilog",
+  "Fusion": "fusion",
+  "EAGLE": "autodesk",
+  "KiCad": "kicad",
+  "STM32": "stmicroelectronics",
+  "ESP32": "espressif",
+  "ROS 2": "ros",
+  "Raspberry Pi": "raspberrypi",
+  "LTspice": "ltspice",
+  "Proteus": "proteus",
+  "NanoEdge AI Studio": "stmicroelectronics"
+}
