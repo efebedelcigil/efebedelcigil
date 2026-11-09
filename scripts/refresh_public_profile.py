@@ -35,6 +35,6 @@ try:
  raw=json.loads(subprocess.check_output(['gh','api','graphql','-f','query='+query],text=True))['data']['user']['contributionsCollection']
  activity={label:sum(r['contributions']['totalCount'] for r in raw[key] if not r['repository']['isPrivate']) for label,key in [('Commits','commitContributionsByRepository'),('Issues','issueContributionsByRepository'),('Pull requests','pullRequestContributionsByRepository'),('Reviews','pullRequestReviewContributionsByRepository')]}
 except (subprocess.CalledProcessError,KeyError,FileNotFoundError):
- if not activity:raise RuntimeError('Public activity unavailable; retaining previous artwork')
+ raise RuntimeError('Public activity refresh failed; retaining previous snapshot and artwork')
 snapshot={'fetched':datetime.date.today().isoformat(),'source':'Public calendar, public repository metadata and languages; contribution types filtered by public repository.','days':days,'repos':repos,'pinned':pinned,'languages':languages,'activity':activity}
 (ROOT/'assets/public-profile.json').write_text(json.dumps(snapshot,indent=2)+'\n',encoding='utf-8')
