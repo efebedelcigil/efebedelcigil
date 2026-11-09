@@ -92,4 +92,6 @@ All primary section headers come from the same `heading-*` generator. Areas/Tool
 
 `design_parts.py` provides typography measurement and the restrained category-colored perimeter animation. Static and reduced-motion badge variants share layout and contain no animation. The hero includes institution/status beneath the name; `python scripts/refresh_hero.py` updates lettering using existing embedded raster frames without re-rendering the robot. Working areas uses the earlier card layout; the control diagram is not displayed.
 
-Contribution package tops have bevels and raised side walls. The current route is projected through each package top and uses copper/orange-only glow. It covers every active date in the public snapshot and is recalculated when the snapshot changes.
+Contribution package tops have bevels and raised side walls. The current route stays at PCB level, behind raised package geometry, and uses copper/orange-only glow. It covers every active date in the public snapshot and is recalculated when the snapshot changes.
+
+Current is drawn at PCB level before package geometry. Opaque chip bodies occlude it; internal windows pulse at the first visit of the moving signal, derived from route arc length. Four-sided contacts make entry and exit visible. It no longer rides across the raised lid.

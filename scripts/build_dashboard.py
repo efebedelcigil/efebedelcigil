@@ -71,25 +71,37 @@ for theme in ('dark','light'):
  p=[centered('Public activity / past year',1120,28,19,muted)]
  p.append(f'<g transform="translate(70 60) matrix(1 .08 -.32 .82 0 0)"><rect x="0" y="10" width="1010" height="183" rx="18" fill="{line}"/><rect width="1010" height="183" rx="18" fill="{panel}" stroke="{muted}"/>')
  for week in range(53):p.append(f'<path d="M{24+week*18} 17v144" stroke="{line}" stroke-width="1"/>')
+ chip_start=len(p)
  for d in dates:
   day=datetime.date.fromisoformat(d);offset=(day-start).days;week=offset//7;row=offset%7;level=public['days'][d];x=20+week*18;y=20+row*21
   if not level:
-   p.append(f'<rect x="{x}" y="{y}" width="12" height="13" rx="2" fill="{palette[0]}"/>');continue
+   p.append(f'<path d="M{x+4} {y+6}h4" stroke="{line}" stroke-width="1" opacity=".3"/>');continue
   lift=3+level*.65
   p.append(f'<rect x="{x+1}" y="{y+2}" width="13" height="14" rx="2" fill="{line}" opacity=".7"/>')
   p.append(f'<path d="M{x-2} {y+4}h3m10 0h4M{x-2} {y+9}h3m10 0h4" stroke="{copper}" stroke-width="1.3"/>')
   p.append(f'<path d="M{x} {y+13-lift}h12v{lift}h-12z" fill="{line}"/><path d="M{x+12} {y-lift}v13l2 2V{y+2}z" fill="{muted}" opacity=".6"/>')
   p.append(f'<rect x="{x}" y="{y-lift}" width="12" height="13" rx="1.5" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: activity level {level}</title></rect>')
   p.append(f'<path d="M{x+1} {y+2-lift}h10" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
+ packages=p[chip_start:];p=p[:chip_start]
  active={(i//7,i%7) for i,d in enumerate(dates) if public['days'][d]}
  route=circuit_route(active)
  levels={(i//7,i%7):public['days'][d] for i,d in enumerate(dates)}
- points=[(26+x*18,26.5+y*21-(3+levels[(x,y)]*.65 if levels.get((x,y)) else 0)) for x,y in route]
+ points=[(26+x*18,26.5+y*21) for x,y in route]
  wire='M'+' L'.join(f'{x},{y}' for x,y in points)
  p.append(f'<path d="{wire}" fill="none" stroke="{copper}" stroke-width="1" opacity=".18"/>')
  p.append(f'<defs><filter id="currentGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2"/></filter></defs>')
  for color,weight,blur in [(copper,6,' filter="url(#currentGlow)"'),(copper,2.5,''),('#ffe1bd',.75,'')]:
   p.append(f'<path d="{wire}" pathLength="1000" fill="none" stroke="{color}" stroke-width="{weight}" stroke-dasharray="18 982" stroke-linecap="round"{blur}><animate attributeName="stroke-dashoffset" from="0" to="-1000" dur="14s" repeatCount="indefinite"/></path>')
+ p+=packages
+ from math import hypot
+ distances=[0.0]
+ for a,b in zip(points,points[1:]):distances.append(distances[-1]+hypot(b[0]-a[0],b[1]-a[1]))
+ total_length=distances[-1] or 1
+ for cell in sorted(active):
+  x,y=20+cell[0]*18,20+cell[1]*21;lift=3+levels[cell]*.65
+  phase=max(0,distances[route.index(cell)]/total_length*14-.25)
+  p.append(f'<path d="M{x+4} {y-2}v3m5-3v3M{x+4} {y+12}v3m5-3v3" stroke="{copper}" stroke-width="1"/>')
+  p.append(f'<rect x="{x+3}" y="{y+4-lift}" width="6" height="4" rx="1" fill="{copper}" opacity=".12"><animate attributeName="opacity" values=".12;.7;.12;.12" keyTimes="0;.025;.065;1" begin="{phase:.3f}s" dur="14s" repeatCount="indefinite"/></rect>')
  p.append('</g>');save('contribution',1120,301,p)
  save('contribution-still',1120,301,[re.sub(r'<animate\b[^>]*/>', '', part) for part in p])
  activity=public.get('activity',{})
