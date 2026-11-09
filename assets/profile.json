@@ -4,43 +4,45 @@
   "status": "Final-year student",
   "portfolio": "https://efebedelcigil.github.io/en/",
   "areas": [
-    "Control systems",
+    "Control Systems",
     "Robotics",
-    "Embedded systems",
-    "Power electronics",
+    "Embedded Systems",
+    "Power Electronics",
     "Mechatronics",
     "IoT",
-    "Circuit design",
-    "3D printing"
+    "Circuit Design",
+    "3D Printing"
   ],
   "learning_areas": [
-    "Machine learning",
-    "Motor control",
-    "Sensor fusion"
+    "Machine Learning",
+    "Motor Control",
+    "Sensor Fusion",
+    "Disturbance Rejection"
   ],
   "exploring_areas": [
     "DSP",
-    "PLC & automation",
-    "Renewable energy"
+    "PLC & Automation",
+    "PV Systems"
   ],
   "learning_area_groups": [
     {
-      "name": "Learning",
+      "name": "AI & Neural Networks",
       "tools": [
-        "Machine learning"
+        "Machine Learning"
       ]
     },
     {
-      "name": "Control & sensing",
+      "name": "Control & Sensing",
       "tools": [
-        "Motor control",
-        "Sensor fusion"
+        "Motor Control",
+        "Sensor Fusion",
+        "Disturbance Rejection"
       ]
     }
   ],
   "exploring_area_groups": [
     {
-      "name": "Signals",
+      "name": "Signals & Systems",
       "tools": [
         "DSP"
       ]
@@ -48,13 +50,13 @@
     {
       "name": "Automation",
       "tools": [
-        "PLC & automation"
+        "PLC & Automation"
       ]
     },
     {
       "name": "Energy",
       "tools": [
-        "Renewable energy"
+        "PV Systems"
       ]
     }
   ]
