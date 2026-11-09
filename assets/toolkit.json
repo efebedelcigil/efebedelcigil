@@ -58,7 +58,9 @@
     "icon": "terminal",
     "color": "warm",
     "tools": [
-      "Linux"
+      "Linux",
+      "Windows",
+      "Microsoft Office"
     ]
   }
 ]
