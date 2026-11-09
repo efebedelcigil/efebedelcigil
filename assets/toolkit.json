@@ -15,7 +15,9 @@
     "color": "blue",
     "tools": [
       "MATLAB / Simulink",
-      "PSIM"
+      "PSIM",
+      "LTspice",
+      "Proteus"
     ]
   },
   {
@@ -28,14 +30,12 @@
     ]
   },
   {
-    "name": "Electronics",
+    "name": "PCB design",
     "icon": "circuit",
     "color": "teal",
     "tools": [
       "KiCad",
-      "EAGLE",
-      "LTspice",
-      "Proteus"
+      "EAGLE"
     ]
   },
   {

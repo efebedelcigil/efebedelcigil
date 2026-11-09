@@ -118,6 +118,11 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
         parts.append(f'<clipPath id="chargeClip"><rect x="{start_x}" y="{baseline-10}" width="{end-start_x}" height="20" rx="4"/></clipPath>')
         zig='M'+' L'.join(f'{start_x+i*(end-start_x)/30:.2f},{baseline+(-5 if i%2 else 5)}' for i in range(31))
         parts.append(f'<g clip-path="url(#chargeClip)"><path d="{zig}" fill="none" stroke="{accent}" stroke-width="5" opacity=".3"/><path d="{zig}" pathLength="100" fill="none" stroke="{ink}" stroke-width="1.5" stroke-dasharray="9 91"><animate attributeName="stroke-dashoffset" from="0" to="-100" dur="1.7s" repeatCount="indefinite"/></path></g>')
+    identity=json.loads((ROOT/'assets/profile.json').read_text(encoding='utf-8'))
+    muted='#a9b8cc' if theme=='dark' else '#52647a'
+    ix,iy=(8,365) if mobile else (22,477)
+    parts.append(lettering(identity['discipline'],ix,iy,20 if mobile else 25,muted,550,100,370 if mobile else 610))
+    parts.append(lettering(identity['institution']+' / '+identity['status'],ix,iy+30,18 if mobile else 21,muted,450,100,370 if mobile else 610))
     rx,ry,rw=(255,-130,470) if mobile else (550,-215,720)
     parts.append(f'<g clip-path="url(#heroBounds)"><g transform="translate({rx} {ry}) scale({rw/600})"><use id="robotTrack" href="#steady">')
     if not still:

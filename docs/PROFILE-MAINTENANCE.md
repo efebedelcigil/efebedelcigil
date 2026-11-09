@@ -85,3 +85,11 @@ Both theme images use GitHub's `#gh-dark-mode-only` / `#gh-light-mode-only` suff
 The current route uses a closed BFS tour of every active public cell, preserving components. The electric battery filament is self-contained SVG animation. Portfolio copy is “Explore my portfolio”; section headings and main explanatory text use native Markdown so they can be selected. Badge and hero lettering remain image content. The browser's selection highlight cannot be removed through GitHub README styling. Theme preview wrappers remain with the user's explicit acceptance.
 
 Pinned cards use inline images at 49% width instead of a nested table, avoiding native table borders. Language distribution is the sum of GitHub language API byte values per eligible public repository; the snapshot stores per-repository language_sources for audit. It is not skill proficiency, project count or a fabricated engineering-language mix.
+
+## Shared headings and learning layout
+
+All primary section headers come from the same `heading-*` generator. Areas/Tools & methods branches use a smaller common style. TinyML lives in `assets/learning.json` under Methods, while Machine learning remains in `profile.json` under learning_areas. Sensor fusion replaces Sensing. LTspice and Proteus are grouped under Simulation; KiCad and EAGLE under PCB design.
+
+`design_parts.py` provides typography measurement and the restrained category-colored perimeter animation. Static and reduced-motion badge variants share layout and contain no animation. The hero includes institution/status beneath the name; `python scripts/refresh_hero.py` updates lettering using existing embedded raster frames without re-rendering the robot. Working areas uses the earlier card layout; the control diagram is not displayed.
+
+Contribution package tops have bevels and raised side walls. The current route is projected through each package top and uses copper/orange-only glow. It covers every active date in the public snapshot and is recalculated when the snapshot changes.

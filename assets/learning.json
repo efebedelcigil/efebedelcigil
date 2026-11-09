@@ -1,5 +1,11 @@
 [
   {
+    "name": "Methods",
+    "tools": [
+      "TinyML"
+    ]
+  },
+  {
     "name": "Languages",
     "tools": [
       "Python",
