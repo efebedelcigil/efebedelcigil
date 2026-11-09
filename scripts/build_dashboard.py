@@ -10,6 +10,11 @@ for theme in ('dark','light'):
  ink,muted,blue,copper,panel,line=('#edf2f8','#a9b8cc','#78a4ff','#efa571','#142237','#31445e') if theme=='dark' else ('#192a40','#52647a','#214fc5','#a45d36','#edf3fa','#cbd8e8')
  def txt(t,x,y,s=22,c=None,w=550):return lettering(t,x,y,s,c or ink,w)
  def save(name,w,h,p):
+  if name.startswith('heading-'):
+   side=sum(map(ord,name))%2;length=48+(sum(map(ord,name))%4)*17
+   x=12 if not side else w-length-24
+   decoration=f'<g fill="none" stroke="{blue}" stroke-width=".8" opacity=".16"><path d="M{x} 7h{length*.6}l8 8h{length*.3}m{-length*.5} -11h{length*.3}l8 8"/><circle cx="{x}" cy="7" r="1.5"/></g>'
+   p=[decoration]+p
   (A/f'{name}-{theme}.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img"><title>{html.escape(name)}</title>'+''.join(p)+'</svg>',encoding='utf-8')
   path=A/f'{name}-{theme}.svg'
   if '<animate' in path.read_text(encoding='utf-8'):
