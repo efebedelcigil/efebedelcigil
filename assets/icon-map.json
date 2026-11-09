@@ -41,7 +41,7 @@
   "Power electronics": "bolt",
   "Mechatronics": "settings",
   "IoT": "wifi",
-  "Circuit design": "circuit-resistor",
+  "Circuit design": "circuit-ground",
   "Code": "code",
   "Simulation": "wave-sine",
   "Embedded": "cpu-2",
