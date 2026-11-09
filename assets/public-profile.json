@@ -440,6 +440,20 @@
     "Python": 8170,
     "VHDL": 10501
   },
+  "language_sources": {
+    "assembly-full-adder": {
+      "Assembly": 844
+    },
+    "nextcalibur-control-center": {
+      "C#": 1393689,
+      "PowerShell": 73063,
+      "Inno Setup": 31498,
+      "Python": 8170
+    },
+    "single-cycle-cpu": {
+      "VHDL": 10501
+    }
+  },
   "activity": {
     "Commits": 539,
     "Issues": 5,

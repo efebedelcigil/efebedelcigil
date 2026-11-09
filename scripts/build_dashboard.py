@@ -1,6 +1,7 @@
 from pathlib import Path
 import json,html,re,xml.etree.ElementTree as E,datetime
 from build_identity import lettering
+from circuit_route import circuit_route
 R=Path(__file__).resolve().parents[1];A=R/'assets'
 profile=json.loads((A/'profile.json').read_text(encoding='utf-8'));public=json.loads((A/'public-profile.json').read_text(encoding='utf-8'))
 logos={'C':'c','C++':'cplusplus','Python':'python','MATLAB / Simulink':'matlab','Linux':'linux','Git':'git','Gazebo':'gazebo','Verilog':'verilog','Fusion':'fusion','EAGLE':'autodesk','KiCad':'kicad','STM32':'stmicroelectronics','ESP32':'espressif','ROS 2':'ros','Raspberry Pi':'raspberrypi','LTspice':'ltspice','Proteus':'proteus','NanoEdge AI Studio':'stmicroelectronics'}
@@ -31,15 +32,20 @@ for theme in ('dark','light'):
   rows=['Embedded systems / Power electronics','Mechatronics / IoT / Circuit design / 3D printing'] if mobile else ['Embedded systems / Power electronics / Mechatronics / IoT / Circuit design / 3D printing']
   for i,row in enumerate(rows):p.append(txt(row,32,231+i*33,21,muted))
   save('focus'+suffix,w,322,p)
+  control=[f'<path d="M15 40h110m40 0h115m140 0h120m140 0h{1120-710}" stroke="{blue}" stroke-width="2" fill="none"/>',f'<circle cx="145" cy="40" r="20" stroke="{copper}" fill="none"/>',f'<path d="M137 40h16m-8-8v16M{1120-35} 40v58H145V60" stroke="{line}" fill="none" stroke-width="2"/>']
+  for x,label in [(280,'Control'),(540,'System')]:
+   if x+140>1120-15:continue
+   control.extend([f'<rect x="{x}" y="15" width="140" height="50" rx="9" fill="{panel}" stroke="{blue}"/>',txt(label,x+19,48,24,ink)])
+  save('control-loop'+suffix,w,112*w/1120,[f'<g transform="scale({w/1120})">']+control+['</g>'])
   for name,title,area_key in [('learning','In progress','learning_areas'),('exploring','Interested in exploring','exploring_areas')]:
-   groups=json.loads((A/(name+'.json')).read_text(encoding='utf-8'));p=[txt(title,8,35,31,blue,650),txt('Areas',8,78,19,copper),txt(' / '.join(profile[area_key]),8,110,21),txt('Tools',8,154,19,copper),traces(w,18)]
-   x,y=8,173
+   groups=json.loads((A/(name+'.json')).read_text(encoding='utf-8'));p=[]
+   x,y=8,8
    for label in [t for g in groups for t in g['tools']]:
     bw=len(label)*11+53
     if x+bw>w-8:x=8;y+=49
     p.append(f'<rect x="{x}" y="{y}" width="{bw}" height="36" rx="10" fill="{panel}" stroke="{line}"/>');p.append(logo(label,x+10,y+9,muted,panel));p.append(txt(label,x+36,y+25,20));x+=bw+9
    save(name+suffix,w,y+62,p)
-  p=[txt('Explore the portfolio',26,49,33,blue,650),txt('Projects, publications, contact and more',26,87,21,muted),f'<path d="M{w-67} 45h29v29m-29 0 29-29" stroke="{copper}" stroke-width="3" fill="none"/>',f'<rect x="8" y="8" width="{w-16}" height="104" rx="15" fill="{panel}" stroke="{blue}" stroke-width="2"/><path d="M18 105h{w-36}" stroke="{copper}" opacity=".65"/>']
+  p=[txt('Explore my portfolio',26,49,33,blue,650),txt('Projects, publications, contact and more',26,87,21,muted),f'<path d="M{w-67} 45h29v29m-29 0 29-29" stroke="{copper}" stroke-width="3" fill="none"/>',f'<rect x="8" y="8" width="{w-16}" height="104" rx="15" fill="{panel}" stroke="{blue}" stroke-width="2"/><path d="M18 105h{w-36}" stroke="{copper}" opacity=".65"/>']
   p=p[-1:]+p[:-1]
   save('portfolio'+suffix,w,122,p)
  # Pseudo-isometric contribution board: date-to-cell mapping stays identical across themes.
@@ -51,14 +57,23 @@ for theme in ('dark','light'):
   day=datetime.date.fromisoformat(d);offset=(day-start).days;week=offset//7;row=offset%7;level=public['days'][d];x=20+week*18;y=20+row*21
   p.append(f'<rect x="{x}" y="{y}" width="12" height="13" rx="2" fill="{palette[level]}"><title>{d}: activity level {level}</title></rect>')
   if level:p.append(f'<path d="M{x-2} {y+4}h2m12 0h3M{x-2} {y+9}h2m12 0h3" stroke="{copper}" stroke-width="1"/>')
- p.append(f'<path d="M24 12h950v151H24Z" fill="none" stroke="{blue}" stroke-width="2" opacity=".18"/>')
- p.append(f'<path d="M24 12h950v151H24Z" fill="none" stroke="{copper}" stroke-width="3" stroke-dasharray="30 2192" stroke-linecap="round"><animate attributeName="stroke-dashoffset" from="0" to="-2222" dur="9s" repeatCount="indefinite"/></path>')
- for week in range(0,53,4):p.append(f'<circle cx="{24+week*18}" cy="12" r="3" fill="{blue}"><animate attributeName="opacity" values=".3;1;.3" dur="3s" begin="{week*.07}s" repeatCount="indefinite"/></circle>')
- p.append('</g>');p.append(txt('Each component represents an active public day.',8,359,19,muted));save('contribution',1120,382,p)
- save('contribution-still',1120,382,[re.sub(r'<animate\b[^>]*/>', '', part) for part in p])
+ active={(i//7,i%7) for i,d in enumerate(dates) if public['days'][d]}
+ route=circuit_route(active)
+ points=[(26+x*18,26.5+y*21) for x,y in route]
+ wire='M'+' L'.join(f'{x},{y}' for x,y in points)
+ p.append(f'<path d="{wire}" fill="none" stroke="{blue}" stroke-width="1" opacity=".25"/>')
+ p.append(f'<defs><filter id="currentGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2"/></filter></defs>')
+ for color,weight,blur in [(blue,7,' filter="url(#currentGlow)"'),(copper,2.4,''),(ink,.8,'')]:
+  p.append(f'<path d="{wire}" pathLength="1000" fill="none" stroke="{color}" stroke-width="{weight}" stroke-dasharray="18 982" stroke-linecap="round"{blur}><animate attributeName="stroke-dashoffset" from="0" to="-1000" dur="14s" repeatCount="indefinite"/></path>')
+ p.append('</g>');save('contribution',1120,349,p)
+ save('contribution-still',1120,349,[re.sub(r'<animate\b[^>]*/>', '', part) for part in p])
  activity=public.get('activity',{})
  p=[txt('Public activity',8,25,21,muted)]
- for i,(label,count) in enumerate(activity.items()):p.append(txt(str(count)+' '+label,8+i*277,66,21,ink))
+ marks={'Commits':'M1 9h4m8 0h4M9 5a4 4 0 1 0 0 8 4 4 0 1 0 0-8','Issues':'M9 1a8 8 0 1 0 0 16 8 8 0 1 0 0-16M9 5v5m0 3v.1','Pull requests':'M4 3v11M1 2a3 3 0 1 0 6 0M1 16a3 3 0 1 0 6 0M11 3h3v10m-6-10 3-3m-3 3 3 3M11 16a3 3 0 1 0 6 0','Reviews':'M1 1h16v12H7l-5 4v-4H1zM5 7l3 3 5-6'}
+ for i,(label,count) in enumerate(activity.items()):
+  x=8+i*277
+  p.append(f'<path d="{marks[label]}" transform="translate({x} 49)" stroke="{blue}" stroke-width="1.5" fill="none" stroke-linecap="round"/>')
+  p.append(txt(str(count)+' '+label,x+28,66,21,ink))
  save('activity',1120,89,p)
  # Language distribution uses public repository language bytes, excluding forks and the profile repository.
  repos=public['repos'];projects=public.get('pinned',[])
@@ -78,4 +93,4 @@ for theme in ('dark','light'):
   title=repo['name'];desc=shorten(repo['description'] or 'Public repository',48)
   p=[f'<rect x="1" y="1" width="538" height="140" rx="13" stroke="{line}" fill="{panel}"/>',txt(shorten(title,31),22,45,24,ink,650),txt(desc,22,80,20,muted),txt(repo.get('language') or 'Repository',22,117,18,blue)]
   save('repo-'+title,540,142,p)
- save('still-link',340,30,[txt('Still version of landing page',8,23,21,muted)])
+ save('still-link',400,42,[f'<rect x="1" y="1" width="398" height="40" rx="10" fill="{panel}" stroke="{line}"/>',f'<path d="M16 15v12m5-12v12" stroke="{blue}" stroke-width="2"/>',txt('Still version of landing page',36,29,22,ink)])

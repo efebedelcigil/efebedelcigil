@@ -79,3 +79,9 @@ The workflow checks every 15 minutes (GitHub may delay scheduled jobs). It reads
 Both theme images use GitHub's `#gh-dark-mode-only` / `#gh-light-mode-only` suffixes, so manual GitHub appearance overrides the operating-system theme. Responsive/reduced-motion picture sources sit inside each theme variant. This can download both hero variants; GitHub's image/CSS model does not permit custom script selection. Public pins and README rows are regenerated from the same snapshot, with two cards per row and truncated titles/descriptions.
 
 `build_dashboard.py`, `build_readme.py`, `build_toolkit.py` and `build_static.py` rebuild their respective modules. Skills were explicitly deferred. SVG artwork has no cross-image hover/zoom or layout interaction in GitHub README.
+
+## Electrical polish and readable text
+
+The current route uses a closed BFS tour of every active public cell, preserving components. The electric battery filament is self-contained SVG animation. Portfolio copy is “Explore my portfolio”; section headings and main explanatory text use native Markdown so they can be selected. Badge and hero lettering remain image content. The browser's selection highlight cannot be removed through GitHub README styling. Theme preview wrappers remain with the user's explicit acceptance.
+
+Pinned cards use inline images at 49% width instead of a nested table, avoiding native table borders. Language distribution is the sum of GitHub language API byte values per eligible public repository; the snapshot stores per-repository language_sources for audit. It is not skill proficiency, project count or a fabricated engineering-language mix.

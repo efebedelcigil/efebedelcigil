@@ -79,8 +79,8 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
         if not still:
             start=.80 if n==0 else 1.25
             duration=.45 if n==0 else .55
-            times=[0,start]+[start+duration*i/(len(values)-1) for i in range(1,len(values))]+[38]+[38]+[38]+[38]+[38]+[38]
-            clips=[0,0]+[x+value for value in values[1:]]+[width]+[width]+[width]+[width]+[width]+[width]
+            times=[0,start]+[start+duration*i/(len(values)-1) for i in range(1,len(values))]+[38]+[38]+[38]+[38]+[38]+[38]+[38]
+            clips=[0,0]+[x+value for value in values[1:]]+[width]+[width]+[width]+[width]+[width]+[width]+[width]
             keytimes=';'.join(f'{t/38:.6f}' for t in times)
             parts.append(f'<animate attributeName="width" values="{";".join(f"{v:.3f}" for v in clips)}" keyTimes="{keytimes}" begin="0s" dur="38s" calcMode="discrete" repeatCount="indefinite"/>')
         parts.append('</rect></clipPath>')
@@ -114,6 +114,10 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
     if not still:
         parts.append(f'<animate attributeName="d" values="M{start_x} {baseline}h0;M{start_x} {baseline}h{end-start_x};M{start_x} {baseline}h{end-start_x};M{start_x} {baseline}h0" keyTimes="0;.4;.8;1" dur="8s" repeatCount="indefinite"/>')
     parts.append('</path>')
+    if not still:
+        parts.append(f'<clipPath id="chargeClip"><rect x="{start_x}" y="{baseline-10}" width="{end-start_x}" height="20" rx="4"/></clipPath>')
+        zig='M'+' L'.join(f'{start_x+i*(end-start_x)/30:.2f},{baseline+(-5 if i%2 else 5)}' for i in range(31))
+        parts.append(f'<g clip-path="url(#chargeClip)"><path d="{zig}" fill="none" stroke="{accent}" stroke-width="5" opacity=".3"/><path d="{zig}" pathLength="100" fill="none" stroke="{ink}" stroke-width="1.5" stroke-dasharray="9 91"><animate attributeName="stroke-dashoffset" from="0" to="-100" dur="1.7s" repeatCount="indefinite"/></path></g>')
     rx,ry,rw=(255,-130,470) if mobile else (550,-215,720)
     parts.append(f'<g clip-path="url(#heroBounds)"><g transform="translate({rx} {ry}) scale({rw/600})"><use id="robotTrack" href="#steady">')
     if not still:
