@@ -1,7 +1,7 @@
 {
   "institution": "Ege University",
   "discipline": "Electrical & Electronics Engineering",
-  "status": "Final-year Student",
+  "status": "Final-Year Student",
   "portfolio": "https://efebedelcigil.github.io/en/",
   "areas": [
     "Control Systems",
@@ -41,7 +41,7 @@
   ],
   "exploring_area_groups": [
     {
-      "name": "Signals",
+      "name": "Signals & Systems",
       "tools": [
         "DSP"
       ]
