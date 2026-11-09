@@ -112,7 +112,7 @@ for theme in ('dark','light'):
   while measure(language_text,17)>490:language_text=language_text[:-4].rstrip(' .')+'...'
   p=[f'<rect x="1" y="1" width="538" height="166" rx="13" stroke="{line}" fill="{panel}"/>',txt(shorten(title,31),22,43,24,ink,650),txt(desc,22,76,20,muted),txt(language_text,22,110,17,muted),txt('View repository',22,146,18,blue),logo('View repository',496,128,blue,size=22)]
   p.insert(1,halo(1,1,538,166,blue,radius=13))
- save('repo-'+title,540,168,p)
+  save('repo-'+title,540,168,p)
  save('still-link',400,40,[f'<rect x="1" y="1" width="398" height="38" rx="10" fill="{panel}" stroke="{line}"/>',logo('Pause',12,12,blue,size=18),txt('Still version of landing page',36,29,22,ink)])
 
  save('back-top',190,40,[f'<rect x="1" y="1" width="188" height="36" rx="9" fill="{panel}" stroke="{line}"/>',logo('Back to top',12,9,blue,size=18),txt('Back to top',38,26,20,ink)])

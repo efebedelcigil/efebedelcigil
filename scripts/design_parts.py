@@ -23,7 +23,7 @@ def branch_groups(groups,width,y,title,ink,muted,accent,panel,line):
  parts=[lettering(title,50,y+17,22,accent,600)]
  columns=min(2 if width==600 else 3,len(groups));cell=(width-80)/columns;top=y+48
  for start in range(0,len(groups),columns):
-  row=groups[start:start+columns];offset=(columns-len(row))*cell/2;heights=[]
+  row=groups[start:start+columns];offset=(columns-len(row))*cell/2;heights=[];frames=[]
   for col,g in enumerate(row):
    gx=50+offset+col*cell
    parts.append(logo(g['name'],gx+18,top,accent,size=22));parts.append(lettering(g['name'],gx+46,top+18,21,ink,600))
@@ -33,6 +33,7 @@ def branch_groups(groups,width,y,title,ink,muted,accent,panel,line):
     if bx+bw>gx+cell-6:bx=gx+18;by+=48
     parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="36" rx="10" fill="{panel}" stroke="{line}"/>');parts.append(halo(bx,by,bw,36,accent));parts.append(logo(label,bx+10,by+9,muted,panel));parts.append(lettering(label,bx+36,by+25,20,ink,550));bx+=bw+9
    h=by+54-top;heights.append(h)
-   parts.append(f'<path d="M{gx} {top+30}v{h-30}h{cell-18}" stroke="{line}" fill="none"/>')
+   frames.append(gx)
+  for gx in frames:parts.append(f'<path d="M{gx} {top+30}v{max(heights)-30}h{cell-18}" stroke="{line}" fill="none"/>')
   top+=max(heights)+14
  return parts,top+12

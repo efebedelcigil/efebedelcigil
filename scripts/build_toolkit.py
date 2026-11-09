@@ -11,7 +11,7 @@ def build(theme,mobile,groups):
  accents={'teal':'#65c7c2','blue':'#8aa7ff','warm':'#efa571'} if dark else {'teal':'#147c79','blue':'#365dc1','warm':'#a75a2c'}
  parts=[];top=10
  for row_start in range(0,len(groups),columns):
-  heights=[]
+  heights=[];frames=[]
   for col,g in enumerate(groups[row_start:row_start+columns]):
    x=8+col*cell;y=top;color=accents[g['color']];group=[]
    group.append(logo(g['name'],x+2,y,color,size=22));group.append(lettering(g['name'],x+34,y+18,21,primary,600))
@@ -21,7 +21,8 @@ def build(theme,mobile,groups):
     bw=measure(display,19)+51
     if bx+bw>x+panel_width-4:bx=x+12;by+=44
     group.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="34" rx="10" fill="{fill}" stroke="{line}"/>');group.append(halo(bx,by,bw,34,color));group.append(logo(label,bx+10,by+8,muted,fill));group.append(lettering(display,bx+35,by+23,19,primary,550));bx+=bw+8
-   h=by-y+50;heights.append(h);parts.append(f'<path d="M{x} {y+30}v{h-30}h{panel_width}" stroke="{line}" fill="none"/>');parts+=group
+   h=by-y+50;heights.append(h);frames.append((x,y));parts+=group
+  for x,y in frames:parts.append(f'<path d="M{x} {y+30}v{max(heights)-30}h{panel_width}" stroke="{line}" fill="none"/>')
   top+=max(heights)+22
  desc='. '.join(g['name']+': '+', '.join(g['tools']) for g in groups)
  svg=f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{top}" viewBox="0 0 {width} {top}" role="img"><title>Engineering toolkit</title><desc>{html.escape(desc)}</desc>'+''.join(parts)+'</svg>'

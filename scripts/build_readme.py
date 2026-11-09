@@ -27,12 +27,8 @@ parts=['<a name="gh-dark-mode-only"></a><a name="gh-light-mode-only"></a>',block
 repos=data.get('pinned',[])
 cards=[linked('repo-'+r['name'],r['html_url'],r['name']+' / '+(r['description'] or ''),'49%') for r in repos]
 parts.append('<p align="center">'+' '.join(cards)+'</p>' if cards else 'No public repositories pinned yet.')
-def view_counter():
- result=[]
- for theme,color in [('dark','435f98'),('light','365dc1')]:
-  fragment='#gh-'+theme+'-mode-only'
-  url='https://komarev.com/ghpvc/?username=efebedelcigil&label=Profile+views&color='+color+'&style=flat'
-  result.append(f'<a href="{html.escape(url,quote=True)}{fragment}"><img src="{html.escape(url,quote=True)}{fragment}" height="20" alt="Profile views"></a>')
- return ''.join(result)
-parts.append('<hr>\n\n<p align="center">'+linked('still-link','docs/STATIC.md','Still version of landing page',200)+' &nbsp; '+view_counter()+' &nbsp; '+picture('back-top','Back to top',95,False)+'</p>')
-(R/'README.md').write_text('\n\n'.join(parts)+'\n',encoding='utf-8')
+parts.append('<hr>\n\n<p align="center">'+linked('still-link','docs/STATIC.md','Still version of landing page',200)+' &nbsp; '+picture('back-top','Back to top',95,False)+'</p>')
+for i in range(len(parts)-1):
+ if 'assets/heading-' in parts[i] and parts[i+1].startswith('<p align="center">'):
+  parts[i]=parts[i].removesuffix('</p>')+'<br>'+parts[i+1].removeprefix('<p align="center">');parts[i+1]=''
+(R/'README.md').write_text('\n\n'.join(p for p in parts if p)+'\n',encoding='utf-8')
