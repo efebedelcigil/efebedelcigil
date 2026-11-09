@@ -19,6 +19,7 @@ concurrency:
   cancel-in-progress: true
 permissions:
   contents: write
+  pull-requests: write
 jobs:
   refresh:
     runs-on: ubuntu-latest
@@ -36,10 +37,16 @@ jobs:
       - run: python scripts/refresh_hero.py
       - run: python scripts/build_readme.py
       - run: python scripts/build_static.py
-      - name: Save public artwork
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets README.md docs/STATIC.md
-          git diff --cached --quiet || git commit -m 'Refresh public profile artwork'
-          git push
+      - name: Create or update artwork pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.token }}
+          branch: automation/public-profile-artwork
+          delete-branch: true
+          commit-message: 'Refresh public profile artwork'
+          title: 'Refresh public profile artwork'
+          body: 'Automated update of generated profile artwork and README assets.'
+          add-paths: |
+            assets/
+            README.md
+            docs/STATIC.md
