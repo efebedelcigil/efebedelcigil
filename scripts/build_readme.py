@@ -9,7 +9,7 @@ def picture(name,alt,width=1120,mobile=True,hero=False,target=None):
   if hero:mobile_name='hero-mobile-'+theme
   else:mobile_name=name+'-mobile-'+theme
   sources=''
-  if name in ('toolkit','learning','exploring','focus','portfolio'):
+  if name in ('toolkit','learning','exploring','focus','portfolio') or name.startswith('repo-'):
    if mobile:sources+=f'<source media="(prefers-reduced-motion: reduce) and (max-width: 600px)" srcset="assets/{mobile_name}-still.svg">'
    sources+=f'<source media="(prefers-reduced-motion: reduce)" srcset="assets/{desktop}-still.svg">'
   if name=='contribution':sources+=f'<source media="(prefers-reduced-motion: reduce)" srcset="assets/contribution-still-{theme}.svg">'
@@ -32,7 +32,7 @@ def view_counter():
  for theme,color in [('dark','435f98'),('light','365dc1')]:
   fragment='#gh-'+theme+'-mode-only'
   url='https://komarev.com/ghpvc/?username=efebedelcigil&label=Profile+views&color='+color+'&style=flat'
-  result.append(f'<a href="{html.escape(url,quote=True)}{fragment}"><img src="{html.escape(url,quote=True)}{fragment}" height="17" alt="Profile views"></a>')
+  result.append(f'<a href="{html.escape(url,quote=True)}{fragment}"><img src="{html.escape(url,quote=True)}{fragment}" height="20" alt="Profile views"></a>')
  return ''.join(result)
-parts.append('<hr>\n\n<p align="center">'+linked('still-link','docs/STATIC.md','Still version of landing page',190)+' &nbsp; '+view_counter()+' &nbsp; '+picture('back-top','Back to top',125,False)+'</p>')
+parts.append('<hr>\n\n<p align="center">'+linked('still-link','docs/STATIC.md','Still version of landing page',200)+' &nbsp; '+view_counter()+' &nbsp; '+picture('back-top','Back to top',95,False)+'</p>')
 (R/'README.md').write_text('\n\n'.join(parts)+'\n',encoding='utf-8')

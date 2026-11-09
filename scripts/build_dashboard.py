@@ -18,22 +18,21 @@ for theme in ('dark','light'):
  for mobile in (False,True):
   w=600 if mobile else 1120;suffix='-mobile' if mobile else ''
   support=[['Embedded systems','Power electronics'],['Mechatronics','IoT'],['Circuit design','3D printing']] if mobile else [['Embedded systems','Power electronics','Mechatronics','IoT'],['Circuit design','3D printing']]
-  height=138+(len(support)-1)*34
+  height=113+(len(support)-1)*39
   p=[f'<rect x="8" y="8" width="{w-16}" height="{height}" rx="14" fill="{panel}" stroke="{line}"/>']
   for i in range(4):p.append(f'<path d="M{w-140+i*18} 19v12l16 16v{height-40}" stroke="{line}" fill="none" opacity=".5"/>')
   title='Control systems & robotics';tw=measure(title,32,650)
   p+=[centered(title,w,58,32,blue,650),logo('Control systems',(w-tw)/2-34,34,blue,size=23),logo('Robotics',(w+tw)/2+12,34,blue,size=23)]
   for j,row in enumerate(support):
-   widths=[measure(label,21)+33 for label in row];x=(w-sum(widths)-14*(len(row)-1))/2;y=93+j*34
+   widths=[measure(label,21)+33 for label in row];x=(w-sum(widths)-14*(len(row)-1))/2;y=99+j*39
    for label,bw in zip(row,widths):p+=[logo(label,x,y-17,muted),txt(label,x+26,y,21,muted)];x+=bw+14
   p.append(f'<path d="M{w-121} 19v12l16 16v{height-40}" fill="none" stroke="{copper}" stroke-width="1" stroke-dasharray="9 160" opacity=".4"><animate attributeName="stroke-dashoffset" from="0" to="-169" dur="8s" repeatCount="indefinite"/></path>')
-  save('focus'+suffix,w,height+26,p)
+  save('focus'+suffix,w,height+12,p)
   for name,title,area_key in [('learning','In progress','learning_areas'),('exploring','Interested in exploring','exploring_areas')]:
    p=[];y=16;groups=json.loads((A/(name+'.json')).read_text(encoding='utf-8'))
    area_groups=profile['learning_area_groups' if name=='learning' else 'exploring_area_groups']
    parts,y2=branch_groups(area_groups,w,y,'Areas',ink,muted,copper,panel,line);p+=parts
    parts,end=branch_groups(groups,w,y2,'Tools & methods',ink,muted,blue,panel,line);p+=parts
-   p.append(f'<path d="M22 {y+10}V{y2+10}" fill="none" stroke="{line}"/>')
    save(name+suffix,w,end,p)
   p=[txt('Explore my portfolio',26,49,33,blue,650),txt('Projects, publications, contact and more',26,87,21,muted),logo('Open link',w-68,39,copper,size=30),f'<rect x="8" y="8" width="{w-16}" height="104" rx="10" fill="{panel}" stroke="{blue}" stroke-width="2"/>']
   p=p[-1:]+p[:-1]+[halo(8,8,w-16,104,blue)]
@@ -41,7 +40,8 @@ for theme in ('dark','light'):
  for key,title in [('working','Working areas'),('tools','Tools'),('learning','In progress'),('exploring','Interested in exploring'),('contribution','Contribution circuit'),('languages','Project languages'),('pinned','Pinned repositories')]:
   tw=measure(title,32,650);left=(1120-tw)/2
   p=[centered(title,1120,41,32,blue,650),f'<path d="M40 31H{left-28}m{tw+56} 0H1080" stroke="{line}"/><circle cx="{left-16}" cy="31" r="3" fill="{copper}"/>']
-  save('heading-'+key,1120,65,p)
+  p.append(f'<circle cx="{1120-left+16}" cy="31" r="3" fill="{copper}"/>')
+  save('heading-'+key,1120,49,p)
  for name,label in [('github','GitHub'),('linkedin','LinkedIn')]:
   icon=logo(label,12,17,ink,panel)
   save('social-'+name,180,52,[f'<rect x="1" y="1" width="178" height="50" rx="13" fill="{panel}" stroke="{line}"/>',icon,txt(label,41,34,23),logo('Open link',148,18,muted,size=16)])
@@ -50,6 +50,7 @@ for theme in ('dark','light'):
  period=datetime.date.fromisoformat(dates[0]).strftime('%b %Y')+' / '+datetime.date.fromisoformat(dates[-1]).strftime('%b %Y')
  p=[centered(period,1120,28,19,muted)]
  p.append(f'<g transform="translate(70 60) matrix(1 .08 -.32 .82 0 0)"><rect x="0" y="10" width="1010" height="183" rx="18" fill="{line}"/><rect width="1010" height="183" rx="18" fill="{panel}" stroke="{muted}"/>')
+ p.append(halo(0,0,1010,183,copper,radius=18))
  for week in range(53):p.append(f'<path d="M{24+week*18} 17v144" stroke="{line}" stroke-width="1"/>')
  chip_start=len(p)
  for d in dates:
@@ -85,11 +86,11 @@ for theme in ('dark','light'):
  p.append('</g>');save('contribution',1120,301,p)
  save('contribution-still',1120,301,[re.sub(r'<animate\b[^>]*/>', '', part) for part in p])
  activity=public.get('activity',{})
- p=[f'<path d="M560 0v12h-12" stroke="{line}" fill="none"/>',centered('Public activity',1120,32,21,copper,600)]
+ p=[centered('Public activity',1120,25,21,copper,600)]
  for i,(label,count) in enumerate(activity.items()):
   text=str(count)+' '+label;tw=measure(text,21)+30;cx=(i+.5)*280;x=cx-tw/2
-  p.append(logo(label,x,48,blue,size=20));p.append(txt(text,x+30,66,21,ink))
- save('activity',1120,89,p)
+  p.append(logo(label,x,54,blue,size=20));p.append(txt(text,x+30,73,21,ink))
+ save('activity',1120,96,p)
  # Language distribution uses public repository language bytes, excluding forks and the profile repository.
  repos=public['repos'];projects=public.get('pinned',[])
  languages=public.get('languages',{});total=sum(languages.values()) or 1
@@ -110,7 +111,8 @@ for theme in ('dark','light'):
   language_text=' / '.join(names) or repo.get('language') or 'Public repository'
   while measure(language_text,17)>490:language_text=language_text[:-4].rstrip(' .')+'...'
   p=[f'<rect x="1" y="1" width="538" height="166" rx="13" stroke="{line}" fill="{panel}"/>',txt(shorten(title,31),22,43,24,ink,650),txt(desc,22,76,20,muted),txt(language_text,22,110,17,muted),txt('View repository',22,146,18,blue),logo('View repository',496,128,blue,size=22)]
-  save('repo-'+title,540,168,p)
- save('still-link',400,42,[f'<rect x="1" y="1" width="398" height="40" rx="10" fill="{panel}" stroke="{line}"/>',logo('Pause',12,12,blue,size=18),txt('Still version of landing page',36,29,22,ink)])
+  p.insert(1,halo(1,1,538,166,blue,radius=13))
+ save('repo-'+title,540,168,p)
+ save('still-link',400,40,[f'<rect x="1" y="1" width="398" height="38" rx="10" fill="{panel}" stroke="{line}"/>',logo('Pause',12,12,blue,size=18),txt('Still version of landing page',36,29,22,ink)])
 
- save('back-top',190,38,[f'<rect x="1" y="1" width="188" height="36" rx="9" fill="{panel}" stroke="{line}"/>',logo('Back to top',12,9,blue,size=18),txt('Back to top',38,26,20,ink)])
+ save('back-top',190,40,[f'<rect x="1" y="1" width="188" height="36" rx="9" fill="{panel}" stroke="{line}"/>',logo('Back to top',12,9,blue,size=18),txt('Back to top',38,26,20,ink)])
