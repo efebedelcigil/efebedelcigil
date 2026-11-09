@@ -2,7 +2,7 @@ from pathlib import Path
 import json,html
 R=Path(__file__).resolve().parents[1]
 A=R/'assets';profile=json.loads((A/'profile.json').read_text(encoding='utf-8'));data=json.loads((A/'public-profile.json').read_text(encoding='utf-8'))
-def picture(name,alt,width=1120,mobile=True,hero=False):
+def picture(name,alt,width=1120,mobile=True,hero=False,target=None):
  result=[]
  for theme in ['dark','light']:
   fragment=f'#gh-{theme}-mode-only';prefix='hero-' if hero else name+'-';desktop=prefix+theme
@@ -14,9 +14,9 @@ def picture(name,alt,width=1120,mobile=True,hero=False):
    if mobile:sources+=f'<source media="(prefers-reduced-motion: reduce) and (max-width: 600px)" srcset="assets/{mobile_name}-still.svg">'
    sources+=f'<source media="(prefers-reduced-motion: reduce)" srcset="assets/{desktop}-still.svg">'
   if mobile:sources+=f'<source media="(max-width: 600px)" srcset="assets/{mobile_name}.svg">'
-  result.append(f'<picture>{sources}<img src="assets/{desktop}.svg{fragment}" width="{width}" alt="{html.escape(alt,quote=True)}"></picture>')
+  result.append(f'<a href="{target or ("assets/"+desktop+".svg")}{fragment}"><picture>{sources}<img src="assets/{desktop}.svg{fragment}" width="{width}" alt="{html.escape(alt,quote=True)}"></picture></a>')
  return ''.join(result)
-def linked(name,url,alt,width=138,mobile=False):return f'<a href="{url}">'+picture(name,alt,width,mobile)+'</a>'
+def linked(name,url,alt,width=138,mobile=False):return picture(name,alt,width,mobile,target=url)
 parts=[picture('hero','Efe Varol Bedelcigil: control systems and robotics.',1280,True,True),linked('social-github','https://github.com/efebedelcigil','GitHub')+' '+linked('social-linkedin','https://www.linkedin.com/in/efevarolbedelcigil/','LinkedIn'),linked('portfolio',profile['portfolio'],'Projects, publications, contact and more',1120,True),picture('focus',profile['discipline']+'. '+profile['institution']+'. '+profile['status']+'. Working areas: '+', '.join(profile['areas'])), '### Tools',picture('toolkit','Engineering tools: '+', '.join(t for g in json.loads((A/'toolkit.json').read_text(encoding='utf-8')) for t in g['tools'])),picture('learning','In progress: '+', '.join(profile['learning_areas'])),picture('exploring','Interested in exploring: '+', '.join(profile['exploring_areas'])),picture('contribution','Public contribution circuit. Live data refreshed periodically.',mobile=False),picture('activity','Public activity: '+', '.join(str(v)+' '+k for k,v in data['activity'].items()),mobile=False),picture('profile-cards','Public project language distribution by source code bytes.',mobile=False),'### Pinned repositories']
 repos=data.get('pinned',[])
 rows=[]
