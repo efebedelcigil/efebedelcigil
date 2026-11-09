@@ -18,5 +18,7 @@
   "Raspberry Pi": "raspberrypi",
   "LTspice": "ltspice",
   "Proteus": "proteus",
-  "NanoEdge AI Studio": "stmicroelectronics"
+  "NanoEdge AI Studio": "stmicroelectronics",
+  "Windows": "windows11",
+  "Microsoft Office": "microsoftoffice"
 }
