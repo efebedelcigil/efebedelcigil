@@ -1,6 +1,6 @@
 {
   "fetched": "2026-11-09",
-  "source": "Anonymous public GitHub endpoints. No credentials, private repositories or private contribution aggregates.",
+  "source": "Public calendar, public repository metadata and languages; contribution types filtered by public repository.",
   "days": {
     "2025-11-09": 0,
     "2025-11-16": 0,
@@ -107,6 +107,7 @@
     "2026-10-19": 1,
     "2026-10-26": 0,
     "2026-11-02": 0,
+    "2026-11-09": 0,
     "2025-11-11": 0,
     "2025-11-18": 0,
     "2025-11-25": 0,
@@ -401,5 +402,48 @@
       "stargazers_count": 0,
       "fork": false
     }
-  ]
+  ],
+  "pinned": [
+    {
+      "name": "assembly-full-adder",
+      "full_name": "efebedelcigil/assembly-full-adder",
+      "description": "4-bit full adder codes on AtMEGA16 microcontroller written in Assembly",
+      "html_url": "https://github.com/efebedelcigil/assembly-full-adder",
+      "language": "Assembly",
+      "stargazers_count": 0,
+      "fork": false
+    },
+    {
+      "name": "nextcalibur-control-center",
+      "full_name": "efebedelcigil/nextcalibur-control-center",
+      "description": "Open-source replacement for the Casper Excalibur Control Center (tested on G870 / Tongfang JS970, Windows 11): modes, keyboard lighting, temperatures, graphics mode, idle-heat fixes. Not affiliated with Casper.",
+      "html_url": "https://github.com/efebedelcigil/nextcalibur-control-center",
+      "language": "C#",
+      "stargazers_count": 0,
+      "fork": false
+    },
+    {
+      "name": "single-cycle-cpu",
+      "full_name": "efebedelcigil/single-cycle-cpu",
+      "description": "Single cycle computer written in VHDL",
+      "html_url": "https://github.com/efebedelcigil/single-cycle-cpu",
+      "language": "VHDL",
+      "stargazers_count": 0,
+      "fork": false
+    }
+  ],
+  "languages": {
+    "Assembly": 844,
+    "C#": 1393689,
+    "PowerShell": 73063,
+    "Inno Setup": 31498,
+    "Python": 8170,
+    "VHDL": 10501
+  },
+  "activity": {
+    "Commits": 539,
+    "Issues": 5,
+    "Pull requests": 2,
+    "Reviews": 0
+  }
 }

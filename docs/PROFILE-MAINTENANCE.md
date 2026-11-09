@@ -71,3 +71,11 @@ Edit `assets/toolkit.json`: each category has a name, line icon, accent and list
 Repository cards link to public repositories; they do not change GitHub's native pinned-repository selection. Edit README ordering to curate the card section. Icons are monochrome local vectors from Devicon and Simple Icons (their upstream licenses apply). Product logos unavailable in these sets use a shared circuit symbol. Autodesk and ST/Espressif marks represent their respective tool families. No logo implies endorsement.
 
 The tiny view counter is at the footer. SVG animation failure cannot be detected by README markup once SVG has been selected. The default unanimated frame and reduced-motion sources handle common static cases; the footer Still version remains an explicit alternative.
+
+## Live public data and theme selection
+
+The workflow checks every 15 minutes (GitHub may delay scheduled jobs). It reads native public pins from the public profile page, language byte distributions from public non-fork repositories and contribution-type counts summed only across repositories with `isPrivate == false`. The workflow token is scoped to this public repository; no PAT with private-user access is stored. No private aggregate totals are serialized. Profile views remain a live external counter subject to GitHub image caching.
+
+Both theme images use GitHub's `#gh-dark-mode-only` / `#gh-light-mode-only` suffixes, so manual GitHub appearance overrides the operating-system theme. Responsive/reduced-motion picture sources sit inside each theme variant. This can download both hero variants; GitHub's image/CSS model does not permit custom script selection. Public pins and README rows are regenerated from the same snapshot, with two cards per row and truncated titles/descriptions.
+
+`build_dashboard.py`, `build_readme.py`, `build_toolkit.py` and `build_static.py` rebuild their respective modules. Skills were explicitly deferred. SVG artwork has no cross-image hover/zoom or layout interaction in GitHub README.

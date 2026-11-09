@@ -57,7 +57,7 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
     ink='#edf2f8' if theme=='dark' else '#192a40'
     accent='#78a4ff' if theme=='dark' else '#214fc5'
     copper='#efa571' if theme=='dark' else '#b45e30'
-    lines=[('Efe Varol',8,86,55,650,400),('Bedelcigil',8,166,67,800,400)] if mobile else [('Efe Varol',22,152,90,650,720),('Bedelcigil',22,283,112,800,720)]
+    lines=[('Efe Varol',8,86,55,650,400),('Bedelcigil',8,166,67,800,400)] if mobile else [('Efe Varol',22,250,90,650,720),('Bedelcigil',22,381,112,800,720)]
     parts=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
            '<title id="title">Efe Varol Bedelcigil</title>',
            '<desc id="desc">Control systems and robotics. A robot presses its control button, the name types in periodically, and the robot continues its own calibration cycle.</desc>',
@@ -79,8 +79,8 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
         if not still:
             start=.80 if n==0 else 1.25
             duration=.45 if n==0 else .55
-            times=[0,start]+[start+duration*i/(len(values)-1) for i in range(1,len(values))]+[38]+[38]+[38]+[38]
-            clips=[0,0]+[x+value for value in values[1:]]+[width]+[width]+[width]+[width]
+            times=[0,start]+[start+duration*i/(len(values)-1) for i in range(1,len(values))]+[38]+[38]+[38]+[38]+[38]+[38]
+            clips=[0,0]+[x+value for value in values[1:]]+[width]+[width]+[width]+[width]+[width]+[width]
             keytimes=';'.join(f'{t/38:.6f}' for t in times)
             parts.append(f'<animate attributeName="width" values="{";".join(f"{v:.3f}" for v in clips)}" keyTimes="{keytimes}" begin="0s" dur="38s" calcMode="discrete" repeatCount="indefinite"/>')
         parts.append('</rect></clipPath>')
@@ -95,13 +95,13 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
             parts.append(f'<set attributeName="opacity" to="1" begin="{begin}s" dur="{duration}s"/>')
             parts.append(f'<animate attributeName="x" values="{";".join(f"{x+v:.3f}" for v in values)}" begin="{begin}s" dur="{duration}s" calcMode="discrete" fill="freeze"/>')
             parts.append('</rect>')
-    baseline=194 if mobile else 329
+    baseline=244 if mobile else 425
     end=268 if mobile else 460
     start_x=lines[0][1]
     def response_line(amplitude):
         span=end-start_x
         return f'M{start_x} {baseline}C{start_x+span*.35} {baseline-amplitude} {start_x+span*.65} {baseline+amplitude*.65} {end} {baseline}'
-    parts.append(f'<path id="underline" d="{response_line(0)}" fill="none" stroke="{accent}" stroke-width="{6 if mobile else 9}">')
+    parts.append(f'<path id="underline" d="{response_line(0)}" fill="none" stroke="{accent}" stroke-width="{6 if mobile else 9}" opacity=".18">')
     if not still:
         keys=underline_keys()
         shapes=';'.join(response_line(value*(.6 if mobile else 1)) for _,value in keys)
@@ -109,7 +109,11 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
         splines=';'.join(['.42 0 .58 1']*(len(keys)-1))
         parts.append(f'<animate attributeName="d" values="{shapes}" keyTimes="{times}" begin="2.25s" dur="132s" repeatCount="indefinite" calcMode="spline" keySplines="{splines}"/>')
     parts.append('</path>')
-    parts.append(f'<circle cx="{end+22}" cy="{baseline}" r="{3 if mobile else 4.5}" fill="{copper}"/>')
+    parts.append(f'<rect x="{start_x-5}" y="{baseline-13}" width="{end-start_x+10}" height="26" rx="5" stroke="{accent}" fill="none" opacity=".45"/><path d="M{end+6} {baseline-5}v10" stroke="{copper}" stroke-width="5"/>')
+    parts.append(f'<path d="M{start_x} {baseline}h{end-start_x}" stroke="{copper}" stroke-width="{6 if mobile else 9}">')
+    if not still:
+        parts.append(f'<animate attributeName="d" values="M{start_x} {baseline}h0;M{start_x} {baseline}h{end-start_x};M{start_x} {baseline}h{end-start_x};M{start_x} {baseline}h0" keyTimes="0;.4;.8;1" dur="8s" repeatCount="indefinite"/>')
+    parts.append('</path>')
     rx,ry,rw=(255,-130,470) if mobile else (550,-215,720)
     parts.append(f'<g clip-path="url(#heroBounds)"><g transform="translate({rx} {ry}) scale({rw/600})"><use id="robotTrack" href="#steady">')
     if not still:

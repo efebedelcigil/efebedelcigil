@@ -48,7 +48,7 @@ def build(theme, mobile, groups):
             fill='#16263b' if dark else '#edf3fa'
             parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="34" rx="10" fill="{fill}" stroke="{line}"/>')
             parts.append(f'<path d="M{bx+1} {by+11}v12" stroke="{color}" stroke-width="2.5"/>')
-            parts.append(logo(label,bx+10,by+8,muted))
+            parts.append(logo(label,bx+10,by+8,muted,fill))
             parts.append(lettering(label,bx+35,by+23,19,primary,550,100,bw-44))
             bx+=bw+8
     parts.append('</svg>')
