@@ -22,11 +22,15 @@ for theme in ('dark','light'):
  def traces(w,y):return f'<path d="M{w-160} {y}h60l20 20h65m-125-9h43l20 20h62" stroke="{line}" fill="none"/><circle cx="{w-15}" cy="{y+20}" r="3" fill="{copper}"/>'
  for mobile in (False,True):
   w=600 if mobile else 1120;suffix='-mobile' if mobile else ''
-  support=[['Embedded systems','Power electronics'],['Mechatronics','IoT'],['Circuit design','3D printing']] if mobile else [['Embedded systems','Power electronics','Mechatronics','IoT'],['Circuit design','3D printing']]
+  support=[[]];row_width=0
+  for field in profile['areas'][2:]:
+   needed=measure(field,21)+47
+   if row_width+needed>w-(60 if mobile else 150):support.append([]);row_width=0
+   support[-1].append(field);row_width+=needed
   height=113+(len(support)-1)*39
   p=[f'<rect x="8" y="8" width="{w-16}" height="{height}" rx="14" fill="{panel}" stroke="{line}"/>']
   for i in range(4):p.append(f'<path d="M{w-140+i*18} 19v12l16 16v{height-40}" stroke="{line}" fill="none" opacity=".5"/>')
-  title='Control systems & robotics';tw=measure(title,32,650)
+  title=' & '.join(profile['areas'][:2]);tw=measure(title,32,650)
   p+=[centered(title,w,58,32,blue,650),logo('Control systems',(w-tw)/2-34,34,blue,size=23),logo('Robotics',(w+tw)/2+12,34,blue,size=23)]
   for j,row in enumerate(support):
    widths=[measure(label,21)+33 for label in row];x=(w-sum(widths)-14*(len(row)-1))/2;y=99+j*39
