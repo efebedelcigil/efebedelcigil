@@ -96,12 +96,16 @@ for theme in ('dark','light'):
  languages=public.get('languages',{});total=sum(languages.values()) or 1
  colors=[blue,copper,'#65b8ae','#a995d0','#aab8c8']
  p=[centered('Public source code / language bytes',1120,25,19,muted)]
+ ordered=sorted(languages.items(),key=lambda item:-item[1])
+ labels=[language+' '+str(round(value/total*100,1))+'%' for language,value in ordered]
+ col_widths=[max([measure(labels[i],20)+19 for i in range(col,len(labels),3)] or [0]) for col in range(3)]
+ legend_left=(1120-sum(col_widths)-144)/2
  cursor=8
  for i,(language,value) in enumerate(sorted(languages.items(),key=lambda x:-x[1])):
   span=1104*value/total;c=colors[i%len(colors)]
   p.append(f'<rect x="{cursor}" y="46" width="{span}" height="22" fill="{c}"/>')
   p.append(f'<path d="M{cursor} 41v32" stroke="{line}"/>');cursor+=span
-  x=8+(i%3)*365;y=108+(i//3)*35
+  x=legend_left+sum(col_widths[:i%3])+(i%3)*72;y=108+(i//3)*35
   p.append(f'<circle cx="{x+5}" cy="{y-7}" r="4" fill="{c}"/>');p.append(txt(language+' '+str(round(value/total*100,1))+'%',x+19,y,20))
  save('profile-cards',1120,136+((len(languages)-1)//3)*35,p)
  def shorten(t,n):return t if len(t)<=n else t[:n-3].rstrip()+'...'
@@ -111,7 +115,7 @@ for theme in ('dark','light'):
   language_text=' / '.join(names) or repo.get('language') or 'Public repository'
   while measure(language_text,17)>490:language_text=language_text[:-4].rstrip(' .')+'...'
   p=[f'<rect x="1" y="1" width="538" height="166" rx="13" stroke="{line}" fill="{panel}"/>',txt(shorten(title,31),22,43,24,ink,650),txt(desc,22,76,20,muted),txt(language_text,22,110,17,muted),txt('View repository',22,146,18,blue),logo('View repository',496,128,blue,size=22)]
-  p.insert(1,halo(1,1,538,166,blue,radius=13))
+  p.append(halo(1,1,538,166,blue,radius=13).replace('stroke-width="1"','stroke-width="1.5"').replace('opacity=".55"','opacity=".75"'))
   save('repo-'+title,540,168,p)
  save('still-link',400,40,[f'<rect x="1" y="1" width="398" height="38" rx="10" fill="{panel}" stroke="{line}"/>',logo('Pause',12,12,blue,size=18),txt('Still version of landing page',36,29,22,ink)])
 

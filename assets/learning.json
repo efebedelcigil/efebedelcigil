@@ -9,13 +9,13 @@
     "name": "Programming",
     "tools": [
       "Python",
-      "VHDL",
       "Verilog"
     ]
   },
   {
     "name": "Robotics",
     "tools": [
+      "ROS 2",
       "Gazebo"
     ]
   },

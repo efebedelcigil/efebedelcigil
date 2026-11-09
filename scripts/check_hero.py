@@ -167,7 +167,7 @@ def main():
     for path in (ROOT/'README.md',ROOT/'docs/STATIC.md'):
         for reference in re.findall(r'(?:src|srcset)="([^"]+)"',path.read_text(encoding='utf-8')):
             if reference.startswith('https://komarev.com/ghpvc/?username=efebedelcigil'): continue
-            assert (path.parent/reference.split('#')[0]).is_file(),(path,reference)
+            assert (path.parent/reference.split('#')[0].split('?')[0]).is_file(),(path,reference)
     (ROOT/'.render/hero-checks.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report,indent=2))
 

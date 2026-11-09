@@ -1,5 +1,5 @@
 from pathlib import Path
-import json,html
+import json,html,hashlib,re
 R=Path(__file__).resolve().parents[1]
 A=R/'assets';profile=json.loads((A/'profile.json').read_text(encoding='utf-8'));data=json.loads((A/'public-profile.json').read_text(encoding='utf-8'))
 def picture(name,alt,width=1120,mobile=True,hero=False,target=None):
@@ -31,4 +31,8 @@ parts.append('<hr>\n\n<p align="center">'+linked('still-link','docs/STATIC.md','
 for i in range(len(parts)-1):
  if 'assets/heading-' in parts[i] and parts[i+1].startswith('<p align="center">'):
   parts[i]=parts[i].removesuffix('</p>')+'<br>'+parts[i+1].removeprefix('<p align="center">');parts[i+1]=''
-(R/'README.md').write_text('\n\n'.join(p for p in parts if p)+'\n',encoding='utf-8')
+content='\n\n'.join(p for p in parts if p)+'\n'
+def version(match):
+ path=match.group(0);digest=hashlib.sha256((R/path).read_bytes()).hexdigest()[:12];return path+'?v='+digest
+content=re.sub(r'assets/repo-[^\"#?<>]+\.svg',version,content)
+(R/'README.md').write_text(content,encoding='utf-8')

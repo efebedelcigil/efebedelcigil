@@ -48,6 +48,7 @@
     "icon": "logic",
     "color": "blue",
     "tools": [
+      "VHDL",
       "Quartus",
       "ModelSim"
     ]
