@@ -34,5 +34,5 @@ for i in range(len(parts)-1):
 content='\n\n'.join(p for p in parts if p)+'\n'
 def version(match):
  path=match.group(0);digest=hashlib.sha256((R/path).read_bytes()).hexdigest()[:12];return path+'?v='+digest
-content=re.sub(r'assets/repo-[^\"#?<>]+\.svg',version,content)
+content=re.sub(r'assets/(?:repo-|portfolio-)[^\"#?<>]+\.svg',version,content)
 (R/'README.md').write_text(content,encoding='utf-8')
