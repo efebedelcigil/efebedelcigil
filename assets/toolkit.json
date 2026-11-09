@@ -30,12 +30,17 @@
     ]
   },
   {
-    "name": "PCB design",
+    "name": "Design & fabrication",
     "icon": "circuit",
     "color": "teal",
     "tools": [
       "KiCad",
-      "EAGLE"
+      "EAGLE",
+      "CAD",
+      "3D printing"
+    ],
+    "learning": [
+      "CAD"
     ]
   },
   {

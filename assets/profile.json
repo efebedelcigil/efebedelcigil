@@ -22,5 +22,40 @@
     "DSP",
     "PLC & automation",
     "Renewable energy"
+  ],
+  "learning_area_groups": [
+    {
+      "name": "Learning",
+      "tools": [
+        "Machine learning"
+      ]
+    },
+    {
+      "name": "Control & sensing",
+      "tools": [
+        "Motor control",
+        "Sensor fusion"
+      ]
+    }
+  ],
+  "exploring_area_groups": [
+    {
+      "name": "Signals",
+      "tools": [
+        "DSP"
+      ]
+    },
+    {
+      "name": "Automation",
+      "tools": [
+        "PLC & automation"
+      ]
+    },
+    {
+      "name": "Energy",
+      "tools": [
+        "Renewable energy"
+      ]
+    }
   ]
 }

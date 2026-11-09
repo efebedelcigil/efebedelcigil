@@ -6,7 +6,7 @@
     ]
   },
   {
-    "name": "Languages",
+    "name": "Programming",
     "tools": [
       "Python",
       "VHDL",
@@ -14,9 +14,14 @@
     ]
   },
   {
-    "name": "Simulation & CAD",
+    "name": "Robotics",
     "tools": [
-      "Gazebo",
+      "Gazebo"
+    ]
+  },
+  {
+    "name": "CAD",
+    "tools": [
       "SolidWorks",
       "Fusion"
     ]

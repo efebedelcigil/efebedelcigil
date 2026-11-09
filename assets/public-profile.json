@@ -411,7 +411,10 @@
       "html_url": "https://github.com/efebedelcigil/assembly-full-adder",
       "language": "Assembly",
       "stargazers_count": 0,
-      "fork": false
+      "fork": false,
+      "languages": {
+        "Assembly": 844
+      }
     },
     {
       "name": "nextcalibur-control-center",
@@ -420,7 +423,13 @@
       "html_url": "https://github.com/efebedelcigil/nextcalibur-control-center",
       "language": "C#",
       "stargazers_count": 0,
-      "fork": false
+      "fork": false,
+      "languages": {
+        "C#": 1393689,
+        "PowerShell": 73063,
+        "Inno Setup": 31498,
+        "Python": 8170
+      }
     },
     {
       "name": "single-cycle-cpu",
@@ -429,7 +438,10 @@
       "html_url": "https://github.com/efebedelcigil/single-cycle-cpu",
       "language": "VHDL",
       "stargazers_count": 0,
-      "fork": false
+      "fork": false,
+      "languages": {
+        "VHDL": 10501
+      }
     }
   ],
   "languages": {

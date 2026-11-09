@@ -95,3 +95,11 @@ All primary section headers come from the same `heading-*` generator. Areas/Tool
 Contribution package tops have bevels and raised side walls. The current route stays at PCB level, behind raised package geometry, and uses copper/orange-only glow. It covers every active date in the public snapshot and is recalculated when the snapshot changes.
 
 Current is drawn at PCB level before package geometry. Opaque chip bodies occlude it; internal windows pulse at the first visit of the moving signal, derived from route arc length. Four-sided contacts make entry and exit visible. It no longer rides across the raised lid.
+
+## Current icon and layout system
+
+All displayed UI icons now come from the bundled Tabler outline collection (MIT, `assets/icons/LICENSE`). `assets/icon-map.json` maps each tool/field to an intentional icon; missing mappings fail rather than showing a default chip. 3D printing uses `stack-3`, representing additive layers rather than an inkjet printer. CAD's visible label is simply CAD; its learning status remains metadata, with SolidWorks/Fusion in progress.
+
+Branch categories match the Tools category format. Junctions point to group labels, with consistent grid alignment. Border highlights all use normalized pathLength 100, phase zero and an eight-second period; lead/trail lengths are scaled from actual rounded perimeter. Each SVG has its own image clock, so cross-image loading can introduce a small start offset, but there are no intentional phase offsets.
+
+Main headings are custom display blocks rather than Markdown heading tags, preventing GitHub's automatic heading-link chain. Two named theme targets at the hero support the themed Back to top control. A sticky/scroll-triggered floating control cannot be implemented in README; this is a footer anchor. Pin languages come from each public pinned repository's language endpoint, not just primaryLanguage. Footer colors use explicit theme variants, with a neutral counter-label portion supplied by the external counter service.

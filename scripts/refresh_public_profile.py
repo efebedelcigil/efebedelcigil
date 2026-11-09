@@ -24,6 +24,8 @@ for block in profile_html.split('pinned-item-list-item-content')[1:]:
   owner,name=m[1].split('/',1)
   detail=json.loads(read(f'https://api.github.com/repos/{owner}/{name}'))
   if not detail.get('private',True):pinned.append({k:detail[k] for k in ['name','full_name','description','html_url','language','stargazers_count','fork']})
+for repo in pinned:
+ repo['languages']=json.loads(read(f'https://api.github.com/repos/{repo["full_name"]}/languages'))
 languages={};language_sources={}
 for repo in repos:
  if repo['fork'] or repo['name']==user:continue

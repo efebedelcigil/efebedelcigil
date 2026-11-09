@@ -123,7 +123,7 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
     ix,iy=(8,365) if mobile else (22,477)
     parts.append(lettering(identity['discipline'],ix,iy,20 if mobile else 25,muted,550,100,370 if mobile else 610))
     parts.append(lettering(identity['institution']+' / '+identity['status'],ix,iy+30,18 if mobile else 21,muted,450,100,370 if mobile else 610))
-    rx,ry,rw=(255,-130,470) if mobile else (550,-215,720)
+    rx,ry,rw=(275,-130,470) if mobile else (595,-215,720)
     parts.append(f'<g clip-path="url(#heroBounds)"><g transform="translate({rx} {ry}) scale({rw/600})"><use id="robotTrack" href="#steady">')
     if not still:
         parts.append(timeline([f'#r{i}' for i in sequence[:54]],0,2.25))
