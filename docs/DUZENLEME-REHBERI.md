@@ -89,3 +89,5 @@ Otomasyon korumalı main dalına doğrudan yazmaz; `automation/public-profile-ar
 Bu profil deposunun kendi kodları GitHub dil istatistiklerine katılmasın diye ana `.gitattributes` dosyasında `* linguist-vendored` bulunur. Başka depolardaki dosyaları etkilemez.
 
 Mobil robot kareleri 360×432, masaüstü kareleri 600×720 piksel olarak üretilir. Hareket süreleri ve kare hızı aynıdır. `refresh_hero.py` her iki sürümü otomatik üretir; mobildeki dosya yükünü azaltmak için bu ayrım korunmalıdır.
+
+Güncel kategori adları bölümler arasında tutarlıdır: Programming, Modeling & Simulation, Embedded Systems, Design & Fabrication, Digital Design, Platforms & Workflow. Verilog öğrenme bölümünde Digital Design, Raspberry Pi keşif bölümünde Embedded Systems altındadır. Energy Systems adı korunmuştur; termal sistemlere özel ilgi eklenmemiştir. Turkcell bootcamp deneyimi tek Data Center Design & Operations alanıyla Working Areas içinde yer alır.

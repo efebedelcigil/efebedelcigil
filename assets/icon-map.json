@@ -68,5 +68,13 @@
   "Programming": "code",
   "Learning": "brain",
   "Automation": "automation",
-  "Energy": "solar-panel"
+  "Energy": "solar-panel",
+  "AI & Machine Learning": "brain",
+  "Signal Processing": "wave-sine",
+  "Energy Systems": "solar-panel",
+  "Modeling & Simulation": "wave-sine",
+  "Digital Design": "binary-tree",
+  "Platforms & Workflow": "terminal-2",
+  "Data Center Design & Operations": "server",
+  "Intelligent Systems": "brain"
 }

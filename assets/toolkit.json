@@ -1,6 +1,6 @@
 [
   {
-    "name": "Code",
+    "name": "Programming",
     "icon": "code",
     "color": "warm",
     "tools": [
@@ -10,7 +10,7 @@
     ]
   },
   {
-    "name": "Simulation",
+    "name": "Modeling & Simulation",
     "icon": "wave",
     "color": "blue",
     "tools": [
@@ -21,7 +21,7 @@
     ]
   },
   {
-    "name": "Embedded",
+    "name": "Embedded Systems",
     "icon": "chip",
     "color": "teal",
     "tools": [
@@ -30,7 +30,7 @@
     ]
   },
   {
-    "name": "Design & fabrication",
+    "name": "Design & Fabrication",
     "icon": "circuit",
     "color": "teal",
     "tools": [
@@ -44,7 +44,7 @@
     ]
   },
   {
-    "name": "Digital",
+    "name": "Digital Design",
     "icon": "logic",
     "color": "blue",
     "tools": [
@@ -54,7 +54,7 @@
     ]
   },
   {
-    "name": "Environment",
+    "name": "Platforms & Workflow",
     "icon": "terminal",
     "color": "warm",
     "tools": [
