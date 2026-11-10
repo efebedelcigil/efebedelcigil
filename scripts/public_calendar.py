@@ -20,6 +20,8 @@ def parse_calendar(html):
  parser=CalendarParser();parser.feed(html)
  dates=sorted(parser.days)
  if len(dates)<350:raise ValueError('Incomplete GitHub calendar')
+ if set(parser.counts)!=set(parser.days):raise ValueError('Missing daily contribution counts')
+ if any((parser.counts[d]>0)!=(v>0) for d,v in parser.days.items()):raise ValueError('Contribution count and level disagree')
  if any(not 0<=v<=4 for v in parser.days.values()):raise ValueError('Invalid level')
  for a,b in zip(dates,dates[1:]):
   if (datetime.date.fromisoformat(b)-datetime.date.fromisoformat(a)).days!=1:raise ValueError('Missing calendar day')

@@ -58,7 +58,7 @@ for theme in ('dark','light'):
   title='Explore my portfolio';subtitle='Projects, publications, contact and more'
   low,high=extent(title,33,650);sub_low,sub_high=extent(subtitle,21,550)
   shift=98-((60-high)+(100-sub_low))/2
-  p=[f'<rect x="8" y="8" width="{w-16}" height="180" rx="10" fill="{panel}" stroke="{blue}" stroke-width="2"/>',txt(title,26,60+shift,33,blue,650),txt(subtitle,26,100+shift,21,muted),logo('Open link',w-68,83,copper,size=30)]
+  p=[f'<rect x="8" y="8" width="{w-16}" height="180" rx="10" fill="{panel}" stroke="{line}" stroke-width=".5"/>',txt(title,26,60+shift,33,blue,650),txt(subtitle,26,100+shift,21,muted),logo('Open link',w-68,83,copper,size=30)]
   p.append(halo(8,8,w-16,180,blue).replace('stroke-width="1"','stroke-width="1.3"').replace('opacity=".55"','opacity=".75"'))
   save('portfolio'+suffix,w,196,p)
  for key,title in [('working','Working areas'),('tools','Tools'),('learning','In progress'),('exploring','Interested in exploring'),('contribution','Contribution circuit'),('languages','Project languages'),('pinned','Pinned repositories')]:
@@ -72,29 +72,29 @@ for theme in ('dark','light'):
  # Pseudo-isometric contribution board: date-to-cell mapping stays identical across themes.
  dates=sorted(public['days']);cells,weeks=cell_map(public['days']);step=948/max(weeks-1,1);palette=['#172536']+['#293a4b']*4 if theme=='dark' else ['#dfe7ed']+['#405567']*4
  period=datetime.date.fromisoformat(dates[0]).strftime('%b %Y')+' / '+datetime.date.fromisoformat(dates[-1]).strftime('%b %Y')
- p=[centered(period,1120,28,19,muted)]
- p.append(f'<g transform="translate(70 60) matrix(1 .08 -.32 .82 0 0)"><rect x="0" y="10" width="1010" height="183" rx="18" fill="{line}"/><rect width="1010" height="183" rx="18" fill="{panel}" stroke="{muted}"/>')
- p.append(halo(0,0,1010,183,copper,radius=18))
- for week in range(weeks):p.append(f'<path d="M{24+week*step} 17v144" stroke="{line}" stroke-width="1"/>')
- for row in range(8):p.append(f'<path data-grid="horizontal" d="M14 {17+row*21}H985" stroke="{line}" stroke-width="1"/>')
+ p=[centered(str(sum(public['day_counts'].values()))+' public contributions',1120,26,22,blue,600),centered(period,1120,51,17,muted)]
+ p.append(f'<g transform="translate(70 80) matrix(1 .025 -.10 .94 0 0)"><rect x="0" y="10" width="1010" height="246" rx="18" fill="{line}"/><rect width="1010" height="246" rx="18" fill="{panel}" stroke="{muted}"/>')
+ p.append(halo(0,0,1010,246,copper,radius=18))
+ for week in range(weeks):p.append(f'<path d="M{24+week*step} 17v212" stroke="{line}" stroke-width="1"/>')
+ for row in range(8):p.append(f'<path data-grid="horizontal" d="M14 {17+row*30}H985" stroke="{line}" stroke-width="1"/>')
  chip_start=len(p)
  for d in dates:
-  week,row=cells[d];level=public['days'][d];x=20+week*step;y=20+row*21
+  week,row=cells[d];level=public['days'][d];x=20+week*step;y=20+row*30
   if not level:
    p.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="12" height="13" rx="2" fill="{palette[0]}" stroke="{line}" stroke-width=".3"/>');continue
-  lift=3+level*.65
+  lift=2+level*2
   p.append(f'<rect x="{x+1}" y="{y+2}" width="13" height="14" rx="2" fill="{line}" opacity=".7"/>')
-  p.append(f'<path d="M{x-2} {y+4}h3m10 0h4M{x-2} {y+9}h3m10 0h4" stroke="{copper}" stroke-width="1.3"/>')
+  p.append(f'<path d="M{x-1} {y+4}h2m10 0h3M{x-1} {y+9}h2m10 0h3" stroke="{copper}" stroke-width="1.3"/>')
   p.append(f'<path d="M{x} {y+13-lift}h12v{lift}h-12z" fill="{line}"/><path d="M{x+12} {y-lift}v13l2 2V{y+2}z" fill="{muted}" opacity=".6"/>')
-  p.append(f'<rect x="{x}" y="{y-lift}" width="12" height="13" rx="1.5" data-date="{d}" data-level="{level}" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: activity level {level}</title></rect>')
+  p.append(f'<rect x="{x}" y="{y-lift}" width="12" height="13" rx="1.5" data-date="{d}" data-level="{level}" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: {public["day_counts"][d]} public contributions, level {level}</title></rect>')
   p.append(f'<path d="M{x+1} {y+2-lift}h10" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
-  for indicator in range(4):
-   p.append(f'<rect data-indicator="{d}" data-lit="{int(indicator<level)}" x="{x+1+indicator*2.6}" y="{y+4-lift}" width="1.8" height="4" rx=".4" fill="{copper if indicator<level else line}"/>')
+  die_w=4+level*1.5;die_h=3+level*1.5;die_color=['','#9a6546','#c48a55','#efa571','#ffe0ae'][level]
+  p.append(f'<rect data-die="{d}" data-level="{level}" x="{x+(12-die_w)/2}" y="{y-lift+(13-die_h)/2}" width="{die_w}" height="{die_h}" rx=".7" fill="{die_color}" stroke="{copper}" stroke-width=".4"/>')
  packages=p[chip_start:];p=p[:chip_start]
  active={cells[d] for d in dates if public['days'][d]}
  route=circuit_route(active,width=weeks)
  levels={cells[d]:public['days'][d] for d in dates}
- points=[(26+x*step,26.5+y*21) for x,y in route]
+ points=[(26+x*step,26.5+y*30) for x,y in route]
  wire='M'+' L'.join(f'{x},{y}' for x,y in points)
  p.append(f'<path d="{wire}" fill="none" stroke="{copper}" stroke-width="1" opacity=".18"/>')
  p.append(f'<defs><filter id="currentGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2"/></filter></defs>')
@@ -106,21 +106,23 @@ for theme in ('dark','light'):
  for a,b in zip(points,points[1:]):distances.append(distances[-1]+hypot(b[0]-a[0],b[1]-a[1]))
  total_length=distances[-1] or 1
  for cell in sorted(active):
-  x,y=20+cell[0]*step,20+cell[1]*21;lift=3+levels[cell]*.65
+  x,y=20+cell[0]*step,20+cell[1]*30;lift=2+levels[cell]*2
   phase=max(0,distances[route.index(cell)]/total_length*14-.25)
   p.append(f'<path d="M{x+4} {y-2}v3m5-3v3M{x+4} {y+12}v3m5-3v3" stroke="{copper}" stroke-width="1"/>')
   p.append(f'<rect x="{x+3}" y="{y+9-lift}" width="6" height="2" rx="1" fill="{copper}" opacity=".12"><animate attributeName="opacity" values=".12;.7;.12;.12" keyTimes="0;.025;.065;1" begin="{phase:.3f}s" dur="14s" repeatCount="indefinite"/></rect>')
  p.append('</g>')
- p.append(txt('Less',395,329,18,muted))
+ p.append(txt('Less',355,388,18,muted))
  for level in range(5):
-  x=450+level*38
-  p.append(f'<rect x="{x}" y="311" width="24" height="19" rx="3" fill="{palette[level]}" stroke="{line}"/>')
+  x=419+level*52;lift=2+level*2 if level else 0;top=371-lift
+  p.append(f'<path d="M{x} {top+20}h28v{lift}h-28z" fill="{line}"/>')
+  p.append(f'<rect x="{x}" y="{top}" width="28" height="20" rx="3" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"/>')
   if level:
-   p.append(f'<path d="M{x-3} 316h3m24 0h3M{x-3} 325h3m24 0h3" stroke="{copper}" stroke-width="1"/>')
-   for j in range(4):p.append(f'<rect x="{x+3+j*5}" y="316" width="3" height="8" rx=".5" fill="{copper if j<level else line}"/>')
- p.append(txt('More',648,329,18,muted))
- save('contribution',1120,350,p)
- save('contribution-still',1120,350,[re.sub(r'<animate\b[^>]*/>', '', part) for part in p])
+   p.append(f'<path d="M{x-4} {top+5}h4m28 0h4M{x-4} {top+15}h4m28 0h4" stroke="{copper}" stroke-width="1.3"/>')
+   dw=7+level*4;dh=3+level*3;dc=['','#9a6546','#c48a55','#efa571','#ffe0ae'][level]
+   p.append(f'<rect x="{x+(28-dw)/2}" y="{top+(20-dh)/2}" width="{dw}" height="{dh}" rx="1" fill="{dc}"/>')
+ p.append(txt('More',697,388,18,muted))
+ save('contribution',1120,411,p)
+ save('contribution-still',1120,411,[re.sub(r'<animate\b[^>]*/>', '', part) for part in p])
  activity=public.get('activity',{})
  p=[centered('Public activity',1120,25,21,copper,600)]
  for i,(label,count) in enumerate(activity.items()):

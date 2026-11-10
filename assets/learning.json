@@ -12,12 +12,6 @@
     ]
   },
   {
-    "name": "Digital Design",
-    "tools": [
-      "Verilog"
-    ]
-  },
-  {
     "name": "Robotics",
     "tools": [
       "ROS 2",

@@ -20,7 +20,7 @@ def read(url):
             url,
             headers={
                 'User-Agent': 'public-profile-artwork',
-                'Accept': 'application/vnd.github+json',
+                'Accept': 'application/vnd.github+json' if url.startswith('https://api.github.com/') else 'text/html',
             },
         )
         try:

@@ -1,5 +1,5 @@
 {
-  "fetched": "2026-11-09",
+  "fetched": "2026-11-10",
   "source": "Public calendar, public repository metadata and languages; contribution types filtered by public repository.",
   "days": {
     "2025-11-09": 0,
@@ -370,109 +370,6 @@
     "2026-10-31": 0,
     "2026-11-07": 0
   },
-  "repos": [
-    {
-      "name": "assembly-full-adder",
-      "description": "4-bit full adder codes on AtMEGA16 microcontroller written in Assembly",
-      "html_url": "https://github.com/efebedelcigil/assembly-full-adder",
-      "language": "Assembly",
-      "stargazers_count": 0,
-      "fork": false
-    },
-    {
-      "name": "efebedelcigil",
-      "description": "The glorious landing page.",
-      "html_url": "https://github.com/efebedelcigil/efebedelcigil",
-      "language": "Python",
-      "stargazers_count": 0,
-      "fork": false
-    },
-    {
-      "name": "nextcalibur-control-center",
-      "description": "Open-source replacement for the Casper Excalibur Control Center (tested on G870 / Tongfang JS970, Windows 11): modes, keyboard lighting, temperatures, graphics mode, idle-heat fixes. Not affiliated with Casper.",
-      "html_url": "https://github.com/efebedelcigil/nextcalibur-control-center",
-      "language": "C#",
-      "stargazers_count": 0,
-      "fork": false
-    },
-    {
-      "name": "single-cycle-cpu",
-      "description": "Single cycle computer written in VHDL",
-      "html_url": "https://github.com/efebedelcigil/single-cycle-cpu",
-      "language": "VHDL",
-      "stargazers_count": 0,
-      "fork": false
-    }
-  ],
-  "pinned": [
-    {
-      "name": "assembly-full-adder",
-      "full_name": "efebedelcigil/assembly-full-adder",
-      "description": "4-bit full adder codes on AtMEGA16 microcontroller written in Assembly",
-      "html_url": "https://github.com/efebedelcigil/assembly-full-adder",
-      "language": "Assembly",
-      "stargazers_count": 0,
-      "fork": false,
-      "languages": {
-        "Assembly": 844
-      }
-    },
-    {
-      "name": "nextcalibur-control-center",
-      "full_name": "efebedelcigil/nextcalibur-control-center",
-      "description": "Open-source replacement for the Casper Excalibur Control Center (tested on G870 / Tongfang JS970, Windows 11): modes, keyboard lighting, temperatures, graphics mode, idle-heat fixes. Not affiliated with Casper.",
-      "html_url": "https://github.com/efebedelcigil/nextcalibur-control-center",
-      "language": "C#",
-      "stargazers_count": 0,
-      "fork": false,
-      "languages": {
-        "C#": 1393689,
-        "PowerShell": 73063,
-        "Inno Setup": 31498,
-        "Python": 8170
-      }
-    },
-    {
-      "name": "single-cycle-cpu",
-      "full_name": "efebedelcigil/single-cycle-cpu",
-      "description": "Single cycle computer written in VHDL",
-      "html_url": "https://github.com/efebedelcigil/single-cycle-cpu",
-      "language": "VHDL",
-      "stargazers_count": 0,
-      "fork": false,
-      "languages": {
-        "VHDL": 10501
-      }
-    }
-  ],
-  "languages": {
-    "Assembly": 844,
-    "C#": 1393689,
-    "PowerShell": 73063,
-    "Inno Setup": 31498,
-    "Python": 8170,
-    "VHDL": 10501
-  },
-  "language_sources": {
-    "assembly-full-adder": {
-      "Assembly": 844
-    },
-    "nextcalibur-control-center": {
-      "C#": 1393689,
-      "PowerShell": 73063,
-      "Inno Setup": 31498,
-      "Python": 8170
-    },
-    "single-cycle-cpu": {
-      "VHDL": 10501
-    }
-  },
-  "activity": {
-    "Commits": 548,
-    "Issues": 5,
-    "Pull requests": 3,
-    "Reviews": 0
-  },
   "day_counts": {
     "2025-11-09": 0,
     "2025-11-16": 0,
@@ -632,7 +529,7 @@
     "2026-10-20": 1,
     "2026-10-27": 5,
     "2026-11-03": 0,
-    "2026-11-10": 4,
+    "2026-11-10": 7,
     "2025-11-12": 0,
     "2025-11-19": 0,
     "2025-11-26": 0,
@@ -842,5 +739,108 @@
     "2026-10-31": 0,
     "2026-11-07": 0
   },
-  "calendar_fetched": "2026-11-10T20:14:03.160333+00:00"
+  "calendar_fetched": "2026-11-10T20:28:07.828142+00:00",
+  "repos": [
+    {
+      "name": "assembly-full-adder",
+      "description": "4-bit full adder codes on AtMEGA16 microcontroller written in Assembly",
+      "html_url": "https://github.com/efebedelcigil/assembly-full-adder",
+      "language": "Assembly",
+      "stargazers_count": 0,
+      "fork": false
+    },
+    {
+      "name": "efebedelcigil",
+      "description": "The glorious landing page.",
+      "html_url": "https://github.com/efebedelcigil/efebedelcigil",
+      "language": "Python",
+      "stargazers_count": 0,
+      "fork": false
+    },
+    {
+      "name": "nextcalibur-control-center",
+      "description": "Open-source replacement for the Casper Excalibur Control Center (tested on G870 / Tongfang JS970, Windows 11): modes, keyboard lighting, temperatures, graphics mode, idle-heat fixes. Not affiliated with Casper.",
+      "html_url": "https://github.com/efebedelcigil/nextcalibur-control-center",
+      "language": "C#",
+      "stargazers_count": 0,
+      "fork": false
+    },
+    {
+      "name": "single-cycle-cpu",
+      "description": "Single cycle computer written in VHDL",
+      "html_url": "https://github.com/efebedelcigil/single-cycle-cpu",
+      "language": "VHDL",
+      "stargazers_count": 0,
+      "fork": false
+    }
+  ],
+  "pinned": [
+    {
+      "name": "assembly-full-adder",
+      "full_name": "efebedelcigil/assembly-full-adder",
+      "description": "4-bit full adder codes on AtMEGA16 microcontroller written in Assembly",
+      "html_url": "https://github.com/efebedelcigil/assembly-full-adder",
+      "language": "Assembly",
+      "stargazers_count": 0,
+      "fork": false,
+      "languages": {
+        "Assembly": 844
+      }
+    },
+    {
+      "name": "nextcalibur-control-center",
+      "full_name": "efebedelcigil/nextcalibur-control-center",
+      "description": "Open-source replacement for the Casper Excalibur Control Center (tested on G870 / Tongfang JS970, Windows 11): modes, keyboard lighting, temperatures, graphics mode, idle-heat fixes. Not affiliated with Casper.",
+      "html_url": "https://github.com/efebedelcigil/nextcalibur-control-center",
+      "language": "C#",
+      "stargazers_count": 0,
+      "fork": false,
+      "languages": {
+        "C#": 1393689,
+        "PowerShell": 73063,
+        "Inno Setup": 31498,
+        "Python": 8170
+      }
+    },
+    {
+      "name": "single-cycle-cpu",
+      "full_name": "efebedelcigil/single-cycle-cpu",
+      "description": "Single cycle computer written in VHDL",
+      "html_url": "https://github.com/efebedelcigil/single-cycle-cpu",
+      "language": "VHDL",
+      "stargazers_count": 0,
+      "fork": false,
+      "languages": {
+        "VHDL": 10501
+      }
+    }
+  ],
+  "languages": {
+    "Assembly": 844,
+    "C#": 1393689,
+    "PowerShell": 73063,
+    "Inno Setup": 31498,
+    "Python": 8170,
+    "VHDL": 10501
+  },
+  "language_sources": {
+    "assembly-full-adder": {
+      "Assembly": 844
+    },
+    "nextcalibur-control-center": {
+      "C#": 1393689,
+      "PowerShell": 73063,
+      "Inno Setup": 31498,
+      "Python": 8170
+    },
+    "single-cycle-cpu": {
+      "VHDL": 10501
+    }
+  },
+  "activity": {
+    "Commits": 555,
+    "Issues": 5,
+    "Pull requests": 7,
+    "Reviews": 1
+  }
 }
