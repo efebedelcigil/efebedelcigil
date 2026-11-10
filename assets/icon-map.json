@@ -78,6 +78,6 @@
   "Data Center Design & Operations": "server",
   "AI & Intelligent Systems": "brain",
   "UART / I²C / SPI / CAN": "circuit-switch-closed",
-  "Embedded Control": "cpu-2",
-  "System Modelling & Design": "adjustments-horizontal"
+  "System Modelling & Design": "adjustments-horizontal",
+  "Embedded & Motor Control": "cpu-2"
 }

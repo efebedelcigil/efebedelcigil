@@ -16,7 +16,7 @@
   ],
   "learning_areas": [
     "Machine Learning",
-    "Embedded Control",
+    "Embedded & Motor Control",
     "Sensor Fusion",
     "System Modelling & Design"
   ],
@@ -36,7 +36,7 @@
     {
       "name": "Control & Sensing",
       "tools": [
-        "Embedded Control",
+        "Embedded & Motor Control",
         "Sensor Fusion",
         "System Modelling & Design"
       ]
