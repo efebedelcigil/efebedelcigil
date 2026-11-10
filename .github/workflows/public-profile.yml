@@ -29,6 +29,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install fonttools pillow
+      - name: Refresh anonymous contribution calendar independently
+        run: python scripts/public_calendar.py
       - name: Refresh public profile snapshot (keep cached snapshot if upstream is unavailable)
         continue-on-error: true
         run: python scripts/refresh_public_profile.py
@@ -38,6 +40,7 @@ jobs:
       - run: python scripts/build_dashboard.py
       - run: python scripts/build_toolkit.py
       - run: python scripts/refresh_hero.py
+      - run: python scripts/test_public_calendar.py
       - run: python scripts/build_readme.py
       - run: python scripts/build_static.py
       - name: Create or update artwork pull request
