@@ -26,7 +26,8 @@
     "color": "teal",
     "tools": [
       "STM32",
-      "ESP32"
+      "ESP32",
+      "Keil"
     ]
   },
   {
