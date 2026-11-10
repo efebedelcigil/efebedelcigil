@@ -77,5 +77,7 @@
   "Platforms & Workflow": "terminal-2",
   "Data Center Design & Operations": "server",
   "AI & Intelligent Systems": "brain",
-  "UART / I²C / SPI / CAN": "circuit-switch-closed"
+  "UART / I²C / SPI / CAN": "circuit-switch-closed",
+  "Embedded Control": "cpu-2",
+  "System Modelling & Design": "adjustments-horizontal"
 }
