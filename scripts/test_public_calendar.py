@@ -32,7 +32,7 @@ class CalendarTests(unittest.TestCase):
     self.assertTrue(a[5]<=b[3] or b[5]<=a[3] or a[6]<=b[4] or b[6]<=a[4],(a,b))
  def test_rendered_parity(self):
   A=Path(__file__).resolve().parents[1]/'assets';data=json.loads((A/'public-profile.json').read_text());days=data['days'];cells,weeks=cell_map(days)
-  palettes={'dark':['#172536']+['#293a4b']*4,'light':['#dfe7ed']+['#405567']*4}
+  palettes={'dark':['#172536']+['#293a4b']*4,'light':['#c1cedb']+['#42576b']*4}
   for theme in ['dark','light']:
    root=E.parse(A/f'contribution-{theme}.svg').getroot();nodes=[e for e in root.iter() if e.get('data-date')]
    self.assertEqual(len([e for e in root.iter() if e.get('data-grid')=='horizontal']),8)

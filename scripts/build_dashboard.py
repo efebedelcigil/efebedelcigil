@@ -9,7 +9,7 @@ R=Path(__file__).resolve().parents[1];A=R/'assets'
 profile=json.loads((A/'profile.json').read_text(encoding='utf-8'));public=json.loads((A/'public-profile.json').read_text(encoding='utf-8'))
 from vector_logos import logo
 for theme in ('dark','light'):
- ink,muted,blue,copper,panel,line=('#edf2f8','#a9b8cc','#78a4ff','#efa571','#142237','#31445e') if theme=='dark' else ('#192a40','#52647a','#214fc5','#a45d36','#edf3fa','#cbd8e8')
+ ink,muted,blue,copper,panel,line=('#edf2f8','#a9b8cc','#78a4ff','#efa571','#142237','#31445e') if theme=='dark' else ('#25394d','#53677d','#365d94','#925c3c','#e4ebf1','#bdcbd9')
  def txt(t,x,y,s=22,c=None,w=550):return lettering(t,x,y,s,c or ink,w)
  def save(name,w,h,p):
   if name.startswith('heading-'):
@@ -70,7 +70,9 @@ for theme in ('dark','light'):
   icon=logo(label,12,17,ink,panel)
   save('social-'+name,180,52,[f'<rect x="1" y="1" width="178" height="50" rx="13" fill="{panel}" stroke="{line}"/>',icon,txt(label,41,34,23),logo('Open link',148,18,muted,size=16)])
  # Pseudo-isometric contribution board: date-to-cell mapping stays identical across themes.
- dates=sorted(public['days']);cells,weeks=cell_map(public['days']);step=948/max(weeks-1,1);palette=['#172536']+['#293a4b']*4 if theme=='dark' else ['#dfe7ed']+['#405567']*4
+ dates=sorted(public['days']);cells,weeks=cell_map(public['days']);step=948/max(weeks-1,1);palette=['#172536']+['#293a4b']*4 if theme=='dark' else ['#c1cedb']+['#42576b']*4
+ if theme=='light':panel,line,muted='#d7e0e9','#b4c4d3','#53677d'
+ die_colors=['','#9a6546','#c48a55','#efa571','#ffe0ae'] if theme=='dark' else ['','#946b4b','#af7f53','#cb975f','#e5b87c']
  period=datetime.date.fromisoformat(dates[0]).strftime('%b %Y')+' / '+datetime.date.fromisoformat(dates[-1]).strftime('%b %Y')
  p=[centered(str(sum(public['day_counts'].values()))+' public contributions',1120,26,22,blue,600),centered(period,1120,51,17,muted)]
  p.append(f'<g transform="translate(70 80) matrix(1 .025 -.10 .94 0 0)"><rect x="0" y="10" width="1010" height="246" rx="18" fill="{line}"/><rect width="1010" height="246" rx="18" fill="{panel}" stroke="{muted}"/>')
@@ -88,7 +90,7 @@ for theme in ('dark','light'):
   p.append(f'<path d="M{x} {y+13-lift}h12v{lift}h-12z" fill="{line}"/><path d="M{x+12} {y-lift}v13l2 2V{y+2}z" fill="{muted}" opacity=".6"/>')
   p.append(f'<rect x="{x}" y="{y-lift}" width="12" height="13" rx="1.5" data-date="{d}" data-level="{level}" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: {public["day_counts"][d]} public contributions, level {level}</title></rect>')
   p.append(f'<path d="M{x+1} {y+2-lift}h10" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
-  die_w=4+level*1.5;die_h=3+level*1.5;die_color=['','#9a6546','#c48a55','#efa571','#ffe0ae'][level]
+  die_w=4+level*1.5;die_h=3+level*1.5;die_color=die_colors[level]
   p.append(f'<rect data-die="{d}" data-level="{level}" x="{x+(12-die_w)/2}" y="{y-lift+(13-die_h)/2}" width="{die_w}" height="{die_h}" rx=".7" fill="{die_color}" stroke="{copper}" stroke-width=".4"/>')
  packages=p[chip_start:];p=p[:chip_start]
  active={cells[d] for d in dates if public['days'][d]}
@@ -118,11 +120,12 @@ for theme in ('dark','light'):
   p.append(f'<rect x="{x}" y="{top}" width="28" height="20" rx="3" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"/>')
   if level:
    p.append(f'<path d="M{x-4} {top+5}h4m28 0h4M{x-4} {top+15}h4m28 0h4" stroke="{copper}" stroke-width="1.3"/>')
-   dw=7+level*4;dh=3+level*3;dc=['','#9a6546','#c48a55','#efa571','#ffe0ae'][level]
+   dw=7+level*4;dh=3+level*3;dc=die_colors[level]
    p.append(f'<rect x="{x+(28-dw)/2}" y="{top+(20-dh)/2}" width="{dw}" height="{dh}" rx="1" fill="{dc}"/>')
  p.append(txt('More',697,388,18,muted))
  save('contribution',1120,411,p)
  save('contribution-still',1120,411,[re.sub(r'<animate\b[^>]*/>', '', part) for part in p])
+ if theme=='light':panel,line,muted='#e4ebf1','#bdcbd9','#53677d'
  activity=public.get('activity',{})
  p=[centered('Public activity',1120,25,21,copper,600)]
  for i,(label,count) in enumerate(activity.items()):

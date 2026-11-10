@@ -66,9 +66,9 @@ def mobile_frame(data):
 
 def make_svg(theme,mobile,images,sequence,background,steady,glance_background,still=False):
     width,height=(720,440) if mobile else (1280,540)
-    ink='#edf2f8' if theme=='dark' else '#192a40'
-    accent='#78a4ff' if theme=='dark' else '#214fc5'
-    copper='#efa571' if theme=='dark' else '#b45e30'
+    ink='#edf2f8' if theme=='dark' else '#25394d'
+    accent='#78a4ff' if theme=='dark' else '#365d94'
+    copper='#efa571' if theme=='dark' else '#925c3c'
     lines=[('Efe Varol',8,86,55,650,400),('Bedelcigil',8,166,67,800,400)] if mobile else [('Efe Varol',22,250,90,650,720),('Bedelcigil',22,381,112,800,720)]
     parts=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
            '<title id="title">Efe Varol Bedelcigil</title>',
@@ -132,7 +132,7 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
         zig='M'+' L'.join(f'{start_x+i*(end-start_x)/30:.2f},{baseline+(-5 if i%2 else 5)}' for i in range(31))
         parts.append(f'<g clip-path="url(#chargeClip)"><path d="{zig}" fill="none" stroke="{accent}" stroke-width="5" opacity=".3"/><path d="{zig}" pathLength="100" fill="none" stroke="{ink}" stroke-width="1.5" stroke-dasharray="9 91"><animate attributeName="stroke-dashoffset" from="0" to="-100" dur="1.7s" repeatCount="indefinite"/></path></g>')
     identity=json.loads((ROOT/'assets/profile.json').read_text(encoding='utf-8'))
-    muted='#a9b8cc' if theme=='dark' else '#52647a'
+    muted='#a9b8cc' if theme=='dark' else '#53677d'
     ix,iy=(8,365) if mobile else (22,477)
     parts.append(lettering(identity['discipline'],ix,iy,20 if mobile else 25,muted,550,100,370 if mobile else 610))
     parts.append(lettering(identity['institution']+' / '+identity['status'],ix,iy+30,18 if mobile else 21,muted,450,100,370 if mobile else 610))
