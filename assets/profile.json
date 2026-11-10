@@ -16,8 +16,9 @@
   ],
   "learning_areas": [
     "Machine Learning",
-    "Motor Control",
-    "Sensor Fusion"
+    "Embedded Control",
+    "Sensor Fusion",
+    "System Modelling & Design"
   ],
   "exploring_areas": [
     "DSP",
@@ -35,8 +36,9 @@
     {
       "name": "Control & Sensing",
       "tools": [
-        "Motor Control",
-        "Sensor Fusion"
+        "Embedded Control",
+        "Sensor Fusion",
+        "System Modelling & Design"
       ]
     }
   ],

@@ -29,12 +29,21 @@ def branch_groups(groups,width,y,title,ink,muted,accent,panel,line):
   for col,g in enumerate(row):
    gx=50+offset+col*cell
    parts.append(logo(g['name'],gx+18,top,accent,size=22));parts.append(lettering(g['name'],gx+46,top+18,21,ink,600,max_width=cell-54))
-   bx,by=gx+18,top+34
+   bx,by=gx+18,top+34;row_height=36
    for label in g['tools']:
-    bw=min(measure(label,20)+55,cell-36)
-    if bx+bw>gx+cell-6:bx=gx+18;by+=48
-    parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="36" rx="10" fill="{panel}" stroke="{line}"/>');parts.append(halo(bx,by,bw,36,accent));parts.append(logo(label,bx+10,by+9,muted,panel));parts.append(lettering(label,bx+36,by+25,20,ink,550,max_width=bw-45));bx+=bw+9
-   h=by+54-top;heights.append(h)
+    bw=min(measure(label,20)+55,cell-36);lines=[label]
+    if measure(label,20)>(bw-45)/.82:
+     words=label.split()
+     if len(words)>1:
+      split=min(range(1,len(words)),key=lambda i:max(measure(' '.join(words[:i]),20),measure(' '.join(words[i:]),20)))
+      lines=[' '.join(words[:split]),' '.join(words[split:])]
+    bh=56 if len(lines)>1 else 36
+    if bx+bw>gx+cell-6:bx=gx+18;by+=row_height+12;row_height=36
+    row_height=max(row_height,bh)
+    parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="10" fill="{panel}" stroke="{line}"/>');parts.append(halo(bx,by,bw,bh,accent));parts.append(logo(label,bx+10,by+(bh-18)/2,muted,panel))
+    for i,text in enumerate(lines):parts.append(lettering(text,bx+36,by+23+i*21 if len(lines)>1 else by+25,20,ink,550,max_width=bw-45))
+    bx+=bw+9
+   h=by+row_height+18-top;heights.append(h)
    frames.append(gx)
   for gx in frames:parts.append(f'<path d="M{gx} {top+30}v{max(heights)-30}h{cell-18}" stroke="{line}" fill="none"/>')
   top+=max(heights)+14
