@@ -2,8 +2,7 @@
   {
     "name": "Embedded Systems",
     "tools": [
-      "Raspberry Pi",
-      "NanoEdge AI Studio"
+      "Raspberry Pi"
     ]
   }
 ]
