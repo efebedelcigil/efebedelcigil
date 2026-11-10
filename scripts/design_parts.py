@@ -1,8 +1,10 @@
+from labels import display_label
 from pathlib import Path
 import re
 from build_identity import lettering,font_at
 
 def measure(text,size=20,weight=550):
+ text=display_label(text)
  f=font_at(weight);c=f.getBestCmap();return sum(f['hmtx'][c.get(ord(ch),'.notdef')][0] for ch in text)*size/f['head'].unitsPerEm
 
 def centered(text,width,y,size,color,weight=550):return lettering(text,(width-measure(text,size,weight))/2,y,size,color,weight)

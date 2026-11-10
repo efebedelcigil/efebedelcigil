@@ -25,7 +25,7 @@ def decode(href):
     assert href.startswith(('data:image/webp;base64,','data:image/png;base64,')),href[:40]
     with Image.open(io.BytesIO(base64.b64decode(href.split(',',1)[1],validate=True))) as image:
         image.load()
-        assert image.size==(600,720),image.size
+        assert image.size in ((600,720),(360,432)),image.size
         assert image.mode=='RGBA',image.mode
         return image.copy()
 

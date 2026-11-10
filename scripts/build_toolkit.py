@@ -1,3 +1,4 @@
+from labels import match_key
 import json,html
 from pathlib import Path
 from build_identity import lettering
@@ -13,7 +14,7 @@ def build(theme,mobile,groups):
  for row_start in range(0,len(groups),columns):
   heights=[];frames=[]
   for col,g in enumerate(groups[row_start:row_start+columns]):
-   x=8+col*cell;y=top;color=accents[g['color']];group=[]
+   x=8+col*cell;y=top;color=accents[match_key(g['color'])];group=[]
    group.append(logo(g['name'],x+2,y,color,size=22));group.append(lettering(g['name'],x+34,y+18,21,primary,600))
    bx,by=x+12,y+38
    for j,label in enumerate(g['tools']):

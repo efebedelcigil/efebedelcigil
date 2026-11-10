@@ -1,3 +1,4 @@
+from labels import display_label
 from pathlib import Path
 import json,html,re,xml.etree.ElementTree as E,datetime
 from build_identity import lettering
@@ -46,6 +47,7 @@ for theme in ('dark','light'):
   from fontTools.pens.boundsPen import BoundsPen
   from build_identity import font_at
   def extent(text,size,weight):
+   text=display_label(text)
    f=font_at(weight);glyphs=f.getGlyphSet();cmap=f.getBestCmap();bounds=[]
    for char in text:
     pen=BoundsPen(glyphs);glyphs[cmap.get(ord(char),'.notdef')].draw(pen)
@@ -54,10 +56,10 @@ for theme in ('dark','light'):
    return min(b[1] for b in bounds)*scale,max(b[3] for b in bounds)*scale
   title='Explore my portfolio';subtitle='Projects, publications, contact and more'
   low,high=extent(title,33,650);sub_low,sub_high=extent(subtitle,21,550)
-  shift=74-((60-high)+(100-sub_low))/2
-  p=[f'<rect x="8" y="8" width="{w-16}" height="132" rx="10" fill="{panel}" stroke="{blue}" stroke-width="2"/>',txt(title,26,60+shift,33,blue,650),txt(subtitle,26,100+shift,21,muted),logo('Open link',w-68,59,copper,size=30)]
-  p.append(halo(8,8,w-16,132,blue).replace('stroke-width="1"','stroke-width="1.3"').replace('opacity=".55"','opacity=".75"'))
-  save('portfolio'+suffix,w,148,p)
+  shift=98-((60-high)+(100-sub_low))/2
+  p=[f'<rect x="8" y="8" width="{w-16}" height="180" rx="10" fill="{panel}" stroke="{blue}" stroke-width="2"/>',txt(title,26,60+shift,33,blue,650),txt(subtitle,26,100+shift,21,muted),logo('Open link',w-68,83,copper,size=30)]
+  p.append(halo(8,8,w-16,180,blue).replace('stroke-width="1"','stroke-width="1.3"').replace('opacity=".55"','opacity=".75"'))
+  save('portfolio'+suffix,w,196,p)
  for key,title in [('working','Working areas'),('tools','Tools'),('learning','In progress'),('exploring','Interested in exploring'),('contribution','Contribution circuit'),('languages','Project languages'),('pinned','Pinned repositories')]:
   tw=measure(title,32,650);left=(1120-tw)/2
   p=[centered(title,1120,41,32,blue,650),f'<path d="M40 31H{left-28}m{tw+56} 0H1080" stroke="{line}"/><circle cx="{left-16}" cy="31" r="3" fill="{copper}"/>']

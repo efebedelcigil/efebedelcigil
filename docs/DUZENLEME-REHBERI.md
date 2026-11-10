@@ -74,3 +74,18 @@ Robot kareleri değişmediği sürece Blender gerekmez. Sosyal medya, pin ve por
 ## Bilinen sınırlar ve gelecek işler
 
 GitHub README özel hover/zoom, sabit navbar veya kaydırınca beliren bir düğme çalıştırmaz. Back to top footer bağlantısıdır. Still version animasyonsuz alternatiftir. Custom profile views sayacı gelecekte, gerçek bir sayım servisiyle yapılacak; mevcut sayfadan kaldırılmıştır.
+
+## Büyük/küçük harf ve Türkçe karakterler
+
+Kart isimlerini yazarken büyük/küçük harf yüzünden yeni ikon anahtarları eklemene gerek yok. `scripts/labels.py` iki ayrı işlem yapar:
+
+- `match_key`: ikon ve marka ararken Türkçe karakter, Unicode, boşluk ve harf farklarını normalleştirir. Örneğin ROS2 ile ROS 2 aynı eşleşir; C, C++ ve C# farklı kalır.
+- `display_label`: görünen isimleri başlık düzenine çevirir. “and”, “of”, “in”, “ve” gibi bağlaçlar küçük kalır; TinyML, LTspice, KiCad, ROS 2 gibi özel yazımlar korunur. Yeni özel bir marka eklenirse `_SPECIAL` listesine doğru yazımı eklenebilir.
+
+İkon bulunamıyorsa gerçek isim eşlemesini ekle; varsayılan ikon kullanılmaz. Aynı normalleştirilmiş isme farklı iki ikon atanırsa üretim hata vererek çelişkiyi gösterir. Test: `python scripts/test_labels.py`.
+
+Otomasyon korumalı main dalına doğrudan yazmaz; `automation/public-profile-artwork` dalından güncelleme PR’ı hazırlar. Güncellemeyi yayınlamak için bu PR’ın birleştirilmesi gerekir. Veri kaynağı geçici olarak erişilemezse son kayıtlı verilerle görseller üretilebilir; veri yenilenmiş sayılmaz.
+
+Bu profil deposunun kendi kodları GitHub dil istatistiklerine katılmasın diye ana `.gitattributes` dosyasında `* linguist-vendored` bulunur. Başka depolardaki dosyaları etkilemez.
+
+Mobil robot kareleri 360×432, masaüstü kareleri 600×720 piksel olarak üretilir. Hareket süreleri ve kare hızı aynıdır. `refresh_hero.py` her iki sürümü otomatik üretir; mobildeki dosya yükünü azaltmak için bu ayrım korunmalıdır.
