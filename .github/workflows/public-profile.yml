@@ -47,6 +47,15 @@ jobs:
       - run: python scripts/build_static.py
       - run: python scripts/test_publish_public_assets.py
       - run: python scripts/test_readme_live.py
+      - name: Verify unattended publication access
+        if: github.ref == 'refs/heads/main'
+        env:
+          PUBLISH_TOKEN_CONFIGURED: ${{ secrets.PROFILE_PUBLISH_TOKEN != '' }}
+        run: |
+          if [ "$PUBLISH_TOKEN_CONFIGURED" != "true" ]; then
+            echo "::error::Configure the repo-scoped PROFILE_PUBLISH_TOKEN secret before unattended publication."
+            exit 1
+          fi
       - name: Publish generated profile without a pull request
         if: github.ref == 'refs/heads/main'
         run: python scripts/publish_public_assets.py
