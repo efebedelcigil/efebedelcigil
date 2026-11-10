@@ -23,5 +23,6 @@
   "Microsoft Office": "microsoftoffice",
   "MQTT": "mqtt",
   "OpenSCAD": "openscad",
-  "Keil": "armkeil"
+  "Keil": "armkeil",
+  "STM32 / CubeIDE": "stmicroelectronics"
 }
