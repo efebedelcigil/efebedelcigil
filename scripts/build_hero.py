@@ -1,3 +1,4 @@
+from functools import lru_cache
 from labels import display_label
 import argparse
 import base64
@@ -54,6 +55,15 @@ def timeline(values,begin,duration):
     return f'<animate attributeName="href" values="{";".join(values)}" begin="{begin}s" dur="{duration}s" calcMode="discrete" '+('repeatCount="indefinite"' if begin else 'fill="freeze"')+'/>'
 
 
+@lru_cache(maxsize=512)
+def mobile_frame(data):
+    with Image.open(io.BytesIO(base64.b64decode(data))) as image:
+        image=image.convert('RGBA').resize((360,432),Image.Resampling.LANCZOS)
+        buffer=io.BytesIO()
+        image.save(buffer,format='WEBP',quality=80,method=4)
+    return base64.b64encode(buffer.getvalue()).decode()
+
+
 def make_svg(theme,mobile,images,sequence,background,steady,glance_background,still=False):
     width,height=(720,440) if mobile else (1280,540)
     ink='#edf2f8' if theme=='dark' else '#192a40'
@@ -71,6 +81,7 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
         parts.append(f'<image id="glance-background" width="600" height="720" href="data:image/webp;base64,{glance_background}"/>')
         for index in sorted(set(sequence[:558])):
             data,kind=images[index]
+            if mobile:data=mobile_frame(data)
             parts.append(f'<g id="r{index}" data-layer="{kind}">')
             background_id='background' if kind=='foreground' else 'glance-background'
             parts.append(f'<use href="#{background_id}"/>')

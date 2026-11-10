@@ -10,6 +10,7 @@ class LabelsTest(unittest.TestCase):
   for a,b in [('CİRCUİT DESİGN','circuit design'),('GÖMÜLÜ SİSTEMLER','gomulu sistemler'),('ROS2','ROS 2'),('Control & Sensing','control and sensing'),('IoT','ıot')]:
    self.assertEqual(match_key(a),match_key(b))
   self.assertEqual(match_key('c'),match_key('Ｃ'))
+  self.assertEqual(match_key('windows'),match_key('WİNDOWS'))
   self.assertEqual(match_key('ş'),match_key(unicodedata.normalize('NFD','ş')))
   self.assertNotEqual(match_key('C'),match_key('C++'));self.assertNotEqual(match_key('C++'),match_key('C#'))
  def test_display(self):

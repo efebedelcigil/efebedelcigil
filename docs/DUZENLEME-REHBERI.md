@@ -87,3 +87,5 @@ Kart isimlerini yazarken büyük/küçük harf yüzünden yeni ikon anahtarları
 Otomasyon korumalı main dalına doğrudan yazmaz; `automation/public-profile-artwork` dalından güncelleme PR’ı hazırlar. Güncellemeyi yayınlamak için bu PR’ın birleştirilmesi gerekir. Veri kaynağı geçici olarak erişilemezse son kayıtlı verilerle görseller üretilebilir; veri yenilenmiş sayılmaz.
 
 Bu profil deposunun kendi kodları GitHub dil istatistiklerine katılmasın diye ana `.gitattributes` dosyasında `* linguist-vendored` bulunur. Başka depolardaki dosyaları etkilemez.
+
+Mobil robot kareleri 360×432, masaüstü kareleri 600×720 piksel olarak üretilir. Hareket süreleri ve kare hızı aynıdır. `refresh_hero.py` her iki sürümü otomatik üretir; mobildeki dosya yükünü azaltmak için bu ayrım korunmalıdır.
