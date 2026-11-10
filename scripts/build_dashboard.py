@@ -76,6 +76,7 @@ for theme in ('dark','light'):
  p.append(f'<g transform="translate(70 60) matrix(1 .08 -.32 .82 0 0)"><rect x="0" y="10" width="1010" height="183" rx="18" fill="{line}"/><rect width="1010" height="183" rx="18" fill="{panel}" stroke="{muted}"/>')
  p.append(halo(0,0,1010,183,copper,radius=18))
  for week in range(weeks):p.append(f'<path d="M{24+week*step} 17v144" stroke="{line}" stroke-width="1"/>')
+ for row in range(8):p.append(f'<path data-grid="horizontal" d="M14 {17+row*21}H985" stroke="{line}" stroke-width="1"/>')
  chip_start=len(p)
  for d in dates:
   week,row=cells[d];level=public['days'][d];x=20+week*step;y=20+row*21

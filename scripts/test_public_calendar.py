@@ -17,6 +17,7 @@ class CalendarTests(unittest.TestCase):
   palettes={'dark':['#161b22','#0e4429','#006d32','#26a641','#39d353'],'light':['#ebedf0','#9be9a8','#40c463','#30a14e','#216e39']}
   for theme in ['dark','light']:
    root=E.parse(A/f'contribution-{theme}.svg').getroot();nodes=[e for e in root.iter() if e.get('data-date')]
+   self.assertEqual(len([e for e in root.iter() if e.get('data-grid')=='horizontal']),8)
    self.assertEqual(len(nodes),len(days));self.assertEqual({e.get('data-date'):int(e.get('data-level')) for e in nodes},days)
    for e in nodes:
     d=e.get('data-date');self.assertEqual(e.get('fill'),palettes[theme][days[d]])
