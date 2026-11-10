@@ -3,6 +3,7 @@ from pathlib import Path
 import json,html,re,xml.etree.ElementTree as E,datetime
 from build_identity import lettering
 from circuit_route import circuit_route
+from public_calendar import cell_map
 from design_parts import halo,centered,measure,strip_motion,branch_groups
 R=Path(__file__).resolve().parents[1];A=R/'assets'
 profile=json.loads((A/'profile.json').read_text(encoding='utf-8'));public=json.loads((A/'public-profile.json').read_text(encoding='utf-8'))
@@ -69,28 +70,28 @@ for theme in ('dark','light'):
   icon=logo(label,12,17,ink,panel)
   save('social-'+name,180,52,[f'<rect x="1" y="1" width="178" height="50" rx="13" fill="{panel}" stroke="{line}"/>',icon,txt(label,41,34,23),logo('Open link',148,18,muted,size=16)])
  # Pseudo-isometric contribution board: date-to-cell mapping stays identical across themes.
- dates=sorted(public['days']);start=datetime.date.fromisoformat(dates[0]);palette=[panel,'#31546b','#3e7a89','#5aa3ad','#88c8c3'] if theme=='dark' else ['#dce7eb','#9dbac3','#6b9ba8','#427e91','#23647b']
+ dates=sorted(public['days']);cells,weeks=cell_map(public['days']);step=948/max(weeks-1,1);palette=['#161b22','#0e4429','#006d32','#26a641','#39d353'] if theme=='dark' else ['#ebedf0','#9be9a8','#40c463','#30a14e','#216e39']
  period=datetime.date.fromisoformat(dates[0]).strftime('%b %Y')+' / '+datetime.date.fromisoformat(dates[-1]).strftime('%b %Y')
  p=[centered(period,1120,28,19,muted)]
  p.append(f'<g transform="translate(70 60) matrix(1 .08 -.32 .82 0 0)"><rect x="0" y="10" width="1010" height="183" rx="18" fill="{line}"/><rect width="1010" height="183" rx="18" fill="{panel}" stroke="{muted}"/>')
  p.append(halo(0,0,1010,183,copper,radius=18))
- for week in range(53):p.append(f'<path d="M{24+week*18} 17v144" stroke="{line}" stroke-width="1"/>')
+ for week in range(weeks):p.append(f'<path d="M{24+week*step} 17v144" stroke="{line}" stroke-width="1"/>')
  chip_start=len(p)
  for d in dates:
-  day=datetime.date.fromisoformat(d);offset=(day-start).days;week=offset//7;row=offset%7;level=public['days'][d];x=20+week*18;y=20+row*21
+  week,row=cells[d];level=public['days'][d];x=20+week*step;y=20+row*21
   if not level:
-   p.append(f'<path d="M{x+4} {y+6}h4" stroke="{line}" stroke-width="1" opacity=".3"/>');continue
+   p.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="12" height="13" rx="2" fill="{palette[0]}" stroke="{line}" stroke-width=".3"/>');continue
   lift=3+level*.65
   p.append(f'<rect x="{x+1}" y="{y+2}" width="13" height="14" rx="2" fill="{line}" opacity=".7"/>')
   p.append(f'<path d="M{x-2} {y+4}h3m10 0h4M{x-2} {y+9}h3m10 0h4" stroke="{copper}" stroke-width="1.3"/>')
   p.append(f'<path d="M{x} {y+13-lift}h12v{lift}h-12z" fill="{line}"/><path d="M{x+12} {y-lift}v13l2 2V{y+2}z" fill="{muted}" opacity=".6"/>')
-  p.append(f'<rect x="{x}" y="{y-lift}" width="12" height="13" rx="1.5" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: activity level {level}</title></rect>')
+  p.append(f'<rect x="{x}" y="{y-lift}" width="12" height="13" rx="1.5" data-date="{d}" data-level="{level}" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: activity level {level}</title></rect>')
   p.append(f'<path d="M{x+1} {y+2-lift}h10" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
  packages=p[chip_start:];p=p[:chip_start]
- active={(i//7,i%7) for i,d in enumerate(dates) if public['days'][d]}
- route=circuit_route(active)
- levels={(i//7,i%7):public['days'][d] for i,d in enumerate(dates)}
- points=[(26+x*18,26.5+y*21) for x,y in route]
+ active={cells[d] for d in dates if public['days'][d]}
+ route=circuit_route(active,width=weeks)
+ levels={cells[d]:public['days'][d] for d in dates}
+ points=[(26+x*step,26.5+y*21) for x,y in route]
  wire='M'+' L'.join(f'{x},{y}' for x,y in points)
  p.append(f'<path d="{wire}" fill="none" stroke="{copper}" stroke-width="1" opacity=".18"/>')
  p.append(f'<defs><filter id="currentGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2"/></filter></defs>')
@@ -102,7 +103,7 @@ for theme in ('dark','light'):
  for a,b in zip(points,points[1:]):distances.append(distances[-1]+hypot(b[0]-a[0],b[1]-a[1]))
  total_length=distances[-1] or 1
  for cell in sorted(active):
-  x,y=20+cell[0]*18,20+cell[1]*21;lift=3+levels[cell]*.65
+  x,y=20+cell[0]*step,20+cell[1]*21;lift=3+levels[cell]*.65
   phase=max(0,distances[route.index(cell)]/total_length*14-.25)
   p.append(f'<path d="M{x+4} {y-2}v3m5-3v3M{x+4} {y+12}v3m5-3v3" stroke="{copper}" stroke-width="1"/>')
   p.append(f'<rect x="{x+3}" y="{y+4-lift}" width="6" height="4" rx="1" fill="{copper}" opacity=".12"><animate attributeName="opacity" values=".12;.7;.12;.12" keyTimes="0;.025;.065;1" begin="{phase:.3f}s" dur="14s" repeatCount="indefinite"/></rect>')

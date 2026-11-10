@@ -49,14 +49,8 @@ def read(url):
 
 
 page = read(f'https://github.com/users/{user}/contributions')
-days = {}
-for tag in re.findall(r'<td\b[^>]*>', page):
-    date = re.search(r'data-date="([^"]+)"', tag)
-    level = re.search(r'data-level="(\d)"', tag)
-    if date and level:
-        days[date[1]] = int(level[1])
-if len(days) < 350:
-    raise ValueError('Incomplete public calendar; preserving previous snapshot')
+from public_calendar import parse_calendar
+days, day_counts = parse_calendar(page)
 
 repos = []
 for page_num in range(1, 20):
@@ -129,6 +123,8 @@ snapshot = {
     'source': 'Public calendar, public repository metadata and languages; '
               'contribution types filtered by public repository.',
     'days': days,
+    'day_counts': day_counts,
+    'calendar_fetched': datetime.datetime.now(datetime.timezone.utc).isoformat(),
     'repos': repos,
     'pinned': pinned,
     'languages': languages,

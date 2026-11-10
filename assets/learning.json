@@ -30,5 +30,17 @@
       "SolidWorks",
       "Fusion"
     ]
+  },
+  {
+    "name": "Embedded Systems",
+    "tools": [
+      "FreeRTOS"
+    ]
+  },
+  {
+    "name": "Platforms & Workflow",
+    "tools": [
+      "Git"
+    ]
   }
 ]
