@@ -4,19 +4,13 @@ import json,html,hashlib,re
 R=Path(__file__).resolve().parents[1]
 A=R/'assets';profile=json.loads((A/'profile.json').read_text(encoding='utf-8'));data=json.loads((A/'public-profile.json').read_text(encoding='utf-8'))
 def picture(name,alt,width=1120,mobile=True,hero=False,target=None):
- prefix='hero-' if hero else name+'-'
  sources=[]
- for theme in ['dark','light']:
-  desktop=prefix+theme;small='hero-mobile-'+theme if hero else name+'-mobile-'+theme
-  scheme=f'(prefers-color-scheme: {theme})'
-  has_still=hero or name in ('toolkit','learning','exploring','focus','portfolio') or name.startswith('repo-')
-  if has_still:
-   if mobile:sources.append(f'<source media="{scheme} and (prefers-reduced-motion: reduce) and (max-width: 600px)" srcset="assets/{small}-still.svg">')
-   sources.append(f'<source media="{scheme} and (prefers-reduced-motion: reduce)" srcset="assets/{desktop}-still.svg">')
-  if name=='contribution':sources.append(f'<source media="{scheme} and (prefers-reduced-motion: reduce)" srcset="assets/contribution-still-{theme}.svg">')
-  if mobile:sources.append(f'<source media="{scheme} and (max-width: 600px)" srcset="assets/{small}.svg">')
-  sources.append(f'<source media="{scheme}" srcset="assets/{desktop}.svg">')
- content='<picture>'+''.join(sources)+f'<img src="assets/{prefix}light.svg" width="{width}" alt="{html.escape(display_label(alt),quote=True)}"></picture>'
+ has_still=hero or name in ('toolkit','learning','exploring','focus','portfolio','contribution') or name.startswith('repo-')
+ if has_still:
+  if mobile:sources.append(f'<source media="(prefers-reduced-motion: reduce) and (max-width: 600px)" srcset="assets/{name}-mobile-still.svg">')
+  sources.append(f'<source media="(prefers-reduced-motion: reduce)" srcset="assets/{name}-still.svg">')
+ if mobile:sources.append(f'<source media="(max-width: 600px)" srcset="assets/{name}-mobile.svg">')
+ content='<picture>'+''.join(sources)+f'<img src="assets/{name}.svg" width="{width}" alt="{html.escape(display_label(alt),quote=True)}"></picture>'
  if name=='back-top':target='#top'
  return f'<a href="{target}">{content}</a>' if target else content
 

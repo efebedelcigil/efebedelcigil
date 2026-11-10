@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PROFILE_PUBLISH_TOKEN || github.token }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -40,6 +42,7 @@ jobs:
       - run: python scripts/build_toolkit.py
       - run: python scripts/refresh_hero.py
       - run: python scripts/test_public_calendar.py
+      - run: python scripts/build_adaptive.py
       - run: python scripts/build_readme.py
       - run: python scripts/build_static.py
       - run: python scripts/test_publish_public_assets.py
