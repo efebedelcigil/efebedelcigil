@@ -22,5 +22,6 @@
   "Windows": "windows11",
   "Microsoft Office": "microsoftoffice",
   "MQTT": "mqtt",
-  "OpenSCAD": "openscad"
+  "OpenSCAD": "openscad",
+  "Keil": "armkeil"
 }
