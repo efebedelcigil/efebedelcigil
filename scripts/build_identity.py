@@ -44,9 +44,9 @@ def lettering(text, x, y, size, fill, weight=600, width=100, max_width=None):
 
 def build(theme, mobile=False):
     width,height=(360,205) if mobile else (640,296)
-    ink='#edf2f8' if theme=='dark' else '#192a40'
-    blue='#78a4ff' if theme=='dark' else '#214fc5'
-    copper='#efa571' if theme=='dark' else '#b45e30'
+    ink='#edf2f8' if theme=='dark' else '#25394d'
+    blue='#78a4ff' if theme=='dark' else '#365d94'
+    copper='#efa571' if theme=='dark' else '#925c3c'
     parts=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
            '<title id="title">Efe Varol Bedelcigil</title>',
            '<desc id="desc">Efe Varol Bedelcigil. Control systems and robotics.</desc>']
