@@ -31,9 +31,9 @@ def branch_groups(groups,width,y,title,ink,muted,accent,panel,line):
    parts.append(logo(g['name'],gx+18,top,accent,size=22));parts.append(lettering(g['name'],gx+46,top+18,21,ink,600,max_width=cell-54))
    bx,by=gx+18,top+34
    for label in g['tools']:
-    bw=measure(label,20)+55
+    bw=min(measure(label,20)+55,cell-36)
     if bx+bw>gx+cell-6:bx=gx+18;by+=48
-    parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="36" rx="10" fill="{panel}" stroke="{line}"/>');parts.append(halo(bx,by,bw,36,accent));parts.append(logo(label,bx+10,by+9,muted,panel));parts.append(lettering(label,bx+36,by+25,20,ink,550));bx+=bw+9
+    parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="36" rx="10" fill="{panel}" stroke="{line}"/>');parts.append(halo(bx,by,bw,36,accent));parts.append(logo(label,bx+10,by+9,muted,panel));parts.append(lettering(label,bx+36,by+25,20,ink,550,max_width=bw-45));bx+=bw+9
    h=by+54-top;heights.append(h)
    frames.append(gx)
   for gx in frames:parts.append(f'<path d="M{gx} {top+30}v{max(heights)-30}h{cell-18}" stroke="{line}" fill="none"/>')

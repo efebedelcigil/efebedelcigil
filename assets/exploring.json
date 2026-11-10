@@ -4,5 +4,17 @@
     "tools": [
       "Raspberry Pi"
     ]
+  },
+  {
+    "name": "IoT",
+    "tools": [
+      "MQTT"
+    ]
+  },
+  {
+    "name": "Design & Fabrication",
+    "tools": [
+      "OpenSCAD"
+    ]
   }
 ]

@@ -20,5 +20,7 @@
   "Proteus": "proteus",
   "NanoEdge AI Studio": "stmicroelectronics",
   "Windows": "windows11",
-  "Microsoft Office": "microsoftoffice"
+  "Microsoft Office": "microsoftoffice",
+  "MQTT": "mqtt",
+  "OpenSCAD": "openscad"
 }

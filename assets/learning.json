@@ -28,7 +28,8 @@
   {
     "name": "Embedded Systems",
     "tools": [
-      "FreeRTOS"
+      "FreeRTOS",
+      "UART / I²C / SPI / CAN"
     ]
   },
   {

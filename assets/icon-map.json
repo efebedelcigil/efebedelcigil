@@ -76,5 +76,6 @@
   "Digital Design": "binary-tree",
   "Platforms & Workflow": "terminal-2",
   "Data Center Design & Operations": "server",
-  "AI & Intelligent Systems": "brain"
+  "AI & Intelligent Systems": "brain",
+  "UART / I²C / SPI / CAN": "circuit-switch-closed"
 }
