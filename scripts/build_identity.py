@@ -1,3 +1,4 @@
+from labels import display_label
 import argparse
 import html
 import math
@@ -25,6 +26,7 @@ def font_at(weight=600, width=100):
 
 
 def lettering(text, x, y, size, fill, weight=600, width=100, max_width=None):
+    text = display_label(text)
     font = font_at(weight, width)
     glyphs = font.getGlyphSet()
     cmap = font.getBestCmap()

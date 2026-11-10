@@ -1,3 +1,4 @@
+from labels import display_label
 import argparse
 import base64
 import hashlib
@@ -37,6 +38,7 @@ def underline_keys():
 
 
 def advances(text,size,weight,maximum):
+    text=display_label(text)
     font=font_at(weight,100)
     cmap=font.getBestCmap()
     widths=[font['hmtx'][cmap[ord(char)]][0] for char in text]

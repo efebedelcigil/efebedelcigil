@@ -1,14 +1,15 @@
 from pathlib import Path
 import json,xml.etree.ElementTree as E
 from functools import lru_cache
+from labels import match_key,lookup_index
 A=Path(__file__).resolve().parents[1]/'assets'
-M=json.loads((A/'icon-map.json').read_text(encoding='utf-8'))
+M=lookup_index(json.loads((A/'icon-map.json').read_text(encoding='utf-8')))
 @lru_cache(maxsize=80)
-def source(label):return (A/'icons'/(M[label]+'.svg')).read_text(encoding='utf-8')
-BRANDS=json.loads((A/'brand-map.json').read_text(encoding='utf-8'))
+def source(label):return (A/'icons'/(M[match_key(label)]+'.svg')).read_text(encoding='utf-8')
+BRANDS=lookup_index(json.loads((A/'brand-map.json').read_text(encoding='utf-8')))
 def logo(label,x,y,c,bg=None,size=18):
- if label in BRANDS:
-  r=E.parse(A/'logos'/(BRANDS[label]+'.svg')).getroot()
+ if match_key(label) in BRANDS:
+  r=E.parse(A/'logos'/(BRANDS[match_key(label)]+'.svg')).getroot()
   for e in r.iter():
    for k in ['style','class']:e.attrib.pop(k,None)
    if e.get('fill')!='none':e.set('fill',bg if bg and e.get('fill','').lower() in ('#fff','#ffffff','white') else c)

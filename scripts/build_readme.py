@@ -1,3 +1,4 @@
+from labels import display_label
 from pathlib import Path
 import json,html,hashlib,re
 R=Path(__file__).resolve().parents[1]
@@ -18,7 +19,7 @@ def picture(name,alt,width=1120,mobile=True,hero=False,target=None):
    sources+=f'<source media="(prefers-reduced-motion: reduce)" srcset="assets/{desktop}-still.svg">'
   if mobile:sources+=f'<source media="(max-width: 600px)" srcset="assets/{mobile_name}.svg">'
   destination=fragment if name=='back-top' else (target or ('assets/'+desktop+'.svg'))+fragment
-  result.append(f'<a href="{destination}"><picture>{sources}<img src="assets/{desktop}.svg{fragment}" width="{width}" alt="{html.escape(alt,quote=True)}"></picture></a>')
+  result.append(f'<a href="{destination}"><picture>{sources}<img src="assets/{desktop}.svg{fragment}" width="{width}" alt="{html.escape(display_label(alt),quote=True)}"></picture></a>')
  return ''.join(result)
 def linked(name,url,alt,width=138,mobile=False):return picture(name,alt,width,mobile,target=url)
 def block(content):return '<p align="center">'+content+'</p>'
