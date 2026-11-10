@@ -28,6 +28,6 @@ def display_label(value):
  def word(m):
   token=m.group();key=match_key(token)
   if key in _SPECIAL:return _SPECIAL[key]
-  if token.casefold() in _SMALL:return token.lower()
+  if token.casefold() in _SMALL:return token[:1].upper()+token[1:].lower() if m.start()==0 else token.lower()
   return token[:1].upper()+token[1:].lower()
  return re.sub(r"[^\W_]+(?:[+#]+)?",word,value,flags=re.UNICODE)

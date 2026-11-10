@@ -13,7 +13,7 @@ class LabelsTest(unittest.TestCase):
   self.assertEqual(match_key('ş'),match_key(unicodedata.normalize('NFD','ş')))
   self.assertNotEqual(match_key('C'),match_key('C++'));self.assertNotEqual(match_key('C++'),match_key('C#'))
  def test_display(self):
-  for value,expected in [('control systems and robotics','Control Systems and Robotics'),('tools & methods','Tools & Methods'),('tinyml','TinyML'),('ROS2','ROS 2'),('ltspice','LTspice'),('3d printing','3D Printing'),('machine learning','Machine Learning')]:self.assertEqual(display_label(value),expected)
+  for value,expected in [('control systems and robotics','Control Systems and Robotics'),('tools & methods','Tools & Methods'),('in progress','In Progress'),('tinyml','TinyML'),('ROS2','ROS 2'),('ltspice','LTspice'),('3d printing','3D Printing'),('machine learning','Machine Learning')]:self.assertEqual(display_label(value),expected)
  def test_lookup_conflicts_and_unknowns(self):
   self.assertEqual(lookup_index({'IoT':'wifi','IOT':'wifi'}),{'iot':'wifi'})
   with self.assertRaises(ValueError):lookup_index({'IoT':'wifi','IOT':'cpu'})
