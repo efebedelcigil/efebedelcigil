@@ -58,7 +58,7 @@ for theme in ('dark','light'):
   title='Explore my portfolio';subtitle='Projects, publications, contact and more'
   low,high=extent(title,33,650);sub_low,sub_high=extent(subtitle,21,550)
   shift=98-((60-high)+(100-sub_low))/2
-  p=[f'<rect x="8" y="8" width="{w-16}" height="180" rx="10" fill="{panel}" stroke="{blue}" stroke-width="2"/>',txt(title,26,60+shift,33,blue,650),txt(subtitle,26,100+shift,21,muted),logo('Open link',w-68,83,copper,size=30)]
+  p=[f'<rect x="8" y="8" width="{w-16}" height="180" rx="10" fill="{panel}" stroke="{line}" stroke-width=".5"/>',txt(title,26,60+shift,33,blue,650),txt(subtitle,26,100+shift,21,muted),logo('Open link',w-68,83,copper,size=30)]
   p.append(halo(8,8,w-16,180,blue).replace('stroke-width="1"','stroke-width="1.3"').replace('opacity=".55"','opacity=".75"'))
   save('portfolio'+suffix,w,196,p)
  for key,title in [('working','Working areas'),('tools','Tools'),('learning','In progress'),('exploring','Interested in exploring'),('contribution','Contribution circuit'),('languages','Project languages'),('pinned','Pinned repositories')]:
