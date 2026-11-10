@@ -28,7 +28,7 @@ def branch_groups(groups,width,y,title,ink,muted,accent,panel,line):
   row=groups[start:start+columns];offset=(columns-len(row))*cell/2;heights=[];frames=[]
   for col,g in enumerate(row):
    gx=50+offset+col*cell
-   parts.append(logo(g['name'],gx+18,top,accent,size=22));parts.append(lettering(g['name'],gx+46,top+18,21,ink,600))
+   parts.append(logo(g['name'],gx+18,top,accent,size=22));parts.append(lettering(g['name'],gx+46,top+18,21,ink,600,max_width=cell-54))
    bx,by=gx+18,top+34
    for label in g['tools']:
     bw=measure(label,20)+55

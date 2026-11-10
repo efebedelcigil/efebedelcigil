@@ -15,7 +15,7 @@ def build(theme,mobile,groups):
   heights=[];frames=[]
   for col,g in enumerate(groups[row_start:row_start+columns]):
    x=8+col*cell;y=top;color=accents[match_key(g['color'])];group=[]
-   group.append(logo(g['name'],x+2,y,color,size=22));group.append(lettering(g['name'],x+34,y+18,21,primary,600))
+   group.append(logo(g['name'],x+2,y,color,size=22));group.append(lettering(g['name'],x+34,y+18,21,primary,600,max_width=panel_width-36))
    bx,by=x+12,y+38
    for j,label in enumerate(g['tools']):
     display=label

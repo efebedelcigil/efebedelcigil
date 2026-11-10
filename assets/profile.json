@@ -11,7 +11,8 @@
     "Mechatronics",
     "IoT",
     "Circuit Design",
-    "3D Printing"
+    "3D Printing",
+    "Data Center Design & Operations"
   ],
   "learning_areas": [
     "Machine Learning",
@@ -26,7 +27,7 @@
   ],
   "learning_area_groups": [
     {
-      "name": "Learning",
+      "name": "AI & Machine Learning",
       "tools": [
         "Machine Learning"
       ]
@@ -41,7 +42,7 @@
   ],
   "exploring_area_groups": [
     {
-      "name": "Signals & Systems",
+      "name": "Signal Processing",
       "tools": [
         "DSP"
       ]
@@ -53,7 +54,7 @@
       ]
     },
     {
-      "name": "Energy",
+      "name": "Energy Systems",
       "tools": [
         "Renewable Energy",
         "HVAC Systems"

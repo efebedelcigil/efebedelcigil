@@ -1,19 +1,14 @@
 [
   {
-    "name": "Robotics",
+    "name": "Embedded Systems",
     "tools": [
-      "Raspberry Pi"
-    ]
-  },
-  {
-    "name": "Embedded",
-    "tools": [
+      "Raspberry Pi",
       "FreeRTOS",
       "NanoEdge AI Studio"
     ]
   },
   {
-    "name": "Workflow",
+    "name": "Platforms & Workflow",
     "tools": [
       "Git"
     ]
