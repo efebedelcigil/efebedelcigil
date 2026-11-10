@@ -70,7 +70,7 @@ for theme in ('dark','light'):
   icon=logo(label,12,17,ink,panel)
   save('social-'+name,180,52,[f'<rect x="1" y="1" width="178" height="50" rx="13" fill="{panel}" stroke="{line}"/>',icon,txt(label,41,34,23),logo('Open link',148,18,muted,size=16)])
  # Pseudo-isometric contribution board: date-to-cell mapping stays identical across themes.
- dates=sorted(public['days']);cells,weeks=cell_map(public['days']);step=948/max(weeks-1,1);palette=['#161b22','#0e4429','#006d32','#26a641','#39d353'] if theme=='dark' else ['#ebedf0','#9be9a8','#40c463','#30a14e','#216e39']
+ dates=sorted(public['days']);cells,weeks=cell_map(public['days']);step=948/max(weeks-1,1);palette=['#172536']+['#293a4b']*4 if theme=='dark' else ['#dfe7ed']+['#405567']*4
  period=datetime.date.fromisoformat(dates[0]).strftime('%b %Y')+' / '+datetime.date.fromisoformat(dates[-1]).strftime('%b %Y')
  p=[centered(period,1120,28,19,muted)]
  p.append(f'<g transform="translate(70 60) matrix(1 .08 -.32 .82 0 0)"><rect x="0" y="10" width="1010" height="183" rx="18" fill="{line}"/><rect width="1010" height="183" rx="18" fill="{panel}" stroke="{muted}"/>')
@@ -88,6 +88,8 @@ for theme in ('dark','light'):
   p.append(f'<path d="M{x} {y+13-lift}h12v{lift}h-12z" fill="{line}"/><path d="M{x+12} {y-lift}v13l2 2V{y+2}z" fill="{muted}" opacity=".6"/>')
   p.append(f'<rect x="{x}" y="{y-lift}" width="12" height="13" rx="1.5" data-date="{d}" data-level="{level}" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: activity level {level}</title></rect>')
   p.append(f'<path d="M{x+1} {y+2-lift}h10" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
+  for indicator in range(4):
+   p.append(f'<rect data-indicator="{d}" data-lit="{int(indicator<level)}" x="{x+1+indicator*2.6}" y="{y+4-lift}" width="1.8" height="4" rx=".4" fill="{copper if indicator<level else line}"/>')
  packages=p[chip_start:];p=p[:chip_start]
  active={cells[d] for d in dates if public['days'][d]}
  route=circuit_route(active,width=weeks)
@@ -107,9 +109,18 @@ for theme in ('dark','light'):
   x,y=20+cell[0]*step,20+cell[1]*21;lift=3+levels[cell]*.65
   phase=max(0,distances[route.index(cell)]/total_length*14-.25)
   p.append(f'<path d="M{x+4} {y-2}v3m5-3v3M{x+4} {y+12}v3m5-3v3" stroke="{copper}" stroke-width="1"/>')
-  p.append(f'<rect x="{x+3}" y="{y+4-lift}" width="6" height="4" rx="1" fill="{copper}" opacity=".12"><animate attributeName="opacity" values=".12;.7;.12;.12" keyTimes="0;.025;.065;1" begin="{phase:.3f}s" dur="14s" repeatCount="indefinite"/></rect>')
- p.append('</g>');save('contribution',1120,301,p)
- save('contribution-still',1120,301,[re.sub(r'<animate\b[^>]*/>', '', part) for part in p])
+  p.append(f'<rect x="{x+3}" y="{y+9-lift}" width="6" height="2" rx="1" fill="{copper}" opacity=".12"><animate attributeName="opacity" values=".12;.7;.12;.12" keyTimes="0;.025;.065;1" begin="{phase:.3f}s" dur="14s" repeatCount="indefinite"/></rect>')
+ p.append('</g>')
+ p.append(txt('Less',395,329,18,muted))
+ for level in range(5):
+  x=450+level*38
+  p.append(f'<rect x="{x}" y="311" width="24" height="19" rx="3" fill="{palette[level]}" stroke="{line}"/>')
+  if level:
+   p.append(f'<path d="M{x-3} 316h3m24 0h3M{x-3} 325h3m24 0h3" stroke="{copper}" stroke-width="1"/>')
+   for j in range(4):p.append(f'<rect x="{x+3+j*5}" y="316" width="3" height="8" rx=".5" fill="{copper if j<level else line}"/>')
+ p.append(txt('More',648,329,18,muted))
+ save('contribution',1120,350,p)
+ save('contribution-still',1120,350,[re.sub(r'<animate\b[^>]*/>', '', part) for part in p])
  activity=public.get('activity',{})
  p=[centered('Public activity',1120,25,21,copper,600)]
  for i,(label,count) in enumerate(activity.items()):

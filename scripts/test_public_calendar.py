@@ -14,13 +14,15 @@ class CalendarTests(unittest.TestCase):
   with self.assertRaises(ValueError):parse_calendar('<td data-date="2026-11-10" data-level="1"></td>')
  def test_rendered_parity(self):
   A=Path(__file__).resolve().parents[1]/'assets';data=json.loads((A/'public-profile.json').read_text());days=data['days'];cells,weeks=cell_map(days)
-  palettes={'dark':['#161b22','#0e4429','#006d32','#26a641','#39d353'],'light':['#ebedf0','#9be9a8','#40c463','#30a14e','#216e39']}
+  palettes={'dark':['#172536']+['#293a4b']*4,'light':['#dfe7ed']+['#405567']*4}
   for theme in ['dark','light']:
    root=E.parse(A/f'contribution-{theme}.svg').getroot();nodes=[e for e in root.iter() if e.get('data-date')]
    self.assertEqual(len([e for e in root.iter() if e.get('data-grid')=='horizontal']),8)
    self.assertEqual(len(nodes),len(days));self.assertEqual({e.get('data-date'):int(e.get('data-level')) for e in nodes},days)
    for e in nodes:
     d=e.get('data-date');self.assertEqual(e.get('fill'),palettes[theme][days[d]])
+    indicators=[n for n in root.iter() if n.get('data-indicator')==d]
+    self.assertEqual(sum(int(n.get('data-lit')) for n in indicators),days[d])
     self.assertAlmostEqual(float(e.get('x')),20+cells[d][0]*948/(weeks-1));self.assertEqual(float(e.get('y')),20+cells[d][1]*21-(3+days[d]*.65 if days[d] else 0))
   active={cells[d] for d,v in days.items() if v};self.assertTrue(active<=set(circuit_route(active,width=weeks)))
 if __name__=='__main__':unittest.main()
