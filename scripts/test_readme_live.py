@@ -66,5 +66,19 @@ class ReadmeLiveTests(unittest.TestCase):
    for mobile in ['', 'mobile-']:
     text=(ROOT/'assets'/f'portfolio-{mobile}{theme}.svg').read_text(encoding='utf-8')
     self.assertIn('aria-label="ALL projects, publications, contact info. and more"',text)
+ def test_shared_card_surfaces_and_footer_padding(self):
+  import json
+  from design_parts import measure
+  pins=json.loads((ROOT/'assets/public-profile.json').read_text(encoding='utf-8')).get('pinned',[])
+  for theme,panel in [('dark','#142237'),('light','#e4ebf1')]:
+   for name in ['portfolio','still-link','back-top']+['repo-'+r['name'] for r in pins]:
+    root=E.parse(ROOT/'assets'/f'{name}-{theme}.svg').getroot()
+    surface=next(e for e in root if e.tag.endswith('rect'))
+    self.assertEqual(surface.get('fill'),panel,(name,theme))
+   for name,label,x,size in [('still-link','Still version of landing page',36,22),('back-top','Back to top',38,20)]:
+    root=E.parse(ROOT/'assets'/f'{name}-{theme}.svg').getroot()
+    self.assertEqual(root.get('height'),'40')
+    gap=float(root.get('width'))-x-measure(label,size)
+    self.assertTrue(12<=gap<16,(name,gap))
 
 if __name__=='__main__':unittest.main()

@@ -18,12 +18,12 @@ class CalendarTests(unittest.TestCase):
   fragment=''.join(f'<td id="d{i}" data-date="{start+datetime.timedelta(days=i)}" data-level="0"></td>' for i in range(365))
   with self.assertRaisesRegex(ValueError,'Missing daily'):parse_calendar(fragment)
  def test_projected_packages_do_not_overlap(self):
-  cases=[(53,ChipGeometry(),(1,.025,-.1,.94)),(54,ChipGeometry(),(1,.025,-.1,.94)),(80,ChipGeometry(),(1,.025,-.1,.94)),(54,ChipGeometry(18,19),(.9,.16,-.3,.85)),(26,ChipGeometry(9,11),(.8,-.08,.2,.95))]
+  cases=[(53,ChipGeometry(),(1,.10,-.24,.88)),(53,ChipGeometry(),(1,.025,-.1,.94)),(54,ChipGeometry(),(1,.025,-.1,.94)),(80,ChipGeometry(),(1,.025,-.1,.94)),(54,ChipGeometry(18,19),(.9,.16,-.3,.85)),(26,ChipGeometry(9,11),(.8,-.08,.2,.95))]
   for weeks,chip,projection in cases:
    layout=BoardGeometry(weeks,projection,chip);boxes=[]
    for col in sorted(set([0,1,2,weeks-1])):
     for row in range(7):
-     for level in range(1,5):boxes.append((col,row,layout.project_bounds(chip.bounds(*layout.package_origin((col,row),level),level))))
+     for level in range(1,5):boxes.append((col,row,layout.project_package_bounds(layout.package_origin((col,row),level),level)))
    for a in boxes:
     for b in boxes:
      if a[:2]==b[:2]:continue
@@ -32,6 +32,20 @@ class CalendarTests(unittest.TestCase):
    self.assertGreaterEqual(min(chip.width,chip.height)*layout.scale,4)
  def test_invalid_perspective_rejected(self):
   with self.assertRaises(ValueError):BoardGeometry(53,(1,1,1,1))
+ def test_mounting_hole_clearance(self):
+  for weeks in [26,53,54,80]:
+   layout=BoardGeometry(weeks)
+   for x,y in layout.mounts():self.assertGreaterEqual(min(x,y,layout.width-x,layout.height-y)-3.2,10)
+ def test_seeded_copper_clearance(self):
+  from pcb_background import tracks,crosses,distance
+  layout=BoardGeometry(53);routes,vias=tracks(layout.width,layout.height)
+  self.assertEqual((routes,vias),tracks(layout.width,layout.height));self.assertGreater(len(routes),20)
+  for i,route in enumerate(routes):
+   for x,y in route:self.assertTrue(18<=x<=layout.width-18 and 18<=y<=layout.height-18)
+   for other in routes[:i]:
+    for a,b in zip(route,route[1:]):
+     for c,d in zip(other,other[1:]):
+      self.assertFalse(crosses(a,b,c,d));self.assertGreaterEqual(min(distance(a,c,d),distance(b,c,d),distance(c,a,b),distance(d,a,b)),3.5)
  def test_current_layering(self):
   A=Path(__file__).resolve().parents[1]/'assets'
   for theme in ['dark','light']:
@@ -70,21 +84,19 @@ class CalendarTests(unittest.TestCase):
   self.assertTrue(any(v>0 for t,v in gate))
  def test_rendered_parity(self):
   A=Path(__file__).resolve().parents[1]/'assets';data=json.loads((A/'public-profile.json').read_text());days=data['days'];cells,weeks=cell_map(days);layout=BoardGeometry(weeks)
-  palettes={'dark':['#172536']+['#293a4b']*4,'light':['#c1cedb']+['#42576b']*4}
+  from pcb_components import KINDS,contacts
   for theme in ['dark','light']:
    root=E.parse(A/f'contribution-{theme}.svg').getroot();nodes=[e for e in root.iter() if e.get('data-date')]
    self.assertEqual(len([e for e in root.iter() if e.get('data-grid')=='horizontal']),8)
    self.assertEqual(len(nodes),len(days));self.assertEqual({e.get('data-date'):int(e.get('data-level')) for e in nodes},days)
    for e in nodes:
-    d=e.get('data-date');self.assertEqual(e.get('fill'),palettes[theme][days[d]])
-    dies=[n for n in root.iter() if n.get('data-die')==d]
-    self.assertEqual(len(dies),int(days[d]>0))
-    if dies:self.assertEqual(float(dies[0].get('width')),layout.chip.width-4)
-    origin=layout.package_origin(cells[d],days[d]) if days[d] else layout.origin(cells[d])
-    self.assertAlmostEqual(float(e.get('x')),origin[0]);self.assertEqual(float(e.get('y')),origin[1]-(layout.chip.lift(days[d]) if days[d] else 0))
-    if days[d]:
-     bounds=layout.chip.bounds(*origin,days[d]);cx,cy=layout.center(cells[d])
-     self.assertAlmostEqual((bounds[0]+bounds[2])/2,cx);self.assertAlmostEqual((bounds[1]+bounds[3])/2,cy)
-   self.assertEqual(len([e for e in root.iter() if e.get('data-chip-matte')]),sum(v>0 for v in days.values()))
+    d=e.get('data-date');level=days[d];self.assertEqual(e.get('data-component'),KINDS[level])
+    origin=layout.package_origin(cells[d],level);bounds=layout.chip.bounds(*origin,level);cx,cy=layout.center(cells[d])
+    self.assertAlmostEqual(float(e.get('x')),bounds[0]);self.assertAlmostEqual(float(e.get('y')),bounds[1])
+    self.assertAlmostEqual((bounds[0]+bounds[2])/2,cx);self.assertAlmostEqual((bounds[1]+bounds[3])/2,cy)
+    for px,py in contacts(layout.chip,*origin,level):
+     self.assertGreaterEqual(px-1.4,bounds[0]-.001);self.assertLessEqual(px+1.4,bounds[2]+.001)
+     self.assertGreaterEqual(py-1.1,bounds[1]-.001);self.assertLessEqual(py+1.1,bounds[3]+.001)
+   self.assertEqual(len([e for e in root.iter() if e.get('data-component-sprite')])-4,sum(v>0 for v in days.values()))
   active={cells[d] for d,v in days.items() if v};self.assertTrue(active<=set(circuit_route(active,width=weeks)))
 if __name__=='__main__':unittest.main()

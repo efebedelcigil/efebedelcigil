@@ -13,6 +13,7 @@ on:
       - assets/brand-map.json
       - assets/icons/**
       - assets/logos/**
+      - assets/components3d/**
       - scripts/**
 concurrency:
   group: public-profile-artwork-${{ github.ref }}
@@ -42,6 +43,7 @@ jobs:
       - run: python scripts/build_toolkit.py
       - run: python scripts/refresh_hero.py
       - run: python scripts/test_public_calendar.py
+      - run: python scripts/test_pcb_components.py
       - run: python scripts/build_adaptive.py
       - run: python scripts/build_halo_atlas.py
       - run: python scripts/build_readme.py

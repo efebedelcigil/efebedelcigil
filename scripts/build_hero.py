@@ -135,9 +135,9 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
     wire=f'M{rail_start} {baseline}h{rail_span}'
     for weight,opacity in [(8,.14),(4,.3),(1.8,.9)]:parts.append(f'<path d="{wire}" stroke="{copper}" stroke-width="{weight}" stroke-linecap="round" opacity="{opacity}"/>')
     if not still:
-        from design_parts import electric_packet
+        from design_parts import electric_arcs
         parts.append(f'<path d="{wire}" pathLength="100" stroke="{ink}" stroke-width="1.6" stroke-dasharray="7 93" opacity=".85"><animate attributeName="stroke-dashoffset" from="0" to="-100" dur="2.4s" repeatCount="indefinite"/></path>')
-        parts.append(electric_packet(wire,copper,size=1.35,duration='2.4s',begin='0s'))
+        parts.append(electric_arcs(wire,copper,count=7,span=.95,duration=2.4))
     parts.append('</g>')
     identity=json.loads((ROOT/'assets/profile.json').read_text(encoding='utf-8'))
     muted='#a9b8cc' if theme=='dark' else '#53677d'
