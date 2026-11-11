@@ -141,6 +141,7 @@ for theme in ('dark','light'):
  p.append(txt('Less',cursor,382,15,muted));cursor+=measure('Less',15)+gap
  for level,width in enumerate(sample_widths):
   left,top,right,bottom=chip.bounds(0,0,level);x=-(left+right)/2;y=-(top+bottom)/2
+  if level==0:p.append(f'<rect data-legend-empty="true" x="{cursor}" y="370" width="{width}" height="14" rx="2" fill="none" stroke="{muted}" stroke-width=".8" opacity=".8"/>')
   p.append(f'<g transform="translate({cursor+width/2} 377) scale({legend_scale})">'+pads(chip,x,y,level,panel,metal,copper)+component(chip,x,y,level,panel,metal,copper,ink)+'</g>')
   cursor+=width+gap
  p.append(txt('More',cursor,382,15,muted))
