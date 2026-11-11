@@ -3,22 +3,29 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class ChipGeometry:
- width: float=12
- height: float=13
- lift_base: float=1.2
- lift_step: float=1.1
+ width: float=8
+ height: float=14
+ lift_base: float=.8
+ lift_step: float=.7
  def __post_init__(self):
   if self.width<=6 or self.height<=4 or self.lift_base<0 or self.lift_step<0:raise ValueError('Invalid package dimensions')
  def lift(self,level):return self.lift_base+self.lift_step*level
- def bounds(self,x,y,level):return x-2,y-self.lift(level),x+self.width+3,y+self.height+3
+ def bounds(self,x,y,level):
+  mid=y+self.height/2
+  if level==0:return x-4.5,mid-1.5,x+self.width+4.5,mid+1.5
+  if level==1:return x-4.5,mid-3,x+self.width+4.5,mid+3
+  if level==2:return x-3.5,mid-10,x+self.width+2,mid+8
+  if level==3:return x-4.5,mid-6,x+self.width+4.5,mid+7
+  return x-4.5,y-self.lift(level),x+self.width+4.5,y+self.height+3
 
 class BoardGeometry:
- def __init__(self,weeks,projection=(1,.025,-.1,.94),chip=ChipGeometry(),rows=7):
+ def __init__(self,weeks,projection=(1,.10,-.24,.88),chip=ChipGeometry(),rows=7):
   self.weeks=weeks;self.rows=rows;self.projection=projection;self.chip=chip
   a,b,c,d=projection
   if abs(a*d-b*c)<1e-5:raise ValueError('Degenerate board perspective')
   self.step=948/max(weeks-1,1);self.row_pitch=chip.height+chip.lift(4)+7
-  box=self.project_bounds(chip.bounds(0,0,4));w=box[2]-box[0]+.25;h=box[3]-box[1]+.25
+  boxes=[self.project_bounds(chip.bounds(0,0,level)) for level in range(5)]
+  w=max(box[2]-box[0] for box in boxes)+.25;h=max(box[3]-box[1] for box in boxes)+.25
   for attempt in range(160):
    overlap=any(abs(a*col*self.step+c*row*self.row_pitch)<w and abs(b*col*self.step+d*row*self.row_pitch)<h for col in range(1-weeks,weeks) for row in range(1-rows,rows) if col or row)
    if not overlap:break
@@ -45,3 +52,4 @@ class BoardGeometry:
   x,y=self.center(cell);left,top,right,bottom=self.chip.bounds(0,0,level)
   return x-(left+right)/2,y-(top+bottom)/2
  def occluder(self,cell,level,padding=3):return self.project_bounds(self.chip.bounds(*self.package_origin(cell,level),level),padding)
+ def mounts(self):return [(x,y) for x in [14,self.width-14] for y in [14,self.height-14]]
