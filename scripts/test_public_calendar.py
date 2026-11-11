@@ -79,7 +79,7 @@ class CalendarTests(unittest.TestCase):
     d=e.get('data-date');self.assertEqual(e.get('fill'),palettes[theme][days[d]])
     dies=[n for n in root.iter() if n.get('data-die')==d]
     self.assertEqual(len(dies),int(days[d]>0))
-    if dies:self.assertEqual(float(dies[0].get('width')),layout.chip.width-2)
+    if dies:self.assertEqual(float(dies[0].get('width')),layout.chip.width-4)
     origin=layout.package_origin(cells[d],days[d]) if days[d] else layout.origin(cells[d])
     self.assertAlmostEqual(float(e.get('x')),origin[0]);self.assertEqual(float(e.get('y')),origin[1]-(layout.chip.lift(days[d]) if days[d] else 0))
     if days[d]:

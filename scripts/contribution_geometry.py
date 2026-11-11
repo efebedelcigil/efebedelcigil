@@ -5,12 +5,12 @@ from dataclasses import dataclass
 class ChipGeometry:
  width: float=12
  height: float=13
- lift_base: float=2
- lift_step: float=2
+ lift_base: float=1.2
+ lift_step: float=1.1
  def __post_init__(self):
   if self.width<=6 or self.height<=4 or self.lift_base<0 or self.lift_step<0:raise ValueError('Invalid package dimensions')
  def lift(self,level):return self.lift_base+self.lift_step*level
- def bounds(self,x,y,level):return x-1,y-self.lift(level),x+self.width+2,y+self.height+3
+ def bounds(self,x,y,level):return x-2,y-self.lift(level),x+self.width+3,y+self.height+3
 
 class BoardGeometry:
  def __init__(self,weeks,projection=(1,.025,-.1,.94),chip=ChipGeometry(),rows=7):

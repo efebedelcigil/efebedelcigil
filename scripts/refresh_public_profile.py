@@ -99,22 +99,13 @@ previous = json.loads((ROOT / 'assets/public-profile.json').read_text(encoding='
 activity = previous.get('activity', {})
 try:
     query = (ROOT / 'scripts/public-profile.graphql').read_text(encoding='utf-8')
-    raw = json.loads(subprocess.check_output(
-        ['gh', 'api', 'graphql', '-f', 'query=' + query], text=True
-    ))['data']['user']['contributionsCollection']
-    activity = {
-        label: sum(
-            repo['contributions']['totalCount']
-            for repo in raw[key]
-            if not repo['repository']['isPrivate']
-        )
-        for label, key in (
-            ('Commits', 'commitContributionsByRepository'),
-            ('Issues', 'issueContributionsByRepository'),
-            ('Pull requests', 'pullRequestContributionsByRepository'),
-            ('Reviews', 'pullRequestReviewContributionsByRepository'),
-        )
-    }
+    from public_activity import graphql,public_activity,repository_page
+    for attempt in range(3):
+        activity=public_activity(graphql(query),repository_page)
+        days,day_counts=parse_calendar(read(f'https://github.com/users/{user}/contributions'))
+        if sum(activity.values())==sum(day_counts.values()):break
+        if attempt==2:raise RuntimeError('Public calendar and contribution types differ; retaining the last consistent artwork')
+        time.sleep(2**attempt)
 except (subprocess.CalledProcessError, KeyError, FileNotFoundError):
     raise RuntimeError('Public activity refresh failed; retaining previous snapshot and artwork')
 
