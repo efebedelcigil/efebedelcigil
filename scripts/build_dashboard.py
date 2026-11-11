@@ -4,7 +4,7 @@ import json,html,re,xml.etree.ElementTree as E,datetime
 from build_identity import lettering
 from circuit_route import circuit_route,spark_gate
 from contribution_geometry import BoardGeometry
-from pcb_components import KINDS,component,pads,definitions
+from pcb_components import KINDS,component,pads,definitions,contacts
 from pcb_background import tracks
 from public_calendar import cell_map
 from design_parts import halo,electric_trace,centered,measure,strip_motion,branch_groups
@@ -112,8 +112,18 @@ for theme in ('dark','light'):
  active={cells[d] for d in dates if public['days'][d]}
  route=circuit_route(active,width=weeks)
  levels={cells[d]:public['days'][d] for d in dates}
- points=[geometry.center(cell) for cell in route]
+ points=[];ring=route[:-1]
+ for i,cell in enumerate(ring):
+  if cell not in active:points.append(geometry.center(cell));continue
+  pins=contacts(chip,*geometry.package_origin(cell,levels[cell]),levels[cell])
+  before=geometry.center(ring[(i-1)%len(ring)]);after=geometry.center(ring[(i+1)%len(ring)])
+  distance=lambda p,q:(p[0]-q[0])**2+(p[1]-q[1])**2
+  entry=min(pins,key=lambda p:distance(p,before));exit=min((p for p in pins if p!=entry),key=lambda p:distance(p,after))
+  points.extend([entry,exit])
+ points.append(points[0])
  wire='M'+' L'.join(f'{x},{y}' for x,y in points)
+ cutouts=''.join('<polygon points="'+' '.join(f'{x},{y}' for x,y in chip.polygon(*geometry.package_origin(cell,levels[cell]),levels[cell]))+'" fill="black"/>' for cell in sorted(active))
+ p.append(f'<defs><mask id="componentCurrentMask" maskUnits="userSpaceOnUse" x="0" y="0" width="{geometry.width}" height="{geometry.height}"><rect width="{geometry.width}" height="{geometry.height}" fill="white"/>{cutouts}</mask></defs><g data-current-layer="true" mask="url(#componentCurrentMask)">')
  p.append(f'<path d="{wire}" fill="none" stroke="{copper}" stroke-width="1" opacity=".18"/>')
  p.append(f'<defs><filter id="currentGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2"/></filter></defs>')
  for color,weight,blur in [(copper,6,' filter="url(#currentGlow)"'),(copper,2.5,''),('#ffe1bd',.75,'')]:
@@ -127,7 +137,7 @@ for theme in ('dark','light'):
   for shape,alternate,duration,begin in rays:
    p.append(f'<path d="{shape}" opacity=".3"><animate attributeName="opacity" values=".28;.75;.35;.65;.2;.28" keyTimes="0;.12;.29;.46;.71;1" dur="{duration}" begin="{begin}" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1" repeatCount="indefinite"/><animate attributeName="d" values="{shape};{alternate};{shape}" dur="{duration}" begin="{begin}" repeatCount="indefinite"/></path>')
   p.append(f'<animateMotion path="{wire}" dur="14s" begin="-.126s" rotate="auto" repeatCount="indefinite"/></g></g>')
- p+=packages
+ p.append('</g>');p+=packages
  p.append('</g>')
  legend_scale=.8;gap=12;sample_widths=[]
  for level in range(5):

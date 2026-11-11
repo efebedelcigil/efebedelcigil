@@ -56,6 +56,16 @@ class CalendarTests(unittest.TestCase):
    self.assertTrue(current)
    if pads:self.assertLess(max(pads),min(current))
    if chips:self.assertGreater(min(chips),max(current))
+ def test_current_hidden_inside_component_envelopes(self):
+  A=Path(__file__).resolve().parents[1]/'assets';data=json.loads((A/'public-profile.json').read_text(encoding='utf-8'))
+  active=sum(level>0 for level in data['days'].values())
+  for theme in ['dark','light']:
+   root=E.parse(A/f'contribution-{theme}.svg').getroot()
+   mask=next(e for e in root.iter() if e.get('id')=='componentCurrentMask')
+   self.assertEqual(len([e for e in mask if e.tag.endswith('polygon')]),active)
+   layer=next(e for e in root.iter() if e.get('data-current-layer')=='true')
+   self.assertEqual(layer.get('mask'),'url(#componentCurrentMask)')
+   self.assertEqual(len([e for e in layer.iter() if e.get('pathLength')=='1000']),3)
  def test_sparks_follow_current_and_stop_in_still(self):
   A=Path(__file__).resolve().parents[1]/'assets'
   for theme in ['dark','light']:
