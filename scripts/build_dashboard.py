@@ -5,7 +5,7 @@ from build_identity import lettering
 from circuit_route import circuit_route,spark_gate
 from contribution_geometry import BoardGeometry
 from public_calendar import cell_map
-from design_parts import halo,centered,measure,strip_motion,branch_groups
+from design_parts import halo,electric_trace,centered,measure,strip_motion,branch_groups
 R=Path(__file__).resolve().parents[1];A=R/'assets'
 profile=json.loads((A/'profile.json').read_text(encoding='utf-8'));public=json.loads((A/'public-profile.json').read_text(encoding='utf-8'))
 from vector_logos import logo
@@ -14,9 +14,8 @@ for theme in ('dark','light'):
  def txt(t,x,y,s=22,c=None,w=550):return lettering(t,x,y,s,c or ink,w)
  def save(name,w,h,p):
   if name.startswith('heading-'):
-   side=sum(map(ord,name))%2;length=48+(sum(map(ord,name))%4)*17
-   x=12 if not side else w-length-24
-   decoration=f'<g fill="none" stroke="{blue}" stroke-width=".8" opacity=".16"><path d="M{x} 7h{length*.6}l8 8h{length*.3}m{-length*.5} -11h{length*.3}l8 8"/><circle cx="{x}" cy="7" r="1.5"/></g>'
+   seed=sum(map(ord,name));length=48+(seed%4)*17
+   decoration=f'<g fill="none" stroke="{blue}" stroke-width=".8" opacity=".46"><path d="M12 6h{length*.6}l8 8h{length*.3}m{-length*.5} -11h{length*.3}l8 8M{w-15} 6h{-length*.7}l-7 7h{-length*.2}m30 -10h-18l-7 7M{24+seed%30} 42h24l8 -8h16"/><circle cx="12" cy="6" r="1.5"/><circle cx="{w-15}" cy="6" r="1.5"/></g>'
    p=[decoration]+p
   (A/f'{name}-{theme}.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img"><title>{html.escape(name)}</title>'+''.join(p)+'</svg>',encoding='utf-8')
   path=A/f'{name}-{theme}.svg'
@@ -38,7 +37,8 @@ for theme in ('dark','light'):
   for j,row in enumerate(support):
    widths=[measure(label,21)+33 for label in row];x=(w-sum(widths)-14*(len(row)-1))/2;y=99+j*39
    for label,bw in zip(row,widths):p+=[logo(label,x,y-17,muted),txt(label,x+26,y,21,muted)];x+=bw+14
-  p.append(f'<path d="M{w-121} 19v12l16 16v{height-40}" fill="none" stroke="{copper}" stroke-width="1" stroke-dasharray="9 160" opacity=".4"><animate attributeName="stroke-dashoffset" from="0" to="-169" dur="8s" repeatCount="indefinite"/></path>')
+  p.append('<g opacity=".4">'+electric_trace(f'M{w-121} 19v12l16 16v{height-40}',copper,1)+'</g>')
+  p.append(halo(8,8,w-16,height,blue,radius=14))
   save('focus'+suffix,w,height+12,p)
   for name,title,area_key in [('learning','In progress','learning_areas'),('exploring','Interested in exploring','exploring_areas')]:
    p=[];y=16;groups=json.loads((A/(name+'.json')).read_text(encoding='utf-8'))
@@ -60,38 +60,40 @@ for theme in ('dark','light'):
   low,high=extent(title,33,650);sub_low,sub_high=extent(subtitles[-1],21,550)
   shift=98-((60-high)+(100+29*(len(subtitles)-1)-sub_low))/2
   p=[f'<rect x="8" y="8" width="{w-16}" height="180" rx="10" fill="{panel}" stroke="{line}" stroke-width=".5"/>',txt(title,26,60+shift,33,blue,650),*[lettering(text,26,100+i*29+shift,21,muted,550,max_width=w-110) for i,text in enumerate(subtitles)],logo('Open link',w-68,83,copper,size=30)]
-  p.append(halo(8,8,w-16,180,blue).replace('stroke-width="1"','stroke-width="1.3"').replace('opacity=".55"','opacity=".75"'))
+  p.append(halo(8,8,w-16,180,'#ffad4d' if theme=='dark' else '#ce6a13',weight=1.8))
   save('portfolio'+suffix,w,196,p)
  for key,title in [('working','Working areas'),('tools','Tools'),('learning','In progress'),('exploring','Interested in exploring'),('contribution','Contribution circuit'),('languages','Project languages'),('pinned','Pinned repositories')]:
   tw=measure(title,32,650);left=(1120-tw)/2
-  p=[centered(title,1120,41,32,blue,650),f'<path d="M40 31H{left-28}m{tw+56} 0H1080" stroke="{line}"/><circle cx="{left-16}" cy="31" r="3" fill="{copper}"/>']
+  p=[centered(title,1120,41,32,blue,650),f'<path d="M40 31H{left-28}m{tw+56} 0H1080" stroke="{blue}" opacity=".6"/><circle cx="{left-16}" cy="31" r="3" fill="{copper}"/>']
   p.append(f'<circle cx="{1120-left+16}" cy="31" r="3" fill="{copper}"/>')
   save('heading-'+key,1120,49,p)
  for name,label in [('github','GitHub'),('linkedin','LinkedIn')]:
   icon=logo(label,12,17,ink,panel)
-  save('social-'+name,180,52,[f'<rect x="1" y="1" width="178" height="50" rx="13" fill="{panel}" stroke="{line}"/>',icon,txt(label,41,34,23),logo('Open link',148,18,muted,size=16)])
+  save('social-'+name,180,52,[f'<rect x="3" y="3" width="174" height="46" rx="12" fill="{panel}" stroke="{line}"/>',icon,txt(label,41,34,23),logo('Open link',148,18,muted,size=16),halo(3,3,174,46,blue,radius=12)])
  # Pseudo-isometric contribution board: date-to-cell mapping stays identical across themes.
  dates=sorted(public['days']);cells,weeks=cell_map(public['days']);geometry=BoardGeometry(weeks);chip=geometry.chip;cw,ch=chip.width,chip.height;step=geometry.step;pitch=geometry.row_pitch;palette=['#172536']+['#293a4b']*4 if theme=='dark' else ['#c1cedb']+['#42576b']*4
  if theme=='light':panel,line,muted='#d7e0e9','#b4c4d3','#53677d'
- die_colors=['','#9a6546','#c48a55','#efa571','#ffe0ae'] if theme=='dark' else ['','#946b4b','#af7f53','#cb975f','#e5b87c']
+ die_colors=['','#6595b9','#d98940','#ffc04a','#fff1bc'] if theme=='dark' else ['','#3873a0','#ca7a39','#f0b333','#fff2cb']
  period=datetime.date.fromisoformat(dates[0]).strftime('%b %Y')+' / '+datetime.date.fromisoformat(dates[-1]).strftime('%b %Y')
  p=[centered(str(sum(public['day_counts'].values()))+' public contributions',1120,26,22,blue,600),centered(period,1120,51,17,muted)]
  p.append(f'<g transform="{geometry.transform}"><rect x="0" y="10" width="{geometry.width}" height="{geometry.height}" rx="18" fill="{line}"/><rect width="{geometry.width}" height="{geometry.height}" rx="18" fill="{panel}" stroke="{muted}"/>')
- p.append(halo(0,0,geometry.width,geometry.height,copper,radius=18))
- for week in range(weeks):p.append(f'<path d="M{24+week*step} 17v{7*pitch+2}" stroke="{line}" stroke-width="1"/>')
- for row in range(8):p.append(f'<path data-grid="horizontal" d="M14 {17+row*pitch}H{geometry.width-25}" stroke="{line}" stroke-width="1"/>')
+ p.append(halo(0,0,geometry.width,geometry.height,copper,radius=18,weight=2.1,electric=False))
+ for week in range(weeks+1):p.append(f'<path data-grid="vertical" d="M{geometry.padding+week*step} {geometry.padding}v{7*pitch}" stroke="{line}" stroke-width="1"/>')
+ for row in range(8):p.append(f'<path data-grid="horizontal" d="M{geometry.padding} {geometry.padding+row*pitch}h{weeks*step}" stroke="{line}" stroke-width="1"/>')
  chip_start=len(p);empty_pads=[]
  for d in dates:
   week,row=cells[d];level=public['days'][d];x,y=geometry.origin((week,row))
   if not level:
    empty_pads.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="{cw}" height="{ch}" rx="2" fill="{palette[0]}" stroke="{line}" stroke-width=".3"/>');continue
-  lift=chip.lift(level)
+  x,y=geometry.package_origin((week,row),level);lift=chip.lift(level)
+  left,top,right,bottom=chip.bounds(x,y,level)
+  p.append(f'<rect data-chip-matte="{d}" x="{left}" y="{top}" width="{right-left}" height="{bottom-top}" rx="2" fill="{panel}"/>')
   p.append(f'<rect x="{x+1}" y="{y+2}" width="{cw+1}" height="{ch+1}" rx="2" fill="{line}" opacity=".7"/>')
   p.append(f'<path d="M{x-1} {y+4}h2m{cw-2} 0h3M{x-1} {y+9}h2m{cw-2} 0h3" stroke="{copper}" stroke-width="1.3"/>')
   p.append(f'<path d="M{x} {y+ch-lift}h{cw}v{lift}h{-cw}z" fill="{line}"/><path d="M{x+cw} {y-lift}v{ch}l2 2V{y+2}z" fill="{muted}" opacity=".6"/>')
   p.append(f'<rect x="{x}" y="{y-lift}" width="{cw}" height="{ch}" rx="1.5" data-date="{d}" data-level="{level}" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: {public["day_counts"][d]} public contributions, level {level}</title></rect>')
   p.append(f'<path d="M{x+1} {y+2-lift}h{cw-2}" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
-  die_w=(cw-2)*(.4+level*.15);die_h=(ch-4)*(1/3+level/6);die_color=die_colors[level]
+  die_w=cw-2;die_h=ch-4;die_color=die_colors[level]
   p.append(f'<rect data-die="{d}" data-level="{level}" x="{x+(cw-die_w)/2}" y="{y-lift+(ch-die_h)/2}" width="{die_w}" height="{die_h}" rx=".7" fill="{die_color}" stroke="{copper}" stroke-width=".4"/>')
  packages=p[chip_start:];p=p[:chip_start]+empty_pads
  active={cells[d] for d in dates if public['days'][d]}
@@ -118,10 +120,9 @@ for theme in ('dark','light'):
  for a,b in zip(points,points[1:]):distances.append(distances[-1]+hypot(b[0]-a[0],b[1]-a[1]))
  total_length=distances[-1] or 1
  for cell in sorted(active):
-  x,y=geometry.origin(cell);lift=chip.lift(levels[cell])
+  x,y=geometry.package_origin(cell,levels[cell]);lift=chip.lift(levels[cell])
   phase=max(0,distances[route.index(cell)]/total_length*14-.25)
-  p.append(f'<path d="M{x+cw/3} {y-2}v3m{cw*5/12}-3v3M{x+cw/3} {y+ch-1}v3m{cw*5/12}-3v3" stroke="{copper}" stroke-width="1"/>')
-  p.append(f'<rect x="{x+3}" y="{y+ch-4-lift}" width="{cw-6}" height="2" rx="1" fill="{copper}" opacity=".12"><animate attributeName="opacity" values=".12;.7;.12;.12" keyTimes="0;.025;.065;1" begin="{phase:.3f}s" dur="14s" repeatCount="indefinite"/></rect>')
+  p.append(f'<rect x="{x+3}" y="{y+ch-lift/2-.5}" width="{cw-6}" height="1" rx=".5" fill="{copper}" opacity=".12"><animate attributeName="opacity" values=".12;.7;.12;.12" keyTimes="0;.025;.065;1" begin="{phase:.3f}s" dur="14s" repeatCount="indefinite"/></rect>')
  p.append('</g>')
  p.append(txt('Less',355,388,18,muted))
  for level in range(5):
@@ -130,11 +131,12 @@ for theme in ('dark','light'):
   p.append(f'<rect x="{x}" y="{top}" width="28" height="20" rx="3" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"/>')
   if level:
    p.append(f'<path d="M{x-4} {top+5}h4m28 0h4M{x-4} {top+15}h4m28 0h4" stroke="{copper}" stroke-width="1.3"/>')
-   dw=7+level*4;dh=3+level*3;dc=die_colors[level]
+   dw=24;dh=15;dc=die_colors[level]
    p.append(f'<rect x="{x+(28-dw)/2}" y="{top+(20-dh)/2}" width="{dw}" height="{dh}" rx="1" fill="{dc}"/>')
+  p.append(txt(str(level),x+9,414,15,muted))
  p.append(txt('More',697,388,18,muted))
- save('contribution',1120,411,p)
- save('contribution-still',1120,411,[strip_motion(part) for part in p])
+ save('contribution',1120,430,p)
+ save('contribution-still',1120,430,[strip_motion(part) for part in p])
  if theme=='light':panel,line,muted='#e4ebf1','#bdcbd9','#53677d'
  activity=public.get('activity',{})
  p=[centered('Public activity',1120,25,21,copper,600)]
@@ -166,7 +168,8 @@ for theme in ('dark','light'):
   language_text=' / '.join(names) or repo.get('language') or 'Public repository'
   while measure(language_text,17)>490:language_text=language_text[:-4].rstrip(' .')+'...'
   p=[f'<rect x="1" y="1" width="538" height="166" rx="13" stroke="{line}" fill="{panel}"/>',txt(shorten(title,31),22,43,24,ink,650),txt(desc,22,76,20,muted),txt(language_text,22,110,17,muted),txt('View repository',22,146,18,blue),logo('View repository',496,128,blue,size=22)]
-  p.append(halo(1,1,538,166,blue,radius=13).replace('stroke-width="1"','stroke-width="1.5"').replace('opacity=".55"','opacity=".75"'))
+  p[0]=f'<rect x="5" y="5" width="530" height="158" rx="13" stroke="{line}" fill="{panel}"/>'
+  p.append(halo(5,5,530,158,blue,radius=13,weight=1.6))
   save('repo-'+title,540,168,p)
  save('still-link',400,40,[f'<rect x="1" y="1" width="398" height="38" rx="10" fill="{panel}" stroke="{line}"/>',logo('Pause',12,12,blue,size=18),txt('Still version of landing page',36,29,22,ink)])
 

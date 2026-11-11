@@ -11,7 +11,7 @@ class ReadmeLiveTests(unittest.TestCase):
    self.assertNotIn('profile-data',text)
    self.assertNotIn('#gh-dark-mode-only',text)
    refs=re.findall(r'(?:src|srcset)="([^"]+)"',text)
-   self.assertTrue(any('contribution-' in r for r in refs))
+   self.assertTrue(any('#contribution' in r for r in refs))
    self.assertEqual(text.count('<picture>'),text.count('<img '))
    self.assertNotRegex(text,r'<a href="[^"]*assets/')
    for ref in refs:
@@ -27,9 +27,27 @@ class ReadmeLiveTests(unittest.TestCase):
   for name in ['hero','contribution','portfolio','toolkit','learning','exploring']:
    root=E.parse(ROOT/'assets'/f'{name}.svg').getroot()
    self.assertTrue(any(e.tag.endswith('animate') for e in root.iter()),name)
-   self.assertIn(f'assets/{name}.svg?v=',text)
+   self.assertIn(f'assets/{name}.svg?v=' if name=='hero' else '#'+name+'"',text)
    self.assertIn('@media(prefers-color-scheme:dark)',root.find('{http://www.w3.org/2000/svg}style').text)
   self.assertIn('prefers-reduced-motion: reduce',text)
+ def test_shared_clock_views_and_references(self):
+  from build_halo_atlas import names
+  views=[]
+  for suffix in ['', '-still']:
+   root=E.parse(ROOT/'assets'/f'card-halos{suffix}.svg').getroot()
+   self.assertNotIn('width',root.attrib);self.assertNotIn('height',root.attrib)
+   found=[(e.get('id'),e.get('viewBox')) for e in root if e.tag.endswith('view')];views.append(found)
+   self.assertEqual([n for n,v in found],names())
+   ids=[e.get('id') for e in root.iter() if e.get('id')];self.assertEqual(len(ids),len(set(ids)))
+   for e in root.iter():
+    for value in e.attrib.values():
+     for ref in re.findall(r'url\(#([^)]*)\)',value):self.assertIn(ref,ids)
+   if suffix:self.assertFalse(any('animate' in e.tag for e in root.iter()))
+   else:
+    for e in root.iter():
+     if e.get('data-halo')=='true':
+      animation=next(iter(e));self.assertEqual(animation.get('dur'),'8s');self.assertEqual(animation.get('begin'),'0s')
+  self.assertEqual(views[0],views[1])
  def test_adaptive_geometry_and_timing_unchanged(self):
   for name in ['hero','hero-mobile','contribution','portfolio','toolkit','learning','exploring']:
    left=E.parse(ROOT/'assets'/f'{name}-light.svg').getroot()

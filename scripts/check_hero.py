@@ -78,7 +78,7 @@ def check_svg(path, mobile, still, expected_steady, decode_images=False, expecte
             assert float(animation.get('dur')[:-1])==38
     if still:
         assert not tree.findall('.//s:animate',NS) and not tree.findall('.//s:set',NS)
-        assert set(nodes)=={'title','desc','heroBounds','steady','line0','line1','underline','robotTrack'}
+        assert set(nodes)=={'title','desc','heroBounds','steady','line0','line1','underline','chargeClip','robotTrack'}
         return decoded
     groups={key:node for key,node in nodes.items() if key.startswith('r') and key!='robotTrack'}
     assert groups

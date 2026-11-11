@@ -9,14 +9,19 @@ def measure(text,size=20,weight=550):
 
 def centered(text,width,y,size,color,weight=550):return lettering(text,(width-measure(text,size,weight))/2,y,size,color,weight)
 
-def halo(x,y,w,h,color,still=False,radius=10):
- if still:return ''
- from math import pi
- perimeter=2*(w+h)-8*10+2*pi*10
- lead=12;trail=28
- shape=f'x="{x}" y="{y}" width="{w}" height="{h}" rx="{radius}" pathLength="100" fill="none" stroke="{color}" stroke-width="1"'
+def electric_trace(path,color,weight=1.4,electric=True):
  animation='<animate attributeName="stroke-dashoffset" from="0" to="-100" begin="0s" dur="8s" repeatCount="indefinite"/>'
- return f'<rect {shape} opacity=".12"/><rect {shape} stroke-dasharray="{trail:.5f} {100-trail:.5f}" opacity=".15">{animation}</rect><rect {shape} stroke-dasharray="{lead:.5f} {100-lead:.5f}" opacity=".55">{animation}</rect>'
+ shape=f'd="{path}" pathLength="100" fill="none" stroke="{color}" stroke-linecap="round" stroke-linejoin="round"'
+ result=f'<g data-halo="true">{animation}<path {shape} stroke-width="{weight+2.5}" stroke-dasharray="18 82" opacity=".07"/><path {shape} stroke-width="{weight}" stroke-dasharray="25 75" opacity=".23"/><path {shape} stroke-width="{weight}" stroke-dasharray="8 92" opacity=".85"/></g>'
+ if electric:
+  result+=f'<g data-border-current="true" fill="none" stroke="{color}" stroke-width=".8" stroke-linecap="round" opacity=".5"><path d="M-3 0l2 -1 1 2 2 -1m-1 -2l1 -1 1 1"><animate attributeName="opacity" values=".3;.8;.4;.7;.3" dur="1.3s" repeatCount="indefinite"/></path><animateMotion path="{path}" begin="-.32s" dur="8s" rotate="auto" repeatCount="indefinite"/></g>'
+ return result
+
+def halo(x,y,w,h,color,still=False,radius=10,weight=1.4,electric=True):
+ if still:return ''
+ r=min(radius,w/2,h/2)
+ path=f'M{x+w/2} {y}H{x+w-r}Q{x+w} {y} {x+w} {y+r}V{y+h-r}Q{x+w} {y+h} {x+w-r} {y+h}H{x+r}Q{x} {y+h} {x} {y+h-r}V{y+r}Q{x} {y} {x+r} {y}Z'
+ return electric_trace(path,color,weight,electric)
 
 def strip_motion(text):return re.sub(r'<animate(?:Motion|Transform)?\b[^>]*/>','',text)
 
