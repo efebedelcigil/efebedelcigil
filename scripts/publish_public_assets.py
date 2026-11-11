@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def publish(root=ROOT):
  root=Path(root);assets=root/'assets'
- prefixes=('hero-','toolkit-','learning-','exploring-','focus-','portfolio-','heading-','social-','still-link-','back-top-','contribution-','activity-','profile-cards-','repo-')
+ prefixes=('card-halos','hero-','toolkit-','learning-','exploring-','focus-','portfolio-','heading-','social-','still-link-','back-top-','contribution-','activity-','profile-cards-','repo-')
  files=sorted(p for p in assets.glob('*.svg') if p.name.startswith(prefixes) or p.name in ['hero.svg','toolkit.svg','learning.svg','exploring.svg','focus.svg','portfolio.svg','contribution.svg','activity.svg','profile-cards.svg'])
  files += [assets/'public-profile.json',root/'README.md',root/'docs/STATIC.md']
  if not (assets/'public-profile.json').is_file() or not any(p.name=='contribution-dark.svg' for p in files):

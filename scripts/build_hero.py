@@ -114,7 +114,7 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
     def response_line(amplitude):
         span=end-start_x
         return f'M{start_x} {baseline}C{start_x+span*.35} {baseline-amplitude} {start_x+span*.65} {baseline+amplitude*.65} {end} {baseline}'
-    parts.append(f'<path id="underline" d="{response_line(0)}" fill="none" stroke="{accent}" stroke-width="{6 if mobile else 9}" opacity=".18">')
+    parts.append(f'<path id="underline" d="{response_line(0)}" fill="none" stroke="{accent}" stroke-width="1" opacity=".12">')
     if not still:
         keys=underline_keys()
         shapes=';'.join(response_line(value*(.6 if mobile else 1)) for _,value in keys)
@@ -122,15 +122,17 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
         splines=';'.join(['.42 0 .58 1']*(len(keys)-1))
         parts.append(f'<animate attributeName="d" values="{shapes}" keyTimes="{times}" begin="2.25s" dur="132s" repeatCount="indefinite" calcMode="spline" keySplines="{splines}"/>')
     parts.append('</path>')
-    parts.append(f'<rect x="{start_x-5}" y="{baseline-13}" width="{end-start_x+10}" height="26" rx="5" stroke="{accent}" fill="none" opacity=".45"/><path d="M{end+6} {baseline-5}v10" stroke="{copper}" stroke-width="5"/>')
-    parts.append(f'<path d="M{start_x} {baseline}h{end-start_x}" stroke="{copper}" stroke-width="{6 if mobile else 9}">')
+    span=end-start_x
+    parts.append(f'<rect x="{start_x-5}" y="{baseline-7}" width="{span+10}" height="14" rx="7" stroke="{accent}" stroke-width=".8" fill="none" opacity=".5"/><path d="M{end+7} {baseline-2}v4" stroke="{accent}" stroke-width="2" stroke-linecap="round" opacity=".65"/>')
+    parts.append(f'<clipPath id="chargeClip"><rect x="{start_x}" y="{baseline-5}" width="{span}" height="10" rx="3">')
+    if not still:parts.append(f'<animate attributeName="width" values="0;{span};{span};0" keyTimes="0;.42;.78;1" dur="8s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .2 1;.4 0 .6 1;.4 0 .6 1"/>')
+    parts.append('</rect></clipPath><g clip-path="url(#chargeClip)">')
+    for weight,opacity in [(7,.08),(3,.25),(1.5,.85)]:
+        parts.append(f'<path d="M{start_x} {baseline}h{span}" stroke="{accent}" stroke-width="{weight}" stroke-linecap="round" opacity="{opacity}"/>')
     if not still:
-        parts.append(f'<animate attributeName="d" values="M{start_x} {baseline}h0;M{start_x} {baseline}h{end-start_x};M{start_x} {baseline}h{end-start_x};M{start_x} {baseline}h0" keyTimes="0;.4;.8;1" dur="8s" repeatCount="indefinite"/>')
-    parts.append('</path>')
-    if not still:
-        parts.append(f'<clipPath id="chargeClip"><rect x="{start_x}" y="{baseline-10}" width="{end-start_x}" height="20" rx="4"/></clipPath>')
-        zig='M'+' L'.join(f'{start_x+i*(end-start_x)/30:.2f},{baseline+(-5 if i%2 else 5)}' for i in range(31))
-        parts.append(f'<g clip-path="url(#chargeClip)"><path d="{zig}" fill="none" stroke="{accent}" stroke-width="5" opacity=".3"/><path d="{zig}" pathLength="100" fill="none" stroke="{ink}" stroke-width="1.5" stroke-dasharray="9 91"><animate attributeName="stroke-dashoffset" from="0" to="-100" dur="1.7s" repeatCount="indefinite"/></path></g>')
+        parts.append(f'<path d="M{start_x} {baseline}h{span}" pathLength="100" stroke="{ink}" stroke-width="1.3" stroke-dasharray="4 96" opacity=".7"><animate attributeName="stroke-dashoffset" from="0" to="-100" dur="2s" repeatCount="indefinite"/></path>')
+        parts.append(f'<g fill="none" stroke="{accent}" stroke-width=".8" opacity=".6"><path d="M-3 0l2 -1 1 2 2 -1m-1 -2l1 -1 1 1"><animate attributeName="opacity" values=".2;.7;.35;.6;.2" dur="1.3s" repeatCount="indefinite"/></path><animateMotion path="M{start_x} {baseline}h{span}" dur="2s" repeatCount="indefinite"/></g>')
+    parts.append('</g>')
     identity=json.loads((ROOT/'assets/profile.json').read_text(encoding='utf-8'))
     muted='#a9b8cc' if theme=='dark' else '#53677d'
     ix,iy=(8,365) if mobile else (22,477)

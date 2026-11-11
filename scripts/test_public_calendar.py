@@ -23,7 +23,7 @@ class CalendarTests(unittest.TestCase):
    layout=BoardGeometry(weeks,projection,chip);boxes=[]
    for col in sorted(set([0,1,2,weeks-1])):
     for row in range(7):
-     for level in range(1,5):boxes.append((col,row,layout.project_bounds(chip.bounds(*layout.origin((col,row)),level))))
+     for level in range(1,5):boxes.append((col,row,layout.project_bounds(chip.bounds(*layout.package_origin((col,row),level),level))))
    for a in boxes:
     for b in boxes:
      if a[:2]==b[:2]:continue
@@ -79,7 +79,12 @@ class CalendarTests(unittest.TestCase):
     d=e.get('data-date');self.assertEqual(e.get('fill'),palettes[theme][days[d]])
     dies=[n for n in root.iter() if n.get('data-die')==d]
     self.assertEqual(len(dies),int(days[d]>0))
-    if dies:self.assertEqual(float(dies[0].get('width')),4+days[d]*1.5)
-    self.assertAlmostEqual(float(e.get('x')),layout.origin(cells[d])[0]);self.assertEqual(float(e.get('y')),layout.origin(cells[d])[1]-(layout.chip.lift(days[d]) if days[d] else 0))
+    if dies:self.assertEqual(float(dies[0].get('width')),layout.chip.width-2)
+    origin=layout.package_origin(cells[d],days[d]) if days[d] else layout.origin(cells[d])
+    self.assertAlmostEqual(float(e.get('x')),origin[0]);self.assertEqual(float(e.get('y')),origin[1]-(layout.chip.lift(days[d]) if days[d] else 0))
+    if days[d]:
+     bounds=layout.chip.bounds(*origin,days[d]);cx,cy=layout.center(cells[d])
+     self.assertAlmostEqual((bounds[0]+bounds[2])/2,cx);self.assertAlmostEqual((bounds[1]+bounds[3])/2,cy)
+   self.assertEqual(len([e for e in root.iter() if e.get('data-chip-matte')]),sum(v>0 for v in days.values()))
   active={cells[d] for d,v in days.items() if v};self.assertTrue(active<=set(circuit_route(active,width=weeks)))
 if __name__=='__main__':unittest.main()

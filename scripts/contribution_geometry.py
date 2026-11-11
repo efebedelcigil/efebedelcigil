@@ -24,7 +24,8 @@ class BoardGeometry:
    if not overlap:break
    self.step*=1.04;self.row_pitch*=1.04
   else:raise ValueError('Unable to separate projected packages')
-  self.width=self.step*max(weeks-1,1)+62;self.height=rows*self.row_pitch+36
+  self.padding=18
+  self.width=self.step*weeks+2*self.padding;self.height=rows*self.row_pitch+2*self.padding
   left,top,right,bottom=self.project_bounds((0,0,self.width,self.height+10))
   self.scale=min(1,1040/(right-left),260/(bottom-top))
   if min(chip.width,chip.height)*self.scale<4:raise ValueError('Perspective makes packages unreadable')
@@ -36,7 +37,11 @@ class BoardGeometry:
  def project_bounds(self,bounds,padding=0):
   left,top,right,bottom=bounds;points=[self.project(x,y) for x in [left,right] for y in [top,bottom]]
   return min(x for x,y in points)-padding,min(y for x,y in points)-padding,max(x for x,y in points)+padding,max(y for x,y in points)+padding
- def origin(self,cell):return 20+cell[0]*self.step,20+cell[1]*self.row_pitch
+ def origin(self,cell):
+  x,y=self.center(cell);return x-self.chip.width/2,y-self.chip.height/2
  def center(self,cell):
-  x,y=self.origin(cell);return x+self.chip.width/2,y+self.chip.height/2
- def occluder(self,cell,level,padding=3):return self.project_bounds(self.chip.bounds(*self.origin(cell),level),padding)
+  return self.padding+(cell[0]+.5)*self.step,self.padding+(cell[1]+.5)*self.row_pitch
+ def package_origin(self,cell,level):
+  x,y=self.center(cell);left,top,right,bottom=self.chip.bounds(0,0,level)
+  return x-(left+right)/2,y-(top+bottom)/2
+ def occluder(self,cell,level,padding=3):return self.project_bounds(self.chip.bounds(*self.package_origin(cell,level),level),padding)

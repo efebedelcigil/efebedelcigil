@@ -42,6 +42,7 @@ jobs:
       - run: python scripts/refresh_hero.py
       - run: python scripts/test_public_calendar.py
       - run: python scripts/build_adaptive.py
+      - run: python scripts/build_halo_atlas.py
       - run: python scripts/build_readme.py
       - run: python scripts/build_static.py
       - run: python scripts/test_publish_public_assets.py

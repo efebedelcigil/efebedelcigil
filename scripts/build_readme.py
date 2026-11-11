@@ -1,16 +1,20 @@
 from labels import display_label
+from build_halo_atlas import names as halo_names
 from pathlib import Path
 import json,html,hashlib,re
 R=Path(__file__).resolve().parents[1]
 A=R/'assets';profile=json.loads((A/'profile.json').read_text(encoding='utf-8'));data=json.loads((A/'public-profile.json').read_text(encoding='utf-8'))
 def picture(name,alt,width=1120,mobile=True,hero=False,target=None):
  sources=[]
- has_still=hero or name in ('toolkit','learning','exploring','focus','portfolio','contribution') or name.startswith('repo-')
+ shared=name in halo_names()
+ def source(variant='',still=False):
+  return f'assets/card-halos{"-still" if still else ""}.svg#{name}{variant}' if shared else f'assets/{name}{variant}{"-still" if still else ""}.svg'
+ has_still=hero or shared
  if has_still:
-  if mobile:sources.append(f'<source media="(prefers-reduced-motion: reduce) and (max-width: 600px)" srcset="assets/{name}-mobile-still.svg">')
-  sources.append(f'<source media="(prefers-reduced-motion: reduce)" srcset="assets/{name}-still.svg">')
- if mobile:sources.append(f'<source media="(max-width: 600px)" srcset="assets/{name}-mobile.svg">')
- content='<picture>'+''.join(sources)+f'<img src="assets/{name}.svg" width="{width}" alt="{html.escape(display_label(alt),quote=True)}"></picture>'
+  if mobile:sources.append(f'<source media="(prefers-reduced-motion: reduce) and (max-width: 600px)" srcset="{source("-mobile",True)}">')
+  sources.append(f'<source media="(prefers-reduced-motion: reduce)" srcset="{source(still=True)}">')
+ if mobile:sources.append(f'<source media="(max-width: 600px)" srcset="{source("-mobile")}">')
+ content='<picture>'+''.join(sources)+f'<img src="{source()}" width="{width}" alt="{html.escape(display_label(alt),quote=True)}"></picture>'
  if name=='back-top':target='#top'
  return f'<a href="{target}">{content}</a>' if target else content
 
@@ -24,7 +28,8 @@ parts.append('<p align="center">'+' '.join(cards)+'</p>' if cards else 'No publi
 parts.append('<hr>\n\n<p align="center">'+linked('still-link','docs/STATIC.md','Still version of landing page',200)+' &nbsp; '+picture('back-top','Back to top',95,False)+'</p>')
 for i in range(len(parts)-1):
  if 'assets/heading-' in parts[i] and parts[i+1].startswith('<p align="center">'):
-  parts[i]=parts[i].removesuffix('</p>')+'<br>'+parts[i+1].removeprefix('<p align="center">');parts[i+1]=''
+  gap='<br><br>' if 'heading-pinned' in parts[i] else '<br>'
+  parts[i]=parts[i].removesuffix('</p>')+gap+parts[i+1].removeprefix('<p align="center">');parts[i+1]=''
 content='\n\n'.join(p for p in parts if p)+'\n'
 def version(match):
  path=match.group(0);digest=hashlib.sha256((R/path).read_bytes()).hexdigest()[:12];return path+'?v='+digest
