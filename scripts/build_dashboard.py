@@ -55,10 +55,10 @@ for theme in ('dark','light'):
     if pen.bounds:bounds.append(pen.bounds)
    scale=size/f['head'].unitsPerEm
    return min(b[1] for b in bounds)*scale,max(b[3] for b in bounds)*scale
-  title='Explore my portfolio';subtitle='Projects, publications, contact and more'
-  low,high=extent(title,33,650);sub_low,sub_high=extent(subtitle,21,550)
-  shift=98-((60-high)+(100-sub_low))/2
-  p=[f'<rect x="8" y="8" width="{w-16}" height="180" rx="10" fill="{panel}" stroke="{line}" stroke-width=".5"/>',txt(title,26,60+shift,33,blue,650),txt(subtitle,26,100+shift,21,muted),logo('Open link',w-68,83,copper,size=30)]
+  title='Explore my portfolio';subtitles=['ALL projects, publications, contact info. and more']
+  low,high=extent(title,33,650);sub_low,sub_high=extent(subtitles[-1],21,550)
+  shift=98-((60-high)+(100+29*(len(subtitles)-1)-sub_low))/2
+  p=[f'<rect x="8" y="8" width="{w-16}" height="180" rx="10" fill="{panel}" stroke="{line}" stroke-width=".5"/>',txt(title,26,60+shift,33,blue,650),*[lettering(text,26,100+i*29+shift,21,muted,550,max_width=w-110) for i,text in enumerate(subtitles)],logo('Open link',w-68,83,copper,size=30)]
   p.append(halo(8,8,w-16,180,blue).replace('stroke-width="1"','stroke-width="1.3"').replace('opacity=".55"','opacity=".75"'))
   save('portfolio'+suffix,w,196,p)
  for key,title in [('working','Working areas'),('tools','Tools'),('learning','In progress'),('exploring','Interested in exploring'),('contribution','Contribution circuit'),('languages','Project languages'),('pinned','Pinned repositories')]:
@@ -79,11 +79,11 @@ for theme in ('dark','light'):
  p.append(halo(0,0,1010,246,copper,radius=18))
  for week in range(weeks):p.append(f'<path d="M{24+week*step} 17v212" stroke="{line}" stroke-width="1"/>')
  for row in range(8):p.append(f'<path data-grid="horizontal" d="M14 {17+row*30}H985" stroke="{line}" stroke-width="1"/>')
- chip_start=len(p)
+ chip_start=len(p);empty_pads=[]
  for d in dates:
   week,row=cells[d];level=public['days'][d];x=20+week*step;y=20+row*30
   if not level:
-   p.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="12" height="13" rx="2" fill="{palette[0]}" stroke="{line}" stroke-width=".3"/>');continue
+   empty_pads.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="12" height="13" rx="2" fill="{palette[0]}" stroke="{line}" stroke-width=".3"/>');continue
   lift=2+level*2
   p.append(f'<rect x="{x+1}" y="{y+2}" width="13" height="14" rx="2" fill="{line}" opacity=".7"/>')
   p.append(f'<path d="M{x-1} {y+4}h2m10 0h3M{x-1} {y+9}h2m10 0h3" stroke="{copper}" stroke-width="1.3"/>')
@@ -92,7 +92,7 @@ for theme in ('dark','light'):
   p.append(f'<path d="M{x+1} {y+2-lift}h10" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
   die_w=4+level*1.5;die_h=3+level*1.5;die_color=die_colors[level]
   p.append(f'<rect data-die="{d}" data-level="{level}" x="{x+(12-die_w)/2}" y="{y-lift+(13-die_h)/2}" width="{die_w}" height="{die_h}" rx=".7" fill="{die_color}" stroke="{copper}" stroke-width=".4"/>')
- packages=p[chip_start:];p=p[:chip_start]
+ packages=p[chip_start:];p=p[:chip_start]+empty_pads
  active={cells[d] for d in dates if public['days'][d]}
  route=circuit_route(active,width=weeks)
  levels={cells[d]:public['days'][d] for d in dates}

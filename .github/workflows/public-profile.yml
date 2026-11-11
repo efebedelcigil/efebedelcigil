@@ -15,24 +15,24 @@ on:
       - assets/logos/**
       - scripts/**
 concurrency:
-  group: public-profile-artwork
-  cancel-in-progress: true
+  group: public-profile-artwork-${{ github.ref }}
+  cancel-in-progress: false
 permissions:
   contents: write
-  pull-requests: write
 jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PROFILE_PUBLISH_TOKEN || github.token }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install fonttools pillow
       - name: Refresh anonymous contribution calendar independently
         run: python scripts/public_calendar.py
-      - name: Refresh public profile snapshot (keep cached snapshot if upstream is unavailable)
-        continue-on-error: true
+      - name: Refresh complete public profile snapshot
         run: python scripts/refresh_public_profile.py
         env:
           GH_TOKEN: ${{ github.token }}
@@ -41,18 +41,20 @@ jobs:
       - run: python scripts/build_toolkit.py
       - run: python scripts/refresh_hero.py
       - run: python scripts/test_public_calendar.py
+      - run: python scripts/build_adaptive.py
       - run: python scripts/build_readme.py
       - run: python scripts/build_static.py
-      - name: Create or update artwork pull request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ github.token }}
-          branch: automation/public-profile-artwork
-          delete-branch: true
-          commit-message: 'Refresh public profile artwork'
-          title: 'Refresh public profile artwork'
-          body: 'Automated update of generated profile artwork and README assets.'
-          add-paths: |
-            assets/
-            README.md
-            docs/STATIC.md
+      - run: python scripts/test_publish_public_assets.py
+      - run: python scripts/test_readme_live.py
+      - name: Verify unattended publication access
+        if: github.ref == 'refs/heads/main'
+        env:
+          PUBLISH_TOKEN_CONFIGURED: ${{ secrets.PROFILE_PUBLISH_TOKEN != '' }}
+        run: |
+          if [ "$PUBLISH_TOKEN_CONFIGURED" != "true" ]; then
+            echo "::error::Configure the repo-scoped PROFILE_PUBLISH_TOKEN secret before unattended publication."
+            exit 1
+          fi
+      - name: Publish generated profile without a pull request
+        if: github.ref == 'refs/heads/main'
+        run: python scripts/publish_public_assets.py

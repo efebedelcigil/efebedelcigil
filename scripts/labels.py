@@ -17,7 +17,7 @@ def lookup_index(mapping):
   result[key]=value
  return result
 
-_SPECIAL=['STM32 / CubeIDE','CubeIDE','MQTT','OpenSCAD','UART','I²C','SPI','CAN','C','C++','C#','MATLAB','Simulink','PSIM','LTspice','Proteus','STM32','ESP32','KiCad','EAGLE','Quartus','ModelSim','Linux','Python','VHDL','Verilog','ROS 2','FreeRTOS','Raspberry Pi','NanoEdge AI Studio','Git','Gazebo','SolidWorks','Fusion','CAD','3D Printing','TinyML','DSP','PLC','IoT','AI','PV','HVAC','GitHub','LinkedIn','Microsoft Office','Windows','PowerShell','Inno Setup']
+_SPECIAL=['ALL projects, publications, contact info. and more','STM32 / CubeIDE','CubeIDE','MQTT','OpenSCAD','UART','I²C','SPI','CAN','C','C++','C#','MATLAB','Simulink','PSIM','LTspice','Proteus','STM32','ESP32','KiCad','EAGLE','Quartus','ModelSim','Linux','Python','VHDL','Verilog','ROS 2','FreeRTOS','Raspberry Pi','NanoEdge AI Studio','Git','Gazebo','SolidWorks','Fusion','CAD','3D Printing','TinyML','DSP','PLC','IoT','AI','PV','HVAC','GitHub','LinkedIn','Microsoft Office','Windows','PowerShell','Inno Setup']
 _SPECIAL={match_key(label):label for label in _SPECIAL}
 _SMALL={'and','or','of','the','in','on','at','to','for','with','a','an','as','but','nor','ve','veya','ile'}
 def display_label(value):

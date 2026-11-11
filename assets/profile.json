@@ -11,8 +11,7 @@
     "Mechatronics",
     "IoT",
     "Circuit Design",
-    "3D Printing",
-    "Data Center Design & Operations"
+    "3D Printing"
   ],
   "learning_areas": [
     "Machine Learning",
@@ -24,7 +23,8 @@
     "DSP",
     "PLC & Automation",
     "Renewable Energy",
-    "HVAC Systems"
+    "HVAC Systems",
+    "Data Center Design & Operations"
   ],
   "learning_area_groups": [
     {
@@ -59,7 +59,8 @@
       "name": "Energy Systems",
       "tools": [
         "Renewable Energy",
-        "HVAC Systems"
+        "HVAC Systems",
+        "Data Center Design & Operations"
       ]
     }
   ]
