@@ -1,7 +1,8 @@
 import datetime,json,unittest,xml.etree.ElementTree as E
 from pathlib import Path
 from public_calendar import parse_calendar,cell_map
-from circuit_route import circuit_route
+from circuit_route import circuit_route,spark_gate
+from contribution_geometry import BoardGeometry,ChipGeometry
 class CalendarTests(unittest.TestCase):
  def test_week_boundaries(self):
   cells,weeks=cell_map({'2026-11-07':0,'2026-11-08':1,'2026-11-09':2})
@@ -17,19 +18,20 @@ class CalendarTests(unittest.TestCase):
   fragment=''.join(f'<td id="d{i}" data-date="{start+datetime.timedelta(days=i)}" data-level="0"></td>' for i in range(365))
   with self.assertRaisesRegex(ValueError,'Missing daily'):parse_calendar(fragment)
  def test_projected_packages_do_not_overlap(self):
-  # Worst case: tall package next to low packages, including pins and shadows.
-  step=948/53
-  boxes=[]
-  for col in range(3):
-   for row in range(3):
-    for level in range(1,5):
-     x=20+col*step;y=20+row*30;lift=2+level*2
-     points=[(xx-.1*yy,.025*xx+.94*yy) for xx in (x-1,x+14) for yy in (y-lift,y+16)]
-     boxes.append((col,row,level,min(p[0] for p in points),min(p[1] for p in points),max(p[0] for p in points),max(p[1] for p in points)))
-  for a in boxes:
-   for b in boxes:
-    if a[:2]==b[:2]:continue
-    self.assertTrue(a[5]<=b[3] or b[5]<=a[3] or a[6]<=b[4] or b[6]<=a[4],(a,b))
+  cases=[(53,ChipGeometry(),(1,.025,-.1,.94)),(54,ChipGeometry(),(1,.025,-.1,.94)),(80,ChipGeometry(),(1,.025,-.1,.94)),(54,ChipGeometry(18,19),(.9,.16,-.3,.85)),(26,ChipGeometry(9,11),(.8,-.08,.2,.95))]
+  for weeks,chip,projection in cases:
+   layout=BoardGeometry(weeks,projection,chip);boxes=[]
+   for col in sorted(set([0,1,2,weeks-1])):
+    for row in range(7):
+     for level in range(1,5):boxes.append((col,row,layout.project_bounds(chip.bounds(*layout.origin((col,row)),level))))
+   for a in boxes:
+    for b in boxes:
+     if a[:2]==b[:2]:continue
+     x,y=a[2],b[2]
+     self.assertTrue(x[2]<=y[0] or y[2]<=x[0] or x[3]<=y[1] or y[3]<=x[1],(weeks,a[:2],b[:2]))
+   self.assertGreaterEqual(min(chip.width,chip.height)*layout.scale,4)
+ def test_invalid_perspective_rejected(self):
+  with self.assertRaises(ValueError):BoardGeometry(53,(1,1,1,1))
  def test_current_layering(self):
   A=Path(__file__).resolve().parents[1]/'assets'
   for theme in ['dark','light']:
@@ -46,13 +48,28 @@ class CalendarTests(unittest.TestCase):
    root=E.parse(A/f'contribution-{theme}.svg').getroot();nodes=list(root.iter())
    wire=next(e for e in nodes if e.get('pathLength')=='1000')
    sparks=next(e for e in nodes if e.get('data-current-sparks')=='true')
-   motion=next(e for e in sparks if e.tag.endswith('animateMotion'))
+   motion=next(e for e in sparks.iter() if e.tag.endswith('animateMotion'))
    self.assertEqual(motion.get('path'),wire.get('d'));self.assertEqual(motion.get('dur'),'14s')
    self.assertLess(nodes.index(sparks),min(i for i,e in enumerate(nodes) if e.get('data-date') and e.get('data-level')!='0'))
    for filename in [f'contribution-{theme}-still.svg',f'contribution-still-{theme}.svg']:
     self.assertFalse(any('animate' in e.tag for e in E.parse(A/filename).getroot().iter()),filename)
+ def test_spark_gate_fades_before_occlusion(self):
+  gate=spark_gate([(0,0),(40,0),(0,0)],[(15,-4,25,4)],fade=6)
+  self.assertEqual(gate[0][1],1);self.assertEqual(gate[-1][1],1)
+  self.assertTrue(any(0<v<1 for t,v in gate))
+  for t,v in gate:
+   x=80*t if t<=.5 else 80*(1-t)
+   if 15<=x<=25:self.assertEqual(v,0)
+  self.assertTrue(all(a[0]<b[0] for a,b in zip(gate,gate[1:])))
+ def test_projected_spark_keepout(self):
+  points=[(0,10),(40,10),(0,10)]
+  gate=spark_gate(points,[(9,4,26,15)],projection=(1,.025,-.1,.94))
+  for t,v in gate:
+   x=80*t if t<=.5 else 80*(1-t);sx,sy=x-1,.025*x+9.4
+   if 9<=sx<=26 and 4<=sy<=15:self.assertEqual(v,0)
+  self.assertTrue(any(v>0 for t,v in gate))
  def test_rendered_parity(self):
-  A=Path(__file__).resolve().parents[1]/'assets';data=json.loads((A/'public-profile.json').read_text());days=data['days'];cells,weeks=cell_map(days)
+  A=Path(__file__).resolve().parents[1]/'assets';data=json.loads((A/'public-profile.json').read_text());days=data['days'];cells,weeks=cell_map(days);layout=BoardGeometry(weeks)
   palettes={'dark':['#172536']+['#293a4b']*4,'light':['#c1cedb']+['#42576b']*4}
   for theme in ['dark','light']:
    root=E.parse(A/f'contribution-{theme}.svg').getroot();nodes=[e for e in root.iter() if e.get('data-date')]
@@ -63,6 +80,6 @@ class CalendarTests(unittest.TestCase):
     dies=[n for n in root.iter() if n.get('data-die')==d]
     self.assertEqual(len(dies),int(days[d]>0))
     if dies:self.assertEqual(float(dies[0].get('width')),4+days[d]*1.5)
-    self.assertAlmostEqual(float(e.get('x')),20+cells[d][0]*948/(weeks-1));self.assertEqual(float(e.get('y')),20+cells[d][1]*30-(2+days[d]*2 if days[d] else 0))
+    self.assertAlmostEqual(float(e.get('x')),layout.origin(cells[d])[0]);self.assertEqual(float(e.get('y')),layout.origin(cells[d])[1]-(layout.chip.lift(days[d]) if days[d] else 0))
   active={cells[d] for d,v in days.items() if v};self.assertTrue(active<=set(circuit_route(active,width=weeks)))
 if __name__=='__main__':unittest.main()

@@ -2,7 +2,8 @@ from labels import display_label
 from pathlib import Path
 import json,html,re,xml.etree.ElementTree as E,datetime
 from build_identity import lettering
-from circuit_route import circuit_route
+from circuit_route import circuit_route,spark_gate
+from contribution_geometry import BoardGeometry
 from public_calendar import cell_map
 from design_parts import halo,centered,measure,strip_motion,branch_groups
 R=Path(__file__).resolve().parents[1];A=R/'assets'
@@ -70,58 +71,61 @@ for theme in ('dark','light'):
   icon=logo(label,12,17,ink,panel)
   save('social-'+name,180,52,[f'<rect x="1" y="1" width="178" height="50" rx="13" fill="{panel}" stroke="{line}"/>',icon,txt(label,41,34,23),logo('Open link',148,18,muted,size=16)])
  # Pseudo-isometric contribution board: date-to-cell mapping stays identical across themes.
- dates=sorted(public['days']);cells,weeks=cell_map(public['days']);step=948/max(weeks-1,1);palette=['#172536']+['#293a4b']*4 if theme=='dark' else ['#c1cedb']+['#42576b']*4
+ dates=sorted(public['days']);cells,weeks=cell_map(public['days']);geometry=BoardGeometry(weeks);chip=geometry.chip;cw,ch=chip.width,chip.height;step=geometry.step;pitch=geometry.row_pitch;palette=['#172536']+['#293a4b']*4 if theme=='dark' else ['#c1cedb']+['#42576b']*4
  if theme=='light':panel,line,muted='#d7e0e9','#b4c4d3','#53677d'
  die_colors=['','#9a6546','#c48a55','#efa571','#ffe0ae'] if theme=='dark' else ['','#946b4b','#af7f53','#cb975f','#e5b87c']
  period=datetime.date.fromisoformat(dates[0]).strftime('%b %Y')+' / '+datetime.date.fromisoformat(dates[-1]).strftime('%b %Y')
  p=[centered(str(sum(public['day_counts'].values()))+' public contributions',1120,26,22,blue,600),centered(period,1120,51,17,muted)]
- p.append(f'<g transform="translate(70 80) matrix(1 .025 -.10 .94 0 0)"><rect x="0" y="10" width="1010" height="246" rx="18" fill="{line}"/><rect width="1010" height="246" rx="18" fill="{panel}" stroke="{muted}"/>')
- p.append(halo(0,0,1010,246,copper,radius=18))
- for week in range(weeks):p.append(f'<path d="M{24+week*step} 17v212" stroke="{line}" stroke-width="1"/>')
- for row in range(8):p.append(f'<path data-grid="horizontal" d="M14 {17+row*30}H985" stroke="{line}" stroke-width="1"/>')
+ p.append(f'<g transform="{geometry.transform}"><rect x="0" y="10" width="{geometry.width}" height="{geometry.height}" rx="18" fill="{line}"/><rect width="{geometry.width}" height="{geometry.height}" rx="18" fill="{panel}" stroke="{muted}"/>')
+ p.append(halo(0,0,geometry.width,geometry.height,copper,radius=18))
+ for week in range(weeks):p.append(f'<path d="M{24+week*step} 17v{7*pitch+2}" stroke="{line}" stroke-width="1"/>')
+ for row in range(8):p.append(f'<path data-grid="horizontal" d="M14 {17+row*pitch}H{geometry.width-25}" stroke="{line}" stroke-width="1"/>')
  chip_start=len(p);empty_pads=[]
  for d in dates:
-  week,row=cells[d];level=public['days'][d];x=20+week*step;y=20+row*30
+  week,row=cells[d];level=public['days'][d];x,y=geometry.origin((week,row))
   if not level:
-   empty_pads.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="12" height="13" rx="2" fill="{palette[0]}" stroke="{line}" stroke-width=".3"/>');continue
-  lift=2+level*2
-  p.append(f'<rect x="{x+1}" y="{y+2}" width="13" height="14" rx="2" fill="{line}" opacity=".7"/>')
-  p.append(f'<path d="M{x-1} {y+4}h2m10 0h3M{x-1} {y+9}h2m10 0h3" stroke="{copper}" stroke-width="1.3"/>')
-  p.append(f'<path d="M{x} {y+13-lift}h12v{lift}h-12z" fill="{line}"/><path d="M{x+12} {y-lift}v13l2 2V{y+2}z" fill="{muted}" opacity=".6"/>')
-  p.append(f'<rect x="{x}" y="{y-lift}" width="12" height="13" rx="1.5" data-date="{d}" data-level="{level}" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: {public["day_counts"][d]} public contributions, level {level}</title></rect>')
-  p.append(f'<path d="M{x+1} {y+2-lift}h10" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
-  die_w=4+level*1.5;die_h=3+level*1.5;die_color=die_colors[level]
-  p.append(f'<rect data-die="{d}" data-level="{level}" x="{x+(12-die_w)/2}" y="{y-lift+(13-die_h)/2}" width="{die_w}" height="{die_h}" rx=".7" fill="{die_color}" stroke="{copper}" stroke-width=".4"/>')
+   empty_pads.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="{cw}" height="{ch}" rx="2" fill="{palette[0]}" stroke="{line}" stroke-width=".3"/>');continue
+  lift=chip.lift(level)
+  p.append(f'<rect x="{x+1}" y="{y+2}" width="{cw+1}" height="{ch+1}" rx="2" fill="{line}" opacity=".7"/>')
+  p.append(f'<path d="M{x-1} {y+4}h2m{cw-2} 0h3M{x-1} {y+9}h2m{cw-2} 0h3" stroke="{copper}" stroke-width="1.3"/>')
+  p.append(f'<path d="M{x} {y+ch-lift}h{cw}v{lift}h{-cw}z" fill="{line}"/><path d="M{x+cw} {y-lift}v{ch}l2 2V{y+2}z" fill="{muted}" opacity=".6"/>')
+  p.append(f'<rect x="{x}" y="{y-lift}" width="{cw}" height="{ch}" rx="1.5" data-date="{d}" data-level="{level}" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: {public["day_counts"][d]} public contributions, level {level}</title></rect>')
+  p.append(f'<path d="M{x+1} {y+2-lift}h{cw-2}" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
+  die_w=(cw-2)*(.4+level*.15);die_h=(ch-4)*(1/3+level/6);die_color=die_colors[level]
+  p.append(f'<rect data-die="{d}" data-level="{level}" x="{x+(cw-die_w)/2}" y="{y-lift+(ch-die_h)/2}" width="{die_w}" height="{die_h}" rx=".7" fill="{die_color}" stroke="{copper}" stroke-width=".4"/>')
  packages=p[chip_start:];p=p[:chip_start]+empty_pads
  active={cells[d] for d in dates if public['days'][d]}
  route=circuit_route(active,width=weeks)
  levels={cells[d]:public['days'][d] for d in dates}
- points=[(26+x*step,26.5+y*30) for x,y in route]
+ points=[geometry.center(cell) for cell in route]
  wire='M'+' L'.join(f'{x},{y}' for x,y in points)
  p.append(f'<path d="{wire}" fill="none" stroke="{copper}" stroke-width="1" opacity=".18"/>')
  p.append(f'<defs><filter id="currentGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2"/></filter></defs>')
  for color,weight,blur in [(copper,6,' filter="url(#currentGlow)"'),(copper,2.5,''),('#ffe1bd',.75,'')]:
   p.append(f'<path d="{wire}" pathLength="1000" fill="none" stroke="{color}" stroke-width="{weight}" stroke-dasharray="18 982" stroke-linecap="round"{blur}><animate attributeName="stroke-dashoffset" from="0" to="-1000" dur="14s" repeatCount="indefinite"/></path>')
  if len(points)>1:
-  p.append(f'<g data-current-sparks="true" fill="none" stroke="{copper}" stroke-width=".85" stroke-linecap="round" stroke-linejoin="round">')
-  rays=[('M-1 -2l-2 -2 1 -1 -2 -2','.67s','0s'),('M2 0l3 -1 -1 -2 2 -1','.83s','-.19s'),('M0 2l-1 2 2 1 -1 2','1.07s','-.43s')]
-  for shape,duration,begin in rays:
-   p.append(f'<path d="{shape}" opacity="0"><animate attributeName="opacity" values="0;.7;.08;.5;0;0" keyTimes="0;.07;.14;.23;.34;1" dur="{duration}" begin="{begin}" repeatCount="indefinite"/></path>')
-  p.append(f'<animateMotion path="{wire}" dur="14s" begin="-.126s" rotate="auto" repeatCount="indefinite"/></g>')
+  occluders=[geometry.occluder(cell,levels[cell]) for cell in active]
+  gate=spark_gate(points,occluders,fade=5,projection=geometry.projection)
+  values=';'.join(f'{v:.4f}' for t,v in gate);times=';'.join(f'{t:.7f}' for t,v in gate)
+  p.append(f'<g data-current-sparks="true" opacity="0"><animate attributeName="opacity" values="{values}" keyTimes="{times}" dur="14s" begin="-.126s" repeatCount="indefinite"/><g fill="none" stroke="{copper}" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round">')
+  rays=[('M-1 -2l-2 -2 1 -1 -2 -2','M-1 -2l-3 -1 2 -2 -2 -2','.67s','0s'),('M2 0l3 -1 -1 -2 2 -1','M2 0l2 -2 1 1 1 -3','.83s','-.19s'),('M0 2l-1 2 2 1 -1 2','M0 2l1 2 -2 1 1 2','1.07s','-.43s')]
+  for shape,alternate,duration,begin in rays:
+   p.append(f'<path d="{shape}" opacity=".3"><animate attributeName="opacity" values=".28;.75;.35;.65;.2;.28" keyTimes="0;.12;.29;.46;.71;1" dur="{duration}" begin="{begin}" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1" repeatCount="indefinite"/><animate attributeName="d" values="{shape};{alternate};{shape}" dur="{duration}" begin="{begin}" repeatCount="indefinite"/></path>')
+  p.append(f'<animateMotion path="{wire}" dur="14s" begin="-.126s" rotate="auto" repeatCount="indefinite"/></g></g>')
  p+=packages
  from math import hypot
  distances=[0.0]
  for a,b in zip(points,points[1:]):distances.append(distances[-1]+hypot(b[0]-a[0],b[1]-a[1]))
  total_length=distances[-1] or 1
  for cell in sorted(active):
-  x,y=20+cell[0]*step,20+cell[1]*30;lift=2+levels[cell]*2
+  x,y=geometry.origin(cell);lift=chip.lift(levels[cell])
   phase=max(0,distances[route.index(cell)]/total_length*14-.25)
-  p.append(f'<path d="M{x+4} {y-2}v3m5-3v3M{x+4} {y+12}v3m5-3v3" stroke="{copper}" stroke-width="1"/>')
-  p.append(f'<rect x="{x+3}" y="{y+9-lift}" width="6" height="2" rx="1" fill="{copper}" opacity=".12"><animate attributeName="opacity" values=".12;.7;.12;.12" keyTimes="0;.025;.065;1" begin="{phase:.3f}s" dur="14s" repeatCount="indefinite"/></rect>')
+  p.append(f'<path d="M{x+cw/3} {y-2}v3m{cw*5/12}-3v3M{x+cw/3} {y+ch-1}v3m{cw*5/12}-3v3" stroke="{copper}" stroke-width="1"/>')
+  p.append(f'<rect x="{x+3}" y="{y+ch-4-lift}" width="{cw-6}" height="2" rx="1" fill="{copper}" opacity=".12"><animate attributeName="opacity" values=".12;.7;.12;.12" keyTimes="0;.025;.065;1" begin="{phase:.3f}s" dur="14s" repeatCount="indefinite"/></rect>')
  p.append('</g>')
  p.append(txt('Less',355,388,18,muted))
  for level in range(5):
-  x=419+level*52;lift=2+level*2 if level else 0;top=371-lift
+  x=419+level*52;lift=chip.lift(level) if level else 0;top=371-lift
   p.append(f'<path d="M{x} {top+20}h28v{lift}h-28z" fill="{line}"/>')
   p.append(f'<rect x="{x}" y="{top}" width="28" height="20" rx="3" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"/>')
   if level:
