@@ -30,6 +30,16 @@ class CalendarTests(unittest.TestCase):
    for b in boxes:
     if a[:2]==b[:2]:continue
     self.assertTrue(a[5]<=b[3] or b[5]<=a[3] or a[6]<=b[4] or b[6]<=a[4],(a,b))
+ def test_current_layering(self):
+  A=Path(__file__).resolve().parents[1]/'assets'
+  for theme in ['dark','light']:
+   nodes=list(E.parse(A/f'contribution-{theme}.svg').getroot().iter())
+   current=[i for i,e in enumerate(nodes) if e.get('pathLength')=='1000']
+   pads=[i for i,e in enumerate(nodes) if e.get('data-level')=='0']
+   chips=[i for i,e in enumerate(nodes) if e.get('data-date') and e.get('data-level')!='0']
+   self.assertTrue(current)
+   if pads:self.assertLess(max(pads),min(current))
+   if chips:self.assertGreater(min(chips),max(current))
  def test_rendered_parity(self):
   A=Path(__file__).resolve().parents[1]/'assets';data=json.loads((A/'public-profile.json').read_text());days=data['days'];cells,weeks=cell_map(days)
   palettes={'dark':['#172536']+['#293a4b']*4,'light':['#c1cedb']+['#42576b']*4}

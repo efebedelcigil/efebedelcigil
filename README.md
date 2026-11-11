@@ -14,7 +14,7 @@
 
 <p align="center"><picture><img src="assets/heading-exploring.svg?v=1fc7a31c5652" width="1120" alt="Interested in Exploring"></picture><br><picture><source media="(prefers-reduced-motion: reduce) and (max-width: 600px)" srcset="assets/exploring-mobile-still.svg?v=0893dc3fc530"><source media="(prefers-reduced-motion: reduce)" srcset="assets/exploring-still.svg?v=2c3ef50ef887"><source media="(max-width: 600px)" srcset="assets/exploring-mobile.svg?v=26342bd754bd"><img src="assets/exploring.svg?v=8965f33a102e" width="1120" alt="Interested in Exploring. Areas: DSP, PLC &amp; Automation, Renewable Energy, HVAC Systems, Data Center Design &amp; Operations. Tools and Methods: Raspberry Pi, MQTT, OpenSCAD"></picture></p>
 
-<p align="center"><picture><img src="assets/heading-contribution.svg?v=be97604b8b78" width="1120" alt="Contribution Circuit"></picture><br><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/contribution-still.svg?v=dc4600006f6d"><img src="assets/contribution.svg?v=c09e213bdd40" width="1120" alt="Public Contribution Circuit. Live Data Refreshed Periodically."></picture></p>
+<p align="center"><picture><img src="assets/heading-contribution.svg?v=be97604b8b78" width="1120" alt="Contribution Circuit"></picture><br><picture><source media="(prefers-reduced-motion: reduce)" srcset="assets/contribution-still.svg?v=e1f231d41141"><img src="assets/contribution.svg?v=c54fa5af3364" width="1120" alt="Public Contribution Circuit. Live Data Refreshed Periodically."></picture></p>
 
 <p align="center"><picture><img src="assets/activity.svg?v=aee2d3f02fa1" width="1120" alt="Public Activity: 562 Commits, 5 Issues, 13 Pull Requests, 1 Reviews"></picture></p>
 

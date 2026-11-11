@@ -79,11 +79,11 @@ for theme in ('dark','light'):
  p.append(halo(0,0,1010,246,copper,radius=18))
  for week in range(weeks):p.append(f'<path d="M{24+week*step} 17v212" stroke="{line}" stroke-width="1"/>')
  for row in range(8):p.append(f'<path data-grid="horizontal" d="M14 {17+row*30}H985" stroke="{line}" stroke-width="1"/>')
- chip_start=len(p)
+ chip_start=len(p);empty_pads=[]
  for d in dates:
   week,row=cells[d];level=public['days'][d];x=20+week*step;y=20+row*30
   if not level:
-   p.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="12" height="13" rx="2" fill="{palette[0]}" stroke="{line}" stroke-width=".3"/>');continue
+   empty_pads.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="12" height="13" rx="2" fill="{palette[0]}" stroke="{line}" stroke-width=".3"/>');continue
   lift=2+level*2
   p.append(f'<rect x="{x+1}" y="{y+2}" width="13" height="14" rx="2" fill="{line}" opacity=".7"/>')
   p.append(f'<path d="M{x-1} {y+4}h2m10 0h3M{x-1} {y+9}h2m10 0h3" stroke="{copper}" stroke-width="1.3"/>')
@@ -92,7 +92,7 @@ for theme in ('dark','light'):
   p.append(f'<path d="M{x+1} {y+2-lift}h10" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
   die_w=4+level*1.5;die_h=3+level*1.5;die_color=die_colors[level]
   p.append(f'<rect data-die="{d}" data-level="{level}" x="{x+(12-die_w)/2}" y="{y-lift+(13-die_h)/2}" width="{die_w}" height="{die_h}" rx=".7" fill="{die_color}" stroke="{copper}" stroke-width=".4"/>')
- packages=p[chip_start:];p=p[:chip_start]
+ packages=p[chip_start:];p=p[:chip_start]+empty_pads
  active={cells[d] for d in dates if public['days'][d]}
  route=circuit_route(active,width=weeks)
  levels={cells[d]:public['days'][d] for d in dates}
