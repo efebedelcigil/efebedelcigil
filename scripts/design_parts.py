@@ -18,7 +18,7 @@ def halo(x,y,w,h,color,still=False,radius=10):
  animation='<animate attributeName="stroke-dashoffset" from="0" to="-100" begin="0s" dur="8s" repeatCount="indefinite"/>'
  return f'<rect {shape} opacity=".12"/><rect {shape} stroke-dasharray="{trail:.5f} {100-trail:.5f}" opacity=".15">{animation}</rect><rect {shape} stroke-dasharray="{lead:.5f} {100-lead:.5f}" opacity=".55">{animation}</rect>'
 
-def strip_motion(text):return re.sub(r'<animate\b[^>]*/>','',text)
+def strip_motion(text):return re.sub(r'<animate(?:Motion|Transform)?\b[^>]*/>','',text)
 
 def branch_groups(groups,width,y,title,ink,muted,accent,panel,line):
  from vector_logos import logo
