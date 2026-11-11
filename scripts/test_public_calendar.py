@@ -23,7 +23,7 @@ class CalendarTests(unittest.TestCase):
    layout=BoardGeometry(weeks,projection,chip);boxes=[]
    for col in sorted(set([0,1,2,weeks-1])):
     for row in range(7):
-     for level in range(1,5):boxes.append((col,row,layout.project_bounds(chip.bounds(*layout.package_origin((col,row),level),level))))
+     for level in range(1,5):boxes.append((col,row,layout.project_package_bounds(layout.package_origin((col,row),level),level)))
    for a in boxes:
     for b in boxes:
      if a[:2]==b[:2]:continue
@@ -97,6 +97,6 @@ class CalendarTests(unittest.TestCase):
     for px,py in contacts(layout.chip,*origin,level):
      self.assertGreaterEqual(px-1.4,bounds[0]-.001);self.assertLessEqual(px+1.4,bounds[2]+.001)
      self.assertGreaterEqual(py-1.1,bounds[1]-.001);self.assertLessEqual(py+1.1,bounds[3]+.001)
-   self.assertEqual(len([e for e in root.iter() if e.get('data-chip-matte')]),sum(v>0 for v in days.values()))
+   self.assertEqual(len([e for e in root.iter() if e.get('data-component-sprite')])-4,sum(v>0 for v in days.values()))
   active={cells[d] for d,v in days.items() if v};self.assertTrue(active<=set(circuit_route(active,width=weeks)))
 if __name__=='__main__':unittest.main()

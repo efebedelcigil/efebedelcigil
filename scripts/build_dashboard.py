@@ -4,7 +4,7 @@ import json,html,re,xml.etree.ElementTree as E,datetime
 from build_identity import lettering
 from circuit_route import circuit_route,spark_gate
 from contribution_geometry import BoardGeometry
-from pcb_components import KINDS,component,pads
+from pcb_components import KINDS,component,pads,definitions
 from pcb_background import tracks
 from public_calendar import cell_map
 from design_parts import halo,electric_trace,centered,measure,strip_motion,branch_groups
@@ -74,12 +74,12 @@ for theme in ('dark','light'):
   save('social-'+name,180,52,[f'<rect x="3" y="3" width="174" height="46" rx="12" fill="{panel}" stroke="{line}"/>',icon,txt(label,41,34,23),logo('Open link',148,18,muted,size=16),halo(3,3,174,46,blue,radius=12)])
  # Pseudo-isometric contribution board: date-to-cell mapping stays identical across themes.
  dates=sorted(public['days']);cells,weeks=cell_map(public['days']);geometry=BoardGeometry(weeks);chip=geometry.chip;cw,ch=chip.width,chip.height;step=geometry.step;pitch=geometry.row_pitch;palette=['none']+['#202b34']*4 if theme=='dark' else ['none']+['#2d3d4c']*4
- panel,line=('#163f30','#315d45') if theme=='dark' else ('#62806a','#3e6249')
- copper='#d8ab72' if theme=='dark' else '#d5b07d'
+ panel,line=('#163f30','#315d45') if theme=='dark' else ('#427154','#30563d')
+ copper='#cba56f' if theme=='dark' else '#efd4a1'
  metal='#b9c6bd' if theme=='dark' else '#d0d6c9'
  if theme=='light':muted='#53677d'
  period=datetime.date.fromisoformat(dates[0]).strftime('%b %Y')+' / '+datetime.date.fromisoformat(dates[-1]).strftime('%b %Y')
- p=[centered(str(sum(public['day_counts'].values()))+' public contributions',1120,26,22,blue,600),centered(period,1120,51,17,muted)]
+ p=[definitions(),centered(str(sum(public['day_counts'].values()))+' public contributions',1120,26,22,blue,600),centered(period,1120,51,17,muted)]
  p.append(f'<g transform="{geometry.transform}"><rect x="0" y="5.5" width="{geometry.width}" height="{geometry.height}" rx="18" fill="{line}"/>')
  edge_y=geometry.height;edge_x=geometry.width*.43;edge_w=geometry.width*.12
  p.append(f'<path d="M18 {edge_y+2.6}H{geometry.width-18}" stroke="{copper}" stroke-width=".5" opacity=".3"/><path data-cutaway="true" d="M{edge_x} {edge_y+1.5}h{edge_w}m{-edge_w} 2.5h{edge_w}" stroke="{copper}" stroke-width=".5" opacity=".5"/>')
@@ -91,9 +91,9 @@ for theme in ('dark','light'):
  # Silkscreen and copper stay in the clear perimeter, outside every day cell.
  for x,y in geometry.mounts():p.append(f'<circle data-mount="true" cx="{x}" cy="{y}" r="3.2" fill="{line}" stroke="{copper}" stroke-width="1"/><circle cx="{x}" cy="{y}" r="1.7" fill="{panel}"/>')
  copper_routes,vias=tracks(geometry.width,geometry.height)
- p.append(f'<g data-board-traces="true" fill="none" stroke="{copper}" stroke-width=".9" opacity=".3">')
+ p.append(f'<g data-board-traces="true" fill="none" stroke="{copper}" stroke-width=".9" opacity=".52">')
  for path in copper_routes:p.append('<path d="M'+' L'.join(f'{x},{y}' for x,y in path)+'"/>')
- for x,y in vias:p.append(f'<circle data-via="true" cx="{x}" cy="{y}" r="1.25" fill="{panel}"/><circle cx="{x}" cy="{y}" r=".45" fill="{line}" stroke="none"/>')
+ for x,y in vias:p.append(f'<circle data-via="true" cx="{x}" cy="{y}" r="1.8" fill="{panel}"/><circle cx="{x}" cy="{y}" r=".75" fill="{line}" stroke="none"/>')
  p.append('</g>')
  for week in range(weeks+1):p.append(f'<path data-grid="vertical" d="M{geometry.padding+week*step} {geometry.padding}v{7*pitch}" stroke="{line}" stroke-width=".6" opacity=".12"/>')
  for row in range(8):p.append(f'<path data-grid="horizontal" d="M{geometry.padding} {geometry.padding+row*pitch}h{weeks*step}" stroke="{line}" stroke-width=".6" opacity=".12"/>')
@@ -102,9 +102,11 @@ for theme in ('dark','light'):
   cell=cells[d];level=public['days'][d];x,y=geometry.package_origin(cell,level)
   left,top,right,bottom=chip.bounds(x,y,level)
   marker=f'<rect data-date="{d}" data-level="{level}" data-component="{KINDS[level]}" x="{left}" y="{top}" width="{right-left}" height="{bottom-top}" fill="none" opacity="0"><title>{d}: {public["day_counts"][d]} public contributions, level {level}, {KINDS[level]}</title></rect>'
+  silk='#afbaa5' if theme=='dark' else '#e0e5cf'
+  fx,fy=geometry.center(cell);fw=step*.72;fh=pitch*.68
+  empty_pads.append(f'<path data-silkscreen="{d}" d="M{fx-fw/2+3} {fy-fh/2}h-3v3m0 {fh-6}v3h3m{fw-6} 0h3v-3m0 {-fh+6}v-3h-3" fill="none" stroke="{silk}" stroke-width=".55" opacity=".32"/>')
   if not level:
    empty_pads.append(marker+pads(chip,x,y,level,panel,metal,copper));continue
-  p.append(f'<rect data-chip-matte="{d}" x="{left}" y="{top}" width="{right-left}" height="{bottom-top}" rx="1" fill="{panel}"/>')
   p.append(marker+pads(chip,x,y,level,panel,metal,copper)+component(chip,x,y,level,panel,metal,copper,ink))
  packages=p[chip_start:];p=p[:chip_start]+empty_pads
  active={cells[d] for d in dates if public['days'][d]}
@@ -127,11 +129,21 @@ for theme in ('dark','light'):
   p.append(f'<animateMotion path="{wire}" dur="14s" begin="-.126s" rotate="auto" repeatCount="indefinite"/></g></g>')
  p+=packages
  p.append('</g>')
- p.append(txt('Less',370,382,15,muted))
+ legend_scale=.8;gap=12;sample_widths=[]
  for level in range(5):
-  cx=440+level*56;left,top,right,bottom=chip.bounds(0,0,level);x=-(left+right)/2;y=-(top+bottom)/2
-  p.append(f'<g transform="translate({cx} 377) scale(1.15)">'+pads(chip,x,y,level,panel,metal,copper)+component(chip,x,y,level,panel,metal,copper,ink)+'</g>')
- p.append(txt('More',711,382,15,muted))
+  if level:
+   from pcb_components import META
+   width=META['parts'][str(level)]['image'][2]*legend_scale
+  else:width=22*legend_scale
+  sample_widths.append(width)
+ total_width=measure('Less',15)+measure('More',15)+sum(sample_widths)+gap*6
+ cursor=(1120-total_width)/2
+ p.append(txt('Less',cursor,382,15,muted));cursor+=measure('Less',15)+gap
+ for level,width in enumerate(sample_widths):
+  left,top,right,bottom=chip.bounds(0,0,level);x=-(left+right)/2;y=-(top+bottom)/2
+  p.append(f'<g transform="translate({cursor+width/2} 377) scale({legend_scale})">'+pads(chip,x,y,level,panel,metal,copper)+component(chip,x,y,level,panel,metal,copper,ink)+'</g>')
+  cursor+=width+gap
+ p.append(txt('More',cursor,382,15,muted))
  save('contribution',1120,410,p)
  save('contribution-still',1120,410,[strip_motion(part) for part in p])
  panel,line,muted=('#142237','#31445e','#a9b8cc') if theme=='dark' else ('#e4ebf1','#bdcbd9','#53677d')
