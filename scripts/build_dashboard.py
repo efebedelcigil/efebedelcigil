@@ -60,7 +60,7 @@ for theme in ('dark','light'):
   low,high=extent(title,33,650);sub_low,sub_high=extent(subtitles[-1],21,550)
   shift=98-((60-high)+(100+29*(len(subtitles)-1)-sub_low))/2
   p=[f'<rect x="8" y="8" width="{w-16}" height="180" rx="10" fill="{panel}" stroke="{line}" stroke-width=".5"/>',txt(title,26,60+shift,33,blue,650),*[lettering(text,26,100+i*29+shift,21,muted,550,max_width=w-110) for i,text in enumerate(subtitles)],logo('Open link',w-68,83,copper,size=30)]
-  p.append(halo(8,8,w-16,180,'#ffad4d' if theme=='dark' else '#ce6a13',weight=1.8))
+  p.append(halo(8,8,w-16,180,'#ffad4d' if theme=='dark' else '#ce6a13',weight=3))
   save('portfolio'+suffix,w,196,p)
  for key,title in [('working','Working areas'),('tools','Tools'),('learning','In progress'),('exploring','Interested in exploring'),('contribution','Contribution circuit'),('languages','Project languages'),('pinned','Pinned repositories')]:
   tw=measure(title,32,650);left=(1120-tw)/2
@@ -72,29 +72,40 @@ for theme in ('dark','light'):
   save('social-'+name,180,52,[f'<rect x="3" y="3" width="174" height="46" rx="12" fill="{panel}" stroke="{line}"/>',icon,txt(label,41,34,23),logo('Open link',148,18,muted,size=16),halo(3,3,174,46,blue,radius=12)])
  # Pseudo-isometric contribution board: date-to-cell mapping stays identical across themes.
  dates=sorted(public['days']);cells,weeks=cell_map(public['days']);geometry=BoardGeometry(weeks);chip=geometry.chip;cw,ch=chip.width,chip.height;step=geometry.step;pitch=geometry.row_pitch;palette=['#172536']+['#293a4b']*4 if theme=='dark' else ['#c1cedb']+['#42576b']*4
- if theme=='light':panel,line,muted='#d7e0e9','#b4c4d3','#53677d'
- die_colors=['','#6595b9','#d98940','#ffc04a','#fff1bc'] if theme=='dark' else ['','#3873a0','#ca7a39','#f0b333','#fff2cb']
+ panel,line=('#142c36','#375262') if theme=='dark' else ('#d6e3e5','#9fb5bd')
+ if theme=='light':muted='#53677d'
+ die_colors=['','#79b8dc','#d98940','#ffc04a','#fff1bc'] if theme=='dark' else ['','#6eb3d7','#ca7a39','#f0b333','#fff2cb']
  period=datetime.date.fromisoformat(dates[0]).strftime('%b %Y')+' / '+datetime.date.fromisoformat(dates[-1]).strftime('%b %Y')
  p=[centered(str(sum(public['day_counts'].values()))+' public contributions',1120,26,22,blue,600),centered(period,1120,51,17,muted)]
- p.append(f'<g transform="{geometry.transform}"><rect x="0" y="10" width="{geometry.width}" height="{geometry.height}" rx="18" fill="{line}"/><rect width="{geometry.width}" height="{geometry.height}" rx="18" fill="{panel}" stroke="{muted}"/>')
+ p.append(f'<g transform="{geometry.transform}"><rect x="0" y="4" width="{geometry.width}" height="{geometry.height}" rx="18" fill="{line}"/><rect width="{geometry.width}" height="{geometry.height}" rx="18" fill="{panel}" stroke="{muted}" stroke-width=".7"/>')
  p.append(halo(0,0,geometry.width,geometry.height,copper,radius=18,weight=2.1,electric=False))
- for week in range(weeks+1):p.append(f'<path data-grid="vertical" d="M{geometry.padding+week*step} {geometry.padding}v{7*pitch}" stroke="{line}" stroke-width="1"/>')
- for row in range(8):p.append(f'<path data-grid="horizontal" d="M{geometry.padding} {geometry.padding+row*pitch}h{weeks*step}" stroke="{line}" stroke-width="1"/>')
+ # Silkscreen and copper stay in the clear perimeter, outside every day cell.
+ for side in [0,1]:
+  x=7 if not side else geometry.width-7
+  p.append(f'<path d="M{x} 22v{geometry.height-44}" stroke="{copper}" stroke-width=".8" opacity=".45"/>')
+  for y in [12,geometry.height-12]:p.append(f'<circle cx="{x}" cy="{y}" r="2.7" fill="{palette[0]}" stroke="{copper}" stroke-width="1.3"/>')
+ for col in range(0,weeks,6):
+  x=geometry.padding+(col+.5)*step
+  p.append(f'<path d="M{x} 8h{step*2}l5 5h{step}" fill="none" stroke="{copper}" stroke-width=".8" opacity=".38"/><circle cx="{x}" cy="8" r="1.6" fill="{panel}" stroke="{copper}" stroke-width=".8"/>')
+ for week in range(weeks+1):p.append(f'<path data-grid="vertical" d="M{geometry.padding+week*step} {geometry.padding}v{7*pitch}" stroke="{line}" stroke-width=".7" opacity=".4"/>')
+ for row in range(8):p.append(f'<path data-grid="horizontal" d="M{geometry.padding} {geometry.padding+row*pitch}h{weeks*step}" stroke="{line}" stroke-width=".7" opacity=".4"/>')
  chip_start=len(p);empty_pads=[]
  for d in dates:
   week,row=cells[d];level=public['days'][d];x,y=geometry.origin((week,row))
   if not level:
-   empty_pads.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="{cw}" height="{ch}" rx="2" fill="{palette[0]}" stroke="{line}" stroke-width=".3"/>');continue
+   empty_pads.append(f'<rect data-date="{d}" data-level="0" x="{x}" y="{y}" width="{cw}" height="{ch}" rx=".7" fill="{palette[0]}" opacity=".35" stroke="{line}" stroke-width=".4"/><path d="M{x+1} {y+ch/2}h2m{cw-6} 0h2" stroke="{muted}" stroke-width="2" opacity=".25"/>');continue
   x,y=geometry.package_origin((week,row),level);lift=chip.lift(level)
   left,top,right,bottom=chip.bounds(x,y,level)
   p.append(f'<rect data-chip-matte="{d}" x="{left}" y="{top}" width="{right-left}" height="{bottom-top}" rx="2" fill="{panel}"/>')
   p.append(f'<rect x="{x+1}" y="{y+2}" width="{cw+1}" height="{ch+1}" rx="2" fill="{line}" opacity=".7"/>')
-  p.append(f'<path d="M{x-1} {y+4}h2m{cw-2} 0h3M{x-1} {y+9}h2m{cw-2} 0h3" stroke="{copper}" stroke-width="1.3"/>')
+  for py in [2.5,5.5,8.5,11.5]:
+   p.append(f'<path data-chip-pin="{d}" d="M{x-2} {y+py}h1v{-lift*.5}h2M{x+cw+3} {y+py}h-1v{-lift*.5}h-3" fill="none" stroke="{muted}" stroke-width="1.3" stroke-linejoin="round"/>')
   p.append(f'<path d="M{x} {y+ch-lift}h{cw}v{lift}h{-cw}z" fill="{line}"/><path d="M{x+cw} {y-lift}v{ch}l2 2V{y+2}z" fill="{muted}" opacity=".6"/>')
-  p.append(f'<rect x="{x}" y="{y-lift}" width="{cw}" height="{ch}" rx="1.5" data-date="{d}" data-level="{level}" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: {public["day_counts"][d]} public contributions, level {level}</title></rect>')
+  p.append(f'<rect x="{x}" y="{y-lift}" width="{cw}" height="{ch}" rx=".6" data-date="{d}" data-level="{level}" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"><title>{d}: {public["day_counts"][d]} public contributions, level {level}</title></rect>')
   p.append(f'<path d="M{x+1} {y+2-lift}h{cw-2}" stroke="{ink}" stroke-width=".7" opacity=".45"/>')
-  die_w=cw-2;die_h=ch-4;die_color=die_colors[level]
-  p.append(f'<rect data-die="{d}" data-level="{level}" x="{x+(cw-die_w)/2}" y="{y-lift+(ch-die_h)/2}" width="{die_w}" height="{die_h}" rx=".7" fill="{die_color}" stroke="{copper}" stroke-width=".4"/>')
+  die_w=cw-4;die_h=4;die_color=die_colors[level]
+  p.append(f'<rect data-die="{d}" data-level="{level}" x="{x+2}" y="{y-lift+ch-5}" width="{die_w}" height="{die_h}" rx=".4" fill="{die_color}"/>')
+  p.append(f'<circle cx="{x+2.5}" cy="{y-lift+2.5}" r=".8" fill="{muted}"/><path d="M{x+5} {y-lift+3}h4m-4 2h3" stroke="{muted}" stroke-width=".6" opacity=".75"/>')
  packages=p[chip_start:];p=p[:chip_start]+empty_pads
  active={cells[d] for d in dates if public['days'][d]}
  route=circuit_route(active,width=weeks)
@@ -130,9 +141,9 @@ for theme in ('dark','light'):
   p.append(f'<path d="M{x} {top+20}h28v{lift}h-28z" fill="{line}"/>')
   p.append(f'<rect x="{x}" y="{top}" width="28" height="20" rx="3" fill="{palette[level]}" stroke="{muted}" stroke-width=".5"/>')
   if level:
-   p.append(f'<path d="M{x-4} {top+5}h4m28 0h4M{x-4} {top+15}h4m28 0h4" stroke="{copper}" stroke-width="1.3"/>')
-   dw=24;dh=15;dc=die_colors[level]
-   p.append(f'<rect x="{x+(28-dw)/2}" y="{top+(20-dh)/2}" width="{dw}" height="{dh}" rx="1" fill="{dc}"/>')
+   for py in [3,7,11,15,19]:p.append(f'<path d="M{x-4} {top+py}h4m28 0h4" stroke="{muted}" stroke-width="1.5"/>')
+   dc=die_colors[level]
+   p.append(f'<rect x="{x+4}" y="{top+12}" width="20" height="5" rx=".5" fill="{dc}"/><circle cx="{x+5}" cy="{top+4}" r="1.2" fill="{muted}"/><path d="M{x+10} {top+4}h11m-11 3h8" stroke="{muted}" stroke-width="1"/>')
   p.append(txt(str(level),x+9,414,15,muted))
  p.append(txt('More',697,388,18,muted))
  save('contribution',1120,430,p)
@@ -141,8 +152,9 @@ for theme in ('dark','light'):
  activity=public.get('activity',{})
  p=[centered('Public activity',1120,25,21,copper,600)]
  for i,(label,count) in enumerate(activity.items()):
-  text=str(count)+' '+label;tw=measure(text,21)+30;cx=(i+.5)*280;x=cx-tw/2
-  p.append(logo(label,x,54,blue,size=20));p.append(txt(text,x+30,73,21,ink))
+  display='Repository' if label=='Repositories' and count==1 else label
+  text=str(count)+' '+display;size=19 if len(activity)>4 else 21;tw=measure(text,size)+26;cx=(i+.5)*1120/len(activity);x=cx-tw/2
+  p.append(logo(label,x,54,blue,size=19));p.append(txt(text,x+26,73,size,ink))
  save('activity',1120,96,p)
  # Language distribution uses public repository language bytes, excluding forks and the profile repository.
  repos=public['repos'];projects=public.get('pinned',[])
@@ -169,7 +181,7 @@ for theme in ('dark','light'):
   while measure(language_text,17)>490:language_text=language_text[:-4].rstrip(' .')+'...'
   p=[f'<rect x="1" y="1" width="538" height="166" rx="13" stroke="{line}" fill="{panel}"/>',txt(shorten(title,31),22,43,24,ink,650),txt(desc,22,76,20,muted),txt(language_text,22,110,17,muted),txt('View repository',22,146,18,blue),logo('View repository',496,128,blue,size=22)]
   p[0]=f'<rect x="5" y="5" width="530" height="158" rx="13" stroke="{line}" fill="{panel}"/>'
-  p.append(halo(5,5,530,158,blue,radius=13,weight=1.6))
+  p.append(halo(5,5,530,158,blue,radius=13,weight=2))
   save('repo-'+title,540,168,p)
  save('still-link',400,40,[f'<rect x="1" y="1" width="398" height="38" rx="10" fill="{panel}" stroke="{line}"/>',logo('Pause',12,12,blue,size=18),txt('Still version of landing page',36,29,22,ink)])
 

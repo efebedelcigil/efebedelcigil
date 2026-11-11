@@ -117,21 +117,27 @@ def make_svg(theme,mobile,images,sequence,background,steady,glance_background,st
     parts.append(f'<path id="underline" d="{response_line(0)}" fill="none" stroke="{accent}" stroke-width="1" opacity=".12">')
     if not still:
         keys=underline_keys()
-        shapes=';'.join(response_line(value*(.6 if mobile else 1)) for _,value in keys)
+        shapes=';'.join(response_line(value*(.09 if mobile else .15)) for _,value in keys)
         times=';'.join(f'{time/132:.9f}' for time,_ in keys)
         splines=';'.join(['.42 0 .58 1']*(len(keys)-1))
         parts.append(f'<animate attributeName="d" values="{shapes}" keyTimes="{times}" begin="2.25s" dur="132s" repeatCount="indefinite" calcMode="spline" keySplines="{splines}"/>')
     parts.append('</path>')
     span=end-start_x
-    parts.append(f'<rect x="{start_x-5}" y="{baseline-7}" width="{span+10}" height="14" rx="7" stroke="{accent}" stroke-width=".8" fill="none" opacity=".5"/><path d="M{end+7} {baseline-2}v4" stroke="{accent}" stroke-width="2" stroke-linecap="round" opacity=".65"/>')
-    parts.append(f'<clipPath id="chargeClip"><rect x="{start_x}" y="{baseline-5}" width="{span}" height="10" rx="3">')
-    if not still:parts.append(f'<animate attributeName="width" values="0;{span};{span};0" keyTimes="0;.42;.78;1" dur="8s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .2 1;.4 0 .6 1;.4 0 .6 1"/>')
+    parts.append(f'<rect x="{start_x-5}" y="{baseline-12}" width="{span+10}" height="24" rx="3" stroke="{accent}" stroke-width="1.3" fill="none" opacity=".8"/><rect x="{end+7}" y="{baseline-6}" width="7" height="12" rx="1.5" fill="{accent}" opacity=".8"/>')
+    parts.append(f'<path d="M{start_x+13} {baseline-8}l-6 9h5l-2 7 8 -11h-5z" fill="{copper}"/>')
+    rail_start=start_x+25;rail_end=end-5;rail_span=rail_end-rail_start
+    cell_width=rail_span/10
+    for i in range(10):parts.append(f'<rect x="{rail_start+i*cell_width}" y="{baseline-8}" width="{cell_width-3}" height="16" rx="1" fill="{accent}" opacity=".1"/>')
+    parts.append(f'<clipPath id="chargeClip"><rect x="{rail_start}" y="{baseline-9}" width="{rail_span}" height="18" rx="1">')
+    if not still:parts.append(f'<animate attributeName="width" values="0;{rail_span};{rail_span};0" keyTimes="0;.42;.78;1" dur="8s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .2 1;.4 0 .6 1;.4 0 .6 1"/>')
     parts.append('</rect></clipPath><g clip-path="url(#chargeClip)">')
-    for weight,opacity in [(7,.08),(3,.25),(1.5,.85)]:
-        parts.append(f'<path d="M{start_x} {baseline}h{span}" stroke="{accent}" stroke-width="{weight}" stroke-linecap="round" opacity="{opacity}"/>')
+    for i in range(10):parts.append(f'<rect x="{rail_start+i*cell_width}" y="{baseline-8}" width="{cell_width-3}" height="16" rx="1" fill="{accent}" opacity=".24"/>')
+    wire=f'M{rail_start} {baseline}h{rail_span}'
+    for weight,opacity in [(8,.14),(4,.3),(1.8,.9)]:parts.append(f'<path d="{wire}" stroke="{copper}" stroke-width="{weight}" stroke-linecap="round" opacity="{opacity}"/>')
     if not still:
-        parts.append(f'<path d="M{start_x} {baseline}h{span}" pathLength="100" stroke="{ink}" stroke-width="1.3" stroke-dasharray="4 96" opacity=".7"><animate attributeName="stroke-dashoffset" from="0" to="-100" dur="2s" repeatCount="indefinite"/></path>')
-        parts.append(f'<g fill="none" stroke="{accent}" stroke-width=".8" opacity=".6"><path d="M-3 0l2 -1 1 2 2 -1m-1 -2l1 -1 1 1"><animate attributeName="opacity" values=".2;.7;.35;.6;.2" dur="1.3s" repeatCount="indefinite"/></path><animateMotion path="M{start_x} {baseline}h{span}" dur="2s" repeatCount="indefinite"/></g>')
+        from design_parts import electric_packet
+        parts.append(f'<path d="{wire}" pathLength="100" stroke="{ink}" stroke-width="1.6" stroke-dasharray="7 93" opacity=".85"><animate attributeName="stroke-dashoffset" from="0" to="-100" dur="2.4s" repeatCount="indefinite"/></path>')
+        parts.append(electric_packet(wire,copper,size=1.35,duration='2.4s',begin='0s'))
     parts.append('</g>')
     identity=json.loads((ROOT/'assets/profile.json').read_text(encoding='utf-8'))
     muted='#a9b8cc' if theme=='dark' else '#53677d'

@@ -9,21 +9,30 @@ def measure(text,size=20,weight=550):
 
 def centered(text,width,y,size,color,weight=550):return lettering(text,(width-measure(text,size,weight))/2,y,size,color,weight)
 
-def electric_trace(path,color,weight=1.4,electric=True):
+def electric_packet(path,color,size=1,duration='8s',begin='-.32s'):
+ result=f'<g data-border-current="true" fill="none" stroke="{color}" stroke-linecap="round" stroke-linejoin="round"><g transform="scale({size})">'
+ for shape,alternate,phase in [('M-9 0l4 -2 3 4 3 -3 3 2 4 -1','M-9 0l4 2 3 -4 3 3 3 -2 4 1','0s'),('M-2 -1l2 -3 2 1 2 -2M3 1l2 3 2 -1','M-2 -1l1 -2 3 -1 1 -2M3 1l3 2 1 2','-.27s')]:
+  morph=f'<animate attributeName="d" values="{shape};{alternate};{shape}" dur=".73s" begin="{phase}" repeatCount="indefinite"/>'
+  result+=f'<path d="{shape}" stroke-width="4" opacity=".18">{morph}</path><path d="{shape}" stroke-width="1.2" opacity=".9">{morph}<animate attributeName="opacity" values=".65;1;.75;.95;.65" dur=".91s" begin="{phase}" repeatCount="indefinite"/></path>'
+ return result+f'</g><animateMotion path="{path}" begin="{begin}" dur="{duration}" rotate="auto" repeatCount="indefinite"/></g>'
+
+def electric_trace(path,color,weight=1.9,electric=True):
  animation='<animate attributeName="stroke-dashoffset" from="0" to="-100" begin="0s" dur="8s" repeatCount="indefinite"/>'
  shape=f'd="{path}" pathLength="100" fill="none" stroke="{color}" stroke-linecap="round" stroke-linejoin="round"'
- result=f'<g data-halo="true">{animation}<path {shape} stroke-width="{weight+2.5}" stroke-dasharray="18 82" opacity=".07"/><path {shape} stroke-width="{weight}" stroke-dasharray="25 75" opacity=".23"/><path {shape} stroke-width="{weight}" stroke-dasharray="8 92" opacity=".85"/></g>'
+ result=f'<g data-halo="true">{animation}<path {shape} stroke-width="{weight+3}" stroke-dasharray="18 82" opacity=".12"/><path {shape} stroke-width="{weight+1}" stroke-dasharray="25 75" opacity=".22"/><path {shape} stroke-width="{weight}" stroke-dasharray="8 92" opacity=".95"/></g>'
  if electric:
-  result+=f'<g data-border-current="true" fill="none" stroke="{color}" stroke-width=".8" stroke-linecap="round" opacity=".5"><path d="M-3 0l2 -1 1 2 2 -1m-1 -2l1 -1 1 1"><animate attributeName="opacity" values=".3;.8;.4;.7;.3" dur="1.3s" repeatCount="indefinite"/></path><animateMotion path="{path}" begin="-.32s" dur="8s" rotate="auto" repeatCount="indefinite"/></g>'
+  result+=electric_packet(path,color,size=1.35 if weight>=2.5 else 1)
  return result
 
-def halo(x,y,w,h,color,still=False,radius=10,weight=1.4,electric=True):
+def halo(x,y,w,h,color,still=False,radius=10,weight=1.9,electric=True):
  if still:return ''
  r=min(radius,w/2,h/2)
  path=f'M{x+w/2} {y}H{x+w-r}Q{x+w} {y} {x+w} {y+r}V{y+h-r}Q{x+w} {y+h} {x+w-r} {y+h}H{x+r}Q{x} {y+h} {x} {y+h-r}V{y+r}Q{x} {y} {x+r} {y}Z'
  return electric_trace(path,color,weight,electric)
 
-def strip_motion(text):return re.sub(r'<animate(?:Motion|Transform)?\b[^>]*/>','',text)
+def strip_motion(text):
+ text=re.sub(r'<g data-border-current="true".*?</g><animateMotion\b[^>]*/></g>','',text,flags=re.S)
+ return re.sub(r'<animate(?:Motion|Transform)?\b[^>]*/>','',text)
 
 def branch_groups(groups,width,y,title,ink,muted,accent,panel,line):
  from vector_logos import logo

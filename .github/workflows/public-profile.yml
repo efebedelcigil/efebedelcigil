@@ -37,6 +37,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
       - run: python scripts/test_labels.py
+      - run: python scripts/test_public_activity.py
       - run: python scripts/build_dashboard.py
       - run: python scripts/build_toolkit.py
       - run: python scripts/refresh_hero.py

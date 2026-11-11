@@ -42,7 +42,9 @@ class ReadmeLiveTests(unittest.TestCase):
    for e in root.iter():
     for value in e.attrib.values():
      for ref in re.findall(r'url\(#([^)]*)\)',value):self.assertIn(ref,ids)
-   if suffix:self.assertFalse(any('animate' in e.tag for e in root.iter()))
+   if suffix:
+    self.assertFalse(any('animate' in e.tag for e in root.iter()))
+    self.assertFalse(any(e.get('data-border-current') for e in root.iter()))
    else:
     for e in root.iter():
      if e.get('data-halo')=='true':
