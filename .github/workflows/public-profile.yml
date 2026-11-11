@@ -32,8 +32,7 @@ jobs:
       - run: pip install fonttools pillow
       - name: Refresh anonymous contribution calendar independently
         run: python scripts/public_calendar.py
-      - name: Refresh public profile snapshot (keep cached snapshot if upstream is unavailable)
-        continue-on-error: true
+      - name: Refresh complete public profile snapshot
         run: python scripts/refresh_public_profile.py
         env:
           GH_TOKEN: ${{ github.token }}
