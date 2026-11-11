@@ -102,6 +102,12 @@ for theme in ('dark','light'):
  p.append(f'<defs><filter id="currentGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2"/></filter></defs>')
  for color,weight,blur in [(copper,6,' filter="url(#currentGlow)"'),(copper,2.5,''),('#ffe1bd',.75,'')]:
   p.append(f'<path d="{wire}" pathLength="1000" fill="none" stroke="{color}" stroke-width="{weight}" stroke-dasharray="18 982" stroke-linecap="round"{blur}><animate attributeName="stroke-dashoffset" from="0" to="-1000" dur="14s" repeatCount="indefinite"/></path>')
+ if len(points)>1:
+  p.append(f'<g data-current-sparks="true" fill="none" stroke="{copper}" stroke-width=".85" stroke-linecap="round" stroke-linejoin="round">')
+  rays=[('M-1 -2l-2 -2 1 -1 -2 -2','.67s','0s'),('M2 0l3 -1 -1 -2 2 -1','.83s','-.19s'),('M0 2l-1 2 2 1 -1 2','1.07s','-.43s')]
+  for shape,duration,begin in rays:
+   p.append(f'<path d="{shape}" opacity="0"><animate attributeName="opacity" values="0;.7;.08;.5;0;0" keyTimes="0;.07;.14;.23;.34;1" dur="{duration}" begin="{begin}" repeatCount="indefinite"/></path>')
+  p.append(f'<animateMotion path="{wire}" dur="14s" begin="-.126s" rotate="auto" repeatCount="indefinite"/></g>')
  p+=packages
  from math import hypot
  distances=[0.0]
@@ -124,7 +130,7 @@ for theme in ('dark','light'):
    p.append(f'<rect x="{x+(28-dw)/2}" y="{top+(20-dh)/2}" width="{dw}" height="{dh}" rx="1" fill="{dc}"/>')
  p.append(txt('More',697,388,18,muted))
  save('contribution',1120,411,p)
- save('contribution-still',1120,411,[re.sub(r'<animate\b[^>]*/>', '', part) for part in p])
+ save('contribution-still',1120,411,[strip_motion(part) for part in p])
  if theme=='light':panel,line,muted='#e4ebf1','#bdcbd9','#53677d'
  activity=public.get('activity',{})
  p=[centered('Public activity',1120,25,21,copper,600)]

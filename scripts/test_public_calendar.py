@@ -40,6 +40,17 @@ class CalendarTests(unittest.TestCase):
    self.assertTrue(current)
    if pads:self.assertLess(max(pads),min(current))
    if chips:self.assertGreater(min(chips),max(current))
+ def test_sparks_follow_current_and_stop_in_still(self):
+  A=Path(__file__).resolve().parents[1]/'assets'
+  for theme in ['dark','light']:
+   root=E.parse(A/f'contribution-{theme}.svg').getroot();nodes=list(root.iter())
+   wire=next(e for e in nodes if e.get('pathLength')=='1000')
+   sparks=next(e for e in nodes if e.get('data-current-sparks')=='true')
+   motion=next(e for e in sparks if e.tag.endswith('animateMotion'))
+   self.assertEqual(motion.get('path'),wire.get('d'));self.assertEqual(motion.get('dur'),'14s')
+   self.assertLess(nodes.index(sparks),min(i for i,e in enumerate(nodes) if e.get('data-date') and e.get('data-level')!='0'))
+   for filename in [f'contribution-{theme}-still.svg',f'contribution-still-{theme}.svg']:
+    self.assertFalse(any('animate' in e.tag for e in E.parse(A/filename).getroot().iter()),filename)
  def test_rendered_parity(self):
   A=Path(__file__).resolve().parents[1]/'assets';data=json.loads((A/'public-profile.json').read_text());days=data['days'];cells,weeks=cell_map(days)
   palettes={'dark':['#172536']+['#293a4b']*4,'light':['#c1cedb']+['#42576b']*4}
