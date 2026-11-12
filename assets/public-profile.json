@@ -743,7 +743,7 @@
     "2026-10-31": 0,
     "2026-11-07": 0
   },
-  "calendar_fetched": "2026-11-12T01:55:44.881239+00:00",
+  "calendar_fetched": "2026-11-12T09:40:26.392189+00:00",
   "repos": [
     {
       "name": "assembly-full-adder",
@@ -765,7 +765,7 @@
       "name": "nextcalibur-control-center",
       "description": "Open-source replacement for the Casper Excalibur Control Center (tested on G870 / Tongfang JS970, Windows 11): modes, keyboard lighting, temperatures, graphics mode, idle-heat fixes. Not affiliated with Casper.",
       "html_url": "https://github.com/efebedelcigil/nextcalibur-control-center",
-      "language": "C#",
+      "language": null,
       "stargazers_count": 0,
       "fork": false
     },
@@ -796,15 +796,10 @@
       "full_name": "efebedelcigil/nextcalibur-control-center",
       "description": "Open-source replacement for the Casper Excalibur Control Center (tested on G870 / Tongfang JS970, Windows 11): modes, keyboard lighting, temperatures, graphics mode, idle-heat fixes. Not affiliated with Casper.",
       "html_url": "https://github.com/efebedelcigil/nextcalibur-control-center",
-      "language": "C#",
+      "language": null,
       "stargazers_count": 0,
       "fork": false,
-      "languages": {
-        "C#": 1393689,
-        "PowerShell": 73063,
-        "Inno Setup": 31498,
-        "Python": 8170
-      }
+      "languages": {}
     },
     {
       "name": "single-cycle-cpu",
@@ -821,22 +816,13 @@
   ],
   "languages": {
     "Assembly": 844,
-    "C#": 1393689,
-    "PowerShell": 73063,
-    "Inno Setup": 31498,
-    "Python": 8170,
     "VHDL": 10501
   },
   "language_sources": {
     "assembly-full-adder": {
       "Assembly": 844
     },
-    "nextcalibur-control-center": {
-      "C#": 1393689,
-      "PowerShell": 73063,
-      "Inno Setup": 31498,
-      "Python": 8170
-    },
+    "nextcalibur-control-center": {},
     "single-cycle-cpu": {
       "VHDL": 10501
     }
