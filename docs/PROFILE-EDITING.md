@@ -147,6 +147,7 @@ Run the repository checks:
 
 ```sh
 python scripts/test_labels.py
+python scripts/test_refresh_transport.py
 python scripts/test_public_activity.py
 python scripts/test_public_calendar.py
 python scripts/test_pcb_components.py

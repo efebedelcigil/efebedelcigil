@@ -1,6 +1,7 @@
 from pathlib import Path
 import datetime
 import json
+import os
 import re
 import subprocess
 import time
@@ -23,6 +24,9 @@ def read(url):
                 'Accept': 'application/vnd.github+json' if url.startswith('https://api.github.com/') else 'text/html',
             },
         )
+        token = os.environ.get('GH_TOKEN', '')
+        if token and url.startswith('https://api.github.com/'):
+            request.add_header('Authorization', 'Bearer ' + token)
         try:
             with urllib.request.urlopen(request, timeout=60) as response:
                 return response.read().decode('utf-8')
