@@ -7,7 +7,7 @@ This guide describes the current generated README. Edit the sources below, not t
 1. Open the appropriate source file in this repository and select **Edit**.
 2. Change one item using the tables below. JSON requires double quotes and no trailing comma.
 3. Commit the source change through the repository's normal review process.
-4. Open **Actions → Public profile artwork**. Source changes listed in the workflow trigger a build; use **Run workflow** on `main` when needed.
+4. Open **Actions â†’ Public profile artwork**. Source changes listed in the workflow trigger a build; use **Run workflow** on `main` when needed.
 5. Wait for the complete run, including **Publish generated profile without a pull request**. A successful branch run validates code but does not publish the profile.
 6. Check the live profile in both themes and the **Still Version of Landing Page** link. GitHub's image proxy can delay visible changes.
 
@@ -18,18 +18,18 @@ Scheduled public data updates run every 15 minutes, subject to GitHub scheduling
 | Visible content | Edit here | Exact change | Rebuild |
 | --- | --- | --- | --- |
 | Name | `scripts/build_hero.py` | Search for the name literal; retain text layout and timing | `refresh_hero.py` |
-| Discipline | `assets/profile.json` → `discipline` | Replace the string | `refresh_hero.py` |
-| University | `assets/profile.json` → `institution` | Replace the string | `refresh_hero.py` |
-| Student/graduate status | `assets/profile.json` → `status` | For example, change `Final-Year Student` to `Graduate`; the discipline already identifies the degree | `refresh_hero.py` |
-| GitHub and LinkedIn destinations | `scripts/build_readme.py` → social `linked()` calls | Change the URL, not the SVG | `build_readme.py`, `build_static.py` |
-| Portfolio destination | `assets/profile.json` → `portfolio` | Full HTTPS URL | `build_readme.py`, `build_static.py` |
-| Portfolio heading and description | `scripts/build_dashboard.py` → `title`, `subtitles` | Current copy: Explore My Portfolio / ALL projects, publications, contact info. and more | `build_dashboard.py` |
-| Portfolio hand/click animation | `scripts/profile_visuals.py` → `click_cursor` | SVG hand path, eight-second timing and click cue | `build_dashboard.py` |
-| Section headings | `scripts/build_dashboard.py` → section title loop | Change the visible title; keep internal keys such as `languages` and `pinned` stable | `build_dashboard.py` |
-| Section order and accessible labels | `scripts/build_readme.py` → `parts` | Reorder complete sections; keep heading and content together | `build_readme.py` |
-| Working Areas | `assets/profile.json` → `areas` | First two entries form the main line; later entries are supporting fields | `build_dashboard.py`, `build_readme.py` |
-| In Progress area cards | `assets/profile.json` → `learning_area_groups` | Change a group's `tools` list; also update `learning_areas` for the accessible summary | `build_dashboard.py`, `build_readme.py` |
-| Interested in Exploring area cards | `assets/profile.json` → `exploring_area_groups` | Change a group's `tools` list; also update `exploring_areas` | `build_dashboard.py`, `build_readme.py` |
+| Discipline | `assets/profile.json` â†’ `discipline` | Replace the string | `refresh_hero.py` |
+| University | `assets/profile.json` â†’ `institution` | Replace the string | `refresh_hero.py` |
+| Student/graduate status | `assets/profile.json` â†’ `status` | For example, change `Final-Year Student` to `Graduate`; the discipline already identifies the degree | `refresh_hero.py` |
+| GitHub and LinkedIn destinations | `scripts/build_readme.py` â†’ social `linked()` calls | Change the URL, not the SVG | `build_readme.py`, `build_static.py` |
+| Portfolio destination | `assets/profile.json` â†’ `portfolio` | Full HTTPS URL | `build_readme.py`, `build_static.py` |
+| Portfolio heading and description | `scripts/build_dashboard.py` â†’ `title`, `subtitles` | Current copy: Explore My Portfolio / ALL projects, publications, contact info. and more | `build_dashboard.py` |
+| Portfolio hand/click animation | `scripts/profile_visuals.py` â†’ `click_cursor` | SVG hand path, eight-second timing and click cue | `build_dashboard.py` |
+| Section headings | `scripts/build_dashboard.py` â†’ section title loop | Change the visible title; keep internal keys such as `languages` and `pinned` stable | `build_dashboard.py` |
+| Section order and accessible labels | `scripts/build_readme.py` â†’ `parts` | Reorder complete sections; keep heading and content together | `build_readme.py` |
+| Working Areas | `assets/profile.json` â†’ `areas` | First two entries form the main line; later entries are supporting fields | `build_dashboard.py`, `build_readme.py` |
+| In Progress area cards | `assets/profile.json` â†’ `learning_area_groups` | Change a group's `tools` list; also update `learning_areas` for the accessible summary | `build_dashboard.py`, `build_readme.py` |
+| Interested in Exploring area cards | `assets/profile.json` â†’ `exploring_area_groups` | Change a group's `tools` list; also update `exploring_areas` | `build_dashboard.py`, `build_readme.py` |
 | Tools cards | `assets/toolkit.json` | Category `name`, `color` and `tools`; colors are `blue`, `teal`, `warm` | `build_toolkit.py`, `build_readme.py` |
 | In Progress tools/methods | `assets/learning.json` | Group `name` and `tools` | `build_dashboard.py`, `build_readme.py` |
 | Interested in Exploring tools/methods | `assets/exploring.json` | Group `name` and `tools` | `build_dashboard.py`, `build_readme.py` |
@@ -39,12 +39,12 @@ Scheduled public data updates run every 15 minutes, subject to GitHub scheduling
 | Contribution dates and levels | Automatic `assets/public-profile.json` | Do not edit; `public_calendar.py` reads the anonymous GitHub calendar | Scheduled workflow |
 | Contribution PCB geometry | `scripts/contribution_geometry.py` | Projection, cell pitch, board fitting and centered origins | `build_dashboard.py` |
 | Component sizing/current path | `scripts/contribution_routing.py` | Package clearance, type-consistent size, terminal selection, path and masking | `build_dashboard.py`, routing tests |
-| Component models | `scripts/render_pcb_components.py` | Blender model geometry/materials; eight 0°/90° variants | Blender + preparation, then dashboard |
+| Component models | `scripts/render_pcb_components.py` | Blender model geometry/materials; eight 0Â°/90Â° variants | Blender + preparation, then dashboard |
 | Component image metadata | `scripts/prepare_pcb_components.py`, `scripts/refine_silhouettes.py` | Generated crop, contacts and opaque silhouette; do not hand-edit `layout.json` | Preparation after fresh renders |
-| Less–More legend | `scripts/profile_visuals.py` → `legend_sprite`; dashboard legend loop | Five states, framed empty lands, proportional render samples | `build_dashboard.py` |
+| Lessâ€“More legend | `scripts/profile_visuals.py` â†’ `legend_sprite`; dashboard legend loop | Five states, framed empty lands, proportional render samples | `build_dashboard.py` |
 | Public Activity | Automatic snapshot; `scripts/build_dashboard.py` activity layout | Types include commits, issues, PRs, reviews and repository creation; total consistency is checked | Scheduled workflow |
 | Most Used Languages | Automatic snapshot; dashboard language layout | Public non-fork source-code byte distribution, excluding this profile; not proficiency | Scheduled workflow |
-| Featured Repositories selection/order | GitHub profile → Customize your pins | The cards still follow native public pins; the visible section title does not create a second selection list | Scheduled workflow |
+| Featured Repositories selection/order | GitHub profile â†’ Customize your pins | The cards still follow native public pins; the visible section title does not create a second selection list | Scheduled workflow |
 | Featured card title/description | The public repository name/description on GitHub | Overflow is truncated by the generator | Scheduled workflow |
 | Featured card languages | Automatic language API data | Do not type languages into SVG cards | Scheduled workflow |
 | Footer links/sizes | `scripts/build_readme.py`, dashboard footer loop | Still version and Back to Top; widths follow text | Dashboard + README/static |
@@ -58,55 +58,55 @@ JSON paths below use zero-based array indexes. Names are source strings: display
 
 | Section | Category | Current card | Source and JSON path |
 | --- | --- | --- | --- |
-| Tools | Programming | C | `assets/toolkit.json` → `[0].tools[0]` |
-| Tools | Programming | C++ | `assets/toolkit.json` → `[0].tools[1]` |
-| Tools | Programming | Assembly | `assets/toolkit.json` → `[0].tools[2]` |
-| Tools | Modeling & Simulation | MATLAB / Simulink | `assets/toolkit.json` → `[1].tools[0]` |
-| Tools | Modeling & Simulation | PSIM | `assets/toolkit.json` → `[1].tools[1]` |
-| Tools | Modeling & Simulation | LTspice | `assets/toolkit.json` → `[1].tools[2]` |
-| Tools | Modeling & Simulation | Proteus | `assets/toolkit.json` → `[1].tools[3]` |
-| Tools | Embedded Systems | STM32 / CubeIDE | `assets/toolkit.json` → `[2].tools[0]` |
-| Tools | Embedded Systems | ESP32 | `assets/toolkit.json` → `[2].tools[1]` |
-| Tools | Embedded Systems | Keil | `assets/toolkit.json` → `[2].tools[2]` |
-| Tools | Design & Fabrication | KiCad | `assets/toolkit.json` → `[3].tools[0]` |
-| Tools | Design & Fabrication | EAGLE | `assets/toolkit.json` → `[3].tools[1]` |
-| Tools | Design & Fabrication | CAD | `assets/toolkit.json` → `[3].tools[2]` |
-| Tools | Design & Fabrication | 3D printing | `assets/toolkit.json` → `[3].tools[3]` |
-| Tools | Digital Design | VHDL | `assets/toolkit.json` → `[4].tools[0]` |
-| Tools | Digital Design | Quartus | `assets/toolkit.json` → `[4].tools[1]` |
-| Tools | Digital Design | ModelSim | `assets/toolkit.json` → `[4].tools[2]` |
-| Tools | Platforms & Workflow | Linux | `assets/toolkit.json` → `[5].tools[0]` |
-| Tools | Platforms & Workflow | Windows | `assets/toolkit.json` → `[5].tools[1]` |
-| Tools | Platforms & Workflow | Microsoft Office | `assets/toolkit.json` → `[5].tools[2]` |
-| In Progress / Tools & Methods | Methods | TinyML | `assets/learning.json` → `[0].tools[0]` |
-| In Progress / Tools & Methods | Programming | Python | `assets/learning.json` → `[1].tools[0]` |
-| In Progress / Tools & Methods | Robotics | ROS 2 | `assets/learning.json` → `[2].tools[0]` |
-| In Progress / Tools & Methods | Robotics | Gazebo | `assets/learning.json` → `[2].tools[1]` |
-| In Progress / Tools & Methods | Design & Fabrication | SolidWorks | `assets/learning.json` → `[3].tools[0]` |
-| In Progress / Tools & Methods | Design & Fabrication | Fusion | `assets/learning.json` → `[3].tools[1]` |
-| In Progress / Tools & Methods | Embedded Systems | FreeRTOS | `assets/learning.json` → `[4].tools[0]` |
-| In Progress / Tools & Methods | Embedded Systems | UART / IÂ²C / SPI / CAN | `assets/learning.json` → `[4].tools[1]` |
-| In Progress / Tools & Methods | Platforms & Workflow | Git | `assets/learning.json` → `[5].tools[0]` |
-| Interested in Exploring / Tools & Methods | Embedded Systems | Raspberry Pi | `assets/exploring.json` → `[0].tools[0]` |
-| Interested in Exploring / Tools & Methods | IoT | MQTT | `assets/exploring.json` → `[1].tools[0]` |
-| Interested in Exploring / Tools & Methods | Design & Fabrication | OpenSCAD | `assets/exploring.json` → `[2].tools[0]` |
-| In Progress / Areas | AI & Intelligent Systems | Machine Learning | `assets/profile.json` → `learning_area_groups[0].tools[0]`; update matching summary list too |
-| In Progress / Areas | Control & Sensing | Embedded & Motor Control | `assets/profile.json` → `learning_area_groups[1].tools[0]`; update matching summary list too |
-| In Progress / Areas | Control & Sensing | Sensor Fusion | `assets/profile.json` → `learning_area_groups[1].tools[1]`; update matching summary list too |
-| In Progress / Areas | Control & Sensing | System Modelling & Design | `assets/profile.json` → `learning_area_groups[1].tools[2]`; update matching summary list too |
-| Interested in Exploring / Areas | Signal Processing | DSP | `assets/profile.json` → `exploring_area_groups[0].tools[0]`; update matching summary list too |
-| Interested in Exploring / Areas | Automation | PLC & Automation | `assets/profile.json` → `exploring_area_groups[1].tools[0]`; update matching summary list too |
-| Interested in Exploring / Areas | Energy Systems | Renewable Energy | `assets/profile.json` → `exploring_area_groups[2].tools[0]`; update matching summary list too |
-| Interested in Exploring / Areas | Energy Systems | HVAC Systems | `assets/profile.json` → `exploring_area_groups[2].tools[1]`; update matching summary list too |
-| Interested in Exploring / Areas | Energy Systems | Data Center Design & Operations | `assets/profile.json` → `exploring_area_groups[2].tools[2]`; update matching summary list too |
-| Working Areas | Primary | Control Systems | `assets/profile.json` → `areas[0]` |
-| Working Areas | Primary | Robotics | `assets/profile.json` → `areas[1]` |
-| Working Areas | Supporting | Embedded Systems | `assets/profile.json` → `areas[2]` |
-| Working Areas | Supporting | Power Electronics | `assets/profile.json` → `areas[3]` |
-| Working Areas | Supporting | Mechatronics | `assets/profile.json` → `areas[4]` |
-| Working Areas | Supporting | IoT | `assets/profile.json` → `areas[5]` |
-| Working Areas | Supporting | Circuit Design | `assets/profile.json` → `areas[6]` |
-| Working Areas | Supporting | 3D Printing | `assets/profile.json` → `areas[7]` |
+| Tools | Programming | C | `assets/toolkit.json` â†’ `[0].tools[0]` |
+| Tools | Programming | C++ | `assets/toolkit.json` â†’ `[0].tools[1]` |
+| Tools | Programming | Assembly | `assets/toolkit.json` â†’ `[0].tools[2]` |
+| Tools | Modeling & Simulation | MATLAB / Simulink | `assets/toolkit.json` â†’ `[1].tools[0]` |
+| Tools | Modeling & Simulation | PSIM | `assets/toolkit.json` â†’ `[1].tools[1]` |
+| Tools | Modeling & Simulation | LTspice | `assets/toolkit.json` â†’ `[1].tools[2]` |
+| Tools | Modeling & Simulation | Proteus | `assets/toolkit.json` â†’ `[1].tools[3]` |
+| Tools | Embedded Systems | STM32 / CubeIDE | `assets/toolkit.json` â†’ `[2].tools[0]` |
+| Tools | Embedded Systems | ESP32 | `assets/toolkit.json` â†’ `[2].tools[1]` |
+| Tools | Embedded Systems | Keil | `assets/toolkit.json` â†’ `[2].tools[2]` |
+| Tools | Design & Fabrication | KiCad | `assets/toolkit.json` â†’ `[3].tools[0]` |
+| Tools | Design & Fabrication | EAGLE | `assets/toolkit.json` â†’ `[3].tools[1]` |
+| Tools | Design & Fabrication | CAD | `assets/toolkit.json` â†’ `[3].tools[2]` |
+| Tools | Design & Fabrication | 3D printing | `assets/toolkit.json` â†’ `[3].tools[3]` |
+| Tools | Digital Design | VHDL | `assets/toolkit.json` â†’ `[4].tools[0]` |
+| Tools | Digital Design | Quartus | `assets/toolkit.json` â†’ `[4].tools[1]` |
+| Tools | Digital Design | ModelSim | `assets/toolkit.json` â†’ `[4].tools[2]` |
+| Tools | Platforms & Workflow | Linux | `assets/toolkit.json` â†’ `[5].tools[0]` |
+| Tools | Platforms & Workflow | Windows | `assets/toolkit.json` â†’ `[5].tools[1]` |
+| Tools | Platforms & Workflow | Microsoft Office | `assets/toolkit.json` â†’ `[5].tools[2]` |
+| In Progress / Tools & Methods | Methods | TinyML | `assets/learning.json` â†’ `[0].tools[0]` |
+| In Progress / Tools & Methods | Programming | Python | `assets/learning.json` â†’ `[1].tools[0]` |
+| In Progress / Tools & Methods | Robotics | ROS 2 | `assets/learning.json` â†’ `[2].tools[0]` |
+| In Progress / Tools & Methods | Robotics | Gazebo | `assets/learning.json` â†’ `[2].tools[1]` |
+| In Progress / Tools & Methods | Design & Fabrication | SolidWorks | `assets/learning.json` â†’ `[3].tools[0]` |
+| In Progress / Tools & Methods | Design & Fabrication | Fusion | `assets/learning.json` â†’ `[3].tools[1]` |
+| In Progress / Tools & Methods | Embedded Systems | FreeRTOS | `assets/learning.json` â†’ `[4].tools[0]` |
+| In Progress / Tools & Methods | Embedded Systems | UART / IÃ‚Â²C / SPI / CAN | `assets/learning.json` â†’ `[4].tools[1]` |
+| In Progress / Tools & Methods | Platforms & Workflow | Git | `assets/learning.json` â†’ `[5].tools[0]` |
+| Interested in Exploring / Tools & Methods | Embedded Systems | Raspberry Pi | `assets/exploring.json` â†’ `[0].tools[0]` |
+| Interested in Exploring / Tools & Methods | IoT | MQTT | `assets/exploring.json` â†’ `[1].tools[0]` |
+| Interested in Exploring / Tools & Methods | Design & Fabrication | OpenSCAD | `assets/exploring.json` â†’ `[2].tools[0]` |
+| In Progress / Areas | AI & Intelligent Systems | Machine Learning | `assets/profile.json` â†’ `learning_area_groups[0].tools[0]`; update matching summary list too |
+| In Progress / Areas | Control & Sensing | Embedded & Motor Control | `assets/profile.json` â†’ `learning_area_groups[1].tools[0]`; update matching summary list too |
+| In Progress / Areas | Control & Sensing | Sensor Fusion | `assets/profile.json` â†’ `learning_area_groups[1].tools[1]`; update matching summary list too |
+| In Progress / Areas | Control & Sensing | System Modelling & Design | `assets/profile.json` â†’ `learning_area_groups[1].tools[2]`; update matching summary list too |
+| Interested in Exploring / Areas | Signal Processing | DSP | `assets/profile.json` â†’ `exploring_area_groups[0].tools[0]`; update matching summary list too |
+| Interested in Exploring / Areas | Automation | PLC & Automation | `assets/profile.json` â†’ `exploring_area_groups[1].tools[0]`; update matching summary list too |
+| Interested in Exploring / Areas | Energy Systems | Renewable Energy | `assets/profile.json` â†’ `exploring_area_groups[2].tools[0]`; update matching summary list too |
+| Interested in Exploring / Areas | Energy Systems | HVAC Systems | `assets/profile.json` â†’ `exploring_area_groups[2].tools[1]`; update matching summary list too |
+| Interested in Exploring / Areas | Energy Systems | Data Center Design & Operations | `assets/profile.json` â†’ `exploring_area_groups[2].tools[2]`; update matching summary list too |
+| Working Areas | Primary | Control Systems | `assets/profile.json` â†’ `areas[0]` |
+| Working Areas | Primary | Robotics | `assets/profile.json` â†’ `areas[1]` |
+| Working Areas | Supporting | Embedded Systems | `assets/profile.json` â†’ `areas[2]` |
+| Working Areas | Supporting | Power Electronics | `assets/profile.json` â†’ `areas[3]` |
+| Working Areas | Supporting | Mechatronics | `assets/profile.json` â†’ `areas[4]` |
+| Working Areas | Supporting | IoT | `assets/profile.json` â†’ `areas[5]` |
+| Working Areas | Supporting | Circuit Design | `assets/profile.json` â†’ `areas[6]` |
+| Working Areas | Supporting | 3D Printing | `assets/profile.json` â†’ `areas[7]` |
 
 ## 4. Add or move a card
 
@@ -195,3 +195,7 @@ GitHub README does not support custom page JavaScript, sticky robot layers or ar
 | Broken component silhouettes | Rerender all variants if projection changed, prepare fresh renders, run routing/package tests |
 
 For a content rollback, revert the source commit and let the workflow regenerate. Reverting only SVGs is temporary. Do not delete the publication secret or change repository protection just to refresh metrics.
+
+## 9. Browser checks and language options
+
+See [Validation](VALIDATION.md) for the latest engine results, performance caveats and physical-device limits. Run **Actions → Profile browser checks** after layout changes. [Language options](LANGUAGE-OPTIONS.md) evaluates a generated Turkish companion page; no language switch has been added yet.
