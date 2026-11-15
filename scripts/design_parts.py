@@ -63,7 +63,7 @@ def branch_groups(groups,width,y,title,ink,muted,accent,panel,line):
     bh=56 if len(lines)>1 else 36
     if bx+bw>gx+cell-6:bx=gx+18;by+=row_height+18;row_height=36
     row_height=max(row_height,bh)
-    parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="10" fill="{panel}" stroke="{line}"/>');parts.append(f'<path data-card-accent="true" d="M{bx+11} {by}h17" stroke="{accent}" stroke-width="1.6" stroke-linecap="round" opacity=".60"/>');parts.append(logo(label,bx+10,by+(bh-18)/2,muted,panel))
+    parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="10" fill="{panel}" stroke="{line}"/>');parts.append(f'<path data-card-accent="true" d="M{bx+1} {by+(bh-12)/2}v12" stroke="{accent}" stroke-width="2.5"/>');parts.append(logo(label,bx+10,by+(bh-18)/2,muted,panel))
     for i,text in enumerate(lines):parts.append(lettering(text,bx+36,by+23+i*21 if len(lines)>1 else by+25,20,ink,550,max_width=bw-45))
     bx+=bw+9
    h=by+row_height+18-top;heights.append(h)

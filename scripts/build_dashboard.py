@@ -66,7 +66,7 @@ for theme in ('dark','light'):
   p=[f'<rect x="8" y="8" width="{w-16}" height="180" rx="10" fill="{panel}" stroke="{line}" stroke-width=".5"/>',txt(title,26,60+shift,33,blue,650),*[lettering(text,26,100+i*29+shift,21,muted,550,max_width=w-110) for i,text in enumerate(subtitles)],click_cursor(w-72,73,copper,panel)]
   p.append(halo(8,8,w-16,180,'#ffad4d' if theme=='dark' else '#ce6a13',weight=3))
   save('portfolio'+suffix,w,196,p)
- for key,title in [('working','Working areas'),('tools','Tools'),('learning','In progress'),('exploring','Interested in exploring'),('contribution','Contribution circuit'),('languages','Project languages'),('pinned','Pinned repositories')]:
+ for key,title in [('working','Working areas'),('tools','Tools'),('learning','In progress'),('exploring','Interested in exploring'),('contribution','Contribution circuit'),('languages','Most used languages'),('pinned','Featured repositories')]:
   tw=measure(title,32,650);left=(1120-tw)/2
   p=[centered(title,1120,41,32,blue,650),f'<path d="M40 31H{left-28}m{tw+56} 0H1080" stroke="{blue}" opacity=".6"/><circle cx="{left-16}" cy="31" r="3" fill="{copper}"/>']
   p.append(f'<circle cx="{1120-left+16}" cy="31" r="3" fill="{copper}"/>')
