@@ -20,10 +20,10 @@ for theme in ('dark','light'):
   if name.startswith('heading-'):
    seed=sum(map(ord,name));length=48+(seed%4)*17
    decoration=f'<g fill="none" stroke="{blue}" stroke-width=".8" opacity=".46"><path d="M12 6h{length*.6}l8 8h{length*.3}m{-length*.5} -11h{length*.3}l8 8M{w-15} 6h{-length*.7}l-7 7h{-length*.2}m30 -10h-18l-7 7M{24+seed%30} 42h24l8 -8h16"/><circle cx="12" cy="6" r="1.5"/><circle cx="{w-15}" cy="6" r="1.5"/></g>'
-   p=[decoration]+p
+   p=['<g transform="translate(0 14)">']+p+['</g>'];h+=28
   (A/f'{name}-{theme}.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img"><title>{html.escape(name)}</title>'+''.join(p)+'</svg>',encoding='utf-8')
   path=A/f'{name}-{theme}.svg'
-  if '<animate' in path.read_text(encoding='utf-8'):
+  if '<animate' in path.read_text(encoding='utf-8') or name.startswith(('learning','exploring')):
    (A/f'{name}-{theme}-still.svg').write_text(strip_motion(path.read_text(encoding='utf-8')),encoding='utf-8')
  def traces(w,y):return f'<path d="M{w-160} {y}h60l20 20h65m-125-9h43l20 20h62" stroke="{line}" fill="none"/><circle cx="{w-15}" cy="{y+20}" r="3" fill="{copper}"/>'
  for mobile in (False,True):

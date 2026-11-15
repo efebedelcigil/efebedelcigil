@@ -24,12 +24,19 @@ class ReadmeLiveTests(unittest.TestCase):
     self.assertIn('?v='+digest,ref)
  def test_motion_sources(self):
   text=(ROOT/'README.md').read_text(encoding='utf-8')
-  for name in ['hero','contribution','portfolio','toolkit','learning','exploring']:
+  for name in ['hero','contribution','portfolio']:
    root=E.parse(ROOT/'assets'/f'{name}.svg').getroot()
    self.assertTrue(any(e.tag.endswith('animate') for e in root.iter()),name)
    self.assertIn(f'assets/{name}.svg?v=' if name=='hero' else '#'+name+'"',text)
    self.assertIn('@media(prefers-color-scheme:dark)',root.find('{http://www.w3.org/2000/svg}style').text)
   self.assertIn('prefers-reduced-motion: reduce',text)
+ def test_quiet_card_accents(self):
+  for name in ['toolkit','learning','exploring']:
+   root=E.parse(ROOT/'assets'/f'{name}.svg').getroot()
+   self.assertFalse(any(e.tag.endswith('animate') or e.tag.endswith('animateMotion') for e in root.iter()))
+   accents=[e for e in root.iter() if e.get('data-card-accent')]
+   self.assertTrue(accents);self.assertTrue(all(not list(e) for e in accents))
+   self.assertFalse(any(e.get('data-halo') for e in root.iter()))
  def test_shared_clock_views_and_references(self):
   from build_halo_atlas import names
   views=[]
