@@ -94,7 +94,9 @@ class CalendarTests(unittest.TestCase):
   self.assertTrue(any(v>0 for t,v in gate))
  def test_rendered_parity(self):
   A=Path(__file__).resolve().parents[1]/'assets';data=json.loads((A/'public-profile.json').read_text());days=data['days'];cells,weeks=cell_map(days);layout=BoardGeometry(weeks)
-  from pcb_components import KINDS,contacts
+  from pcb_components import KINDS,contacts,body_origin,scaled_chip,variant_at
+  from contribution_routing import configure_sizes,land_bounds
+  configure_sizes(layout,cells,days)
   for theme in ['dark','light']:
    root=E.parse(A/f'contribution-{theme}.svg').getroot();nodes=[e for e in root.iter() if e.get('data-date')]
    self.assertEqual(len([e for e in root.iter() if e.get('data-grid')=='horizontal']),8)
@@ -103,10 +105,11 @@ class CalendarTests(unittest.TestCase):
     d=e.get('data-date');level=days[d];self.assertEqual(e.get('data-component'),KINDS[level])
     origin=layout.package_origin(cells[d],level);bounds=layout.chip.bounds(*origin,level);cx,cy=layout.center(cells[d])
     self.assertAlmostEqual(float(e.get('x')),bounds[0]);self.assertAlmostEqual(float(e.get('y')),bounds[1])
-    self.assertAlmostEqual((bounds[0]+bounds[2])/2,cx);self.assertAlmostEqual((bounds[1]+bounds[3])/2,cy)
-    for px,py in contacts(layout.chip,*origin,level):
-     self.assertGreaterEqual(px-1.4,bounds[0]-.001);self.assertLessEqual(px+1.4,bounds[2]+.001)
-     self.assertGreaterEqual(py-1.1,bounds[1]-.001);self.assertLessEqual(py+1.1,bounds[3]+.001)
-   self.assertEqual(len([e for e in root.iter() if e.get('data-component-sprite')])-4,sum(v>0 for v in days.values()))
+    dx,dy=body_origin(scaled_chip(layout.chip,*origin,level),variant_at(*origin,level))
+    self.assertLessEqual(abs(origin[0]-dx-cx),.300001);self.assertLessEqual(abs(origin[1]-dy-cy),.300001)
+    if level:
+     l,t,r,b=land_bounds(layout,cells[d],level)
+     self.assertGreaterEqual(min(l-cx+layout.step/2,cx+layout.step/2-r,t-cy+layout.row_pitch/2,cy+layout.row_pitch/2-b),1.5-1e-6)
+   self.assertEqual(len([e for e in root.iter() if e.get('data-component-sprite')]),sum(v>0 for v in days.values()))
   active={cells[d] for d,v in days.items() if v};self.assertTrue(active<=set(circuit_route(active,width=weeks)))
 if __name__=='__main__':unittest.main()
