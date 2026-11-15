@@ -1,0 +1,4 @@
+# This repository file does not override https://github.com/robots.txt.
+# Deploy at your own site's /robots.txt for these directives to apply.
+User-agent: *
+Disallow:

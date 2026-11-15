@@ -1,0 +1,18 @@
+# Efe Varol Bedelcigil
+
+> Electrical & Electronics Engineering student at Ege University, focused on control systems and robotics, with interests in embedded systems, power electronics, mechatronics and IoT.
+
+This repository contains the source and generated artwork for my GitHub profile. The portfolio is the main destination for projects, publications and contact information. Activity graphics represent public GitHub activity; learning and exploration sections describe different stages of familiarity, not equivalent expertise.
+
+## Profile and portfolio
+
+- [Portfolio](https://efebedelcigil.github.io/en/): All projects, publications, contact information and more.
+- [GitHub profile](https://github.com/efebedelcigil): Public repositories and current profile.
+- [LinkedIn](https://www.linkedin.com/in/efevarolbedelcigil/): Professional profile.
+- [Profile README](https://raw.githubusercontent.com/efebedelcigil/efebedelcigil/main/README.md): Current generated landing page.
+- [Profile content](https://raw.githubusercontent.com/efebedelcigil/efebedelcigil/main/assets/profile.json): Institution, discipline, working areas and learning/exploration areas.
+
+## Maintaining this repository
+
+- [Editing guide](https://github.com/efebedelcigil/efebedelcigil/blob/main/docs/PROFILE-EDITING.md): Source files, every card and the rebuild process.
+- [Crawler file scope](https://github.com/efebedelcigil/efebedelcigil/blob/main/docs/DISCOVERY.md): Hosting limitations and the purpose of these files.

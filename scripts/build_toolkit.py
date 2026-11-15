@@ -21,7 +21,7 @@ def build(theme,mobile,groups):
     display=label
     bw=measure(display,19)+51
     if bx+bw>x+panel_width-4:bx=x+12;by+=50
-    group.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="34" rx="10" fill="{fill}" stroke="{line}"/>');group.append(f'<path data-card-accent="true" d="M{bx+11} {by}h17" stroke="{color}" stroke-width="1.6" stroke-linecap="round" opacity=".60"/>');group.append(logo(label,bx+10,by+8,muted,fill));group.append(lettering(display,bx+35,by+23,19,primary,550));bx+=bw+8
+    group.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="34" rx="10" fill="{fill}" stroke="{line}"/>');group.append(f'<path data-card-accent="true" d="M{bx+1} {by+11}v12" stroke="{color}" stroke-width="2.5"/>');group.append(logo(label,bx+10,by+8,muted,fill));group.append(lettering(display,bx+35,by+23,19,primary,550));bx+=bw+8
    h=by-y+50;heights.append(h);frames.append((x,y));parts+=group
   for x,y in frames:parts.append(f'<path d="M{x} {y+30}v{max(heights)-30}h{panel_width}" stroke="{line}" opacity=".5" fill="none"/>')
   top+=max(heights)+34
