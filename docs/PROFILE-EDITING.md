@@ -173,7 +173,7 @@ The workflow fetches an anonymous calendar so its dates, counts and five levels 
 
 ## 7. Layout and animation rules
 
-Small cards use static colored left accents. Large-card halos share one eight-second clock via `card-halos.svg`; electric sparks belong only to the contribution current. The hand cursor makes an occasional subtle click. Contribution bodies may project over calendar lines while their pads retain clearance; package scales are consistent within each type. The current enters and exits actual terminals and is masked inside bodies.
+Small cards use static colored left accents. Large-card halos use the same eight-second duration on separate SVG resources. The README avoids atlas fragments to preserve WebKit image proportions and reduce Firefox rendering work; image load times can introduce a small phase offset. `card-halos.svg` is retained as a compatibility output; electric sparks belong only to the contribution current. The hand cursor makes an occasional subtle click. Contribution bodies may project over calendar lines while their pads retain clearance; package scales are consistent within each type. The current enters and exits actual terminals and is masked inside bodies.
 
 Both themes share geometry. Theme colors use `prefers-color-scheme`; a browser/host override may affect which scheme is exposed to embedded SVGs. Reduced-motion picture sources select still assets. The footer provides a manual still version; blocked SVG animation is not automatically detectable in GitHub README. SVG text is drawn as vector paths and is not selectable like ordinary Markdown text.
 
@@ -195,3 +195,7 @@ GitHub README does not support custom page JavaScript, sticky robot layers or ar
 | Broken component silhouettes | Rerender all variants if projection changed, prepare fresh renders, run routing/package tests |
 
 For a content rollback, revert the source commit and let the workflow regenerate. Reverting only SVGs is temporary. Do not delete the publication secret or change repository protection just to refresh metrics.
+
+## 9. Browser checks and language options
+
+See [Validation](VALIDATION.md) for the latest engine results, performance caveats and physical-device limits. Run **Actions → Profile browser checks** after layout changes. [Language options](LANGUAGE-OPTIONS.md) evaluates a generated Turkish companion page; no language switch has been added yet.
