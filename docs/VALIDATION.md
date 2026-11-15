@@ -37,7 +37,7 @@ The Firefox issue improved in the tested environment. The Linux software-rendere
 
 ## General checks
 
-- 40 Python unit tests passed, including content normalization, public activity, calendar parity, transparent component assets, API authentication boundaries, generated README and publication logic.
+- 41 Python unit tests passed, including content normalization, public activity, calendar parity, transparent component assets, API authentication boundaries, generated README and publication logic.
 - Terminal routing passed 64 direction cases, 64 adjacent-package cases, 128 projected neighbor cases, all five homogeneous levels and four seeded mixed calendars.
 - The hero checker retained 559 source frames and validated 453 decoded unique frames, identical theme geometry, mobile/desktop variants and the accepted 132-second schedule.
 - No private aggregate contribution values or profile view counter were added. The anonymous calendar and public source snapshot remain the data inputs.
@@ -50,3 +50,7 @@ Use the commands in [Editing the profile](PROFILE-EDITING.md). For cross-engine 
 ## PCB surface refinement
 
 [Surface cross-engine run](https://github.com/efebedelcigil/efebedelcigil/actions/runs/43697216876) passed the same 18 scenarios after the softer board palette, decorative trace mask and contact shadows were added. Three surface tests cover empty/dense calendars and exact active-date correspondence. The treatment uses shared radial gradients without new blur filters or animation; component models, sizes and specular lighting are unchanged.
+
+The initial surface mask showed a WebKit software-rendering regression. The follow-up computes local trace opacity into SVG path segments during generation, avoiding a live surface mask. Contact shadows retain only lightweight radial gradients.
+
+[Precomputed surface run](https://github.com/efebedelcigil/efebedelcigil/actions/runs/43697728282) passed all 18 scenarios. In this follow-up sample Chromium and Firefox remained at approximately 60.5 callbacks/s; WebKit measured 20.5 callbacks/s with an 85 ms 95th-percentile interval, compared with 3.5/1097 ms in the masked-surface sample. These separate Linux-runner samples support removing the live mask; they are not a guarantee of physical Safari performance.
