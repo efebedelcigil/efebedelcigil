@@ -46,12 +46,12 @@ _original_component=component
 def oriented_contacts(chip,x,y,level):return _original_contacts(scaled_chip(chip,x,y,level),x,y,variant_at(x,y,level))
 def oriented_component(chip,x,y,level,*args):return _original_component(scaled_chip(chip,x,y,level),x,y,variant_at(x,y,level),*args)
 contacts=oriented_contacts;component=oriented_component
-def empty_lands(chip,x,y,level,panel,metal,copper):
+def empty_lands(chip,x,y,level,panel,metal,copper,legend=False):
  if level:return ''
  angle=PAD_TURNS.get((round(x,6),round(y,6)),0)
  result=f'<g data-empty-lands="true" transform="translate({x} {y}) rotate({angle})">'
  for px in [-5.2,5.2]:
-  result+=f'<rect x="{px-1.55}" y="-2.6" width="3.1" height="5.2" rx=".5" fill="#897553" opacity=".60"/><rect x="{px-1.15}" y="-2.2" width="2.3" height="4.4" rx=".3" fill="#c0c8bc" opacity=".85"/>'
+  result+=f'<rect x="{px-1.55}" y="-2.6" width="3.1" height="5.2" rx=".5" fill="#897553" opacity="{.60 if legend else .30}"/><rect x="{px-1.15}" y="-2.2" width="2.3" height="4.4" rx=".3" fill="#c0c8bc" opacity="{.85 if legend else .42}"/>'
  return result+'</g>'
 pads=empty_lands
 

@@ -46,6 +46,7 @@ jobs:
       - run: python scripts/test_public_calendar.py
       - run: python scripts/test_pcb_components.py
       - run: python scripts/test_contribution_routing.py
+      - run: python scripts/test_pcb_surface.py
       - run: python scripts/build_adaptive.py
       - run: python scripts/build_halo_atlas.py
       - run: python scripts/build_readme.py

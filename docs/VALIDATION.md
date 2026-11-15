@@ -37,7 +37,7 @@ The Firefox issue improved in the tested environment. The Linux software-rendere
 
 ## General checks
 
-- 37 Python unit tests passed, including content normalization, public activity, calendar parity, transparent component assets, API authentication boundaries, generated README and publication logic.
+- 40 Python unit tests passed, including content normalization, public activity, calendar parity, transparent component assets, API authentication boundaries, generated README and publication logic.
 - Terminal routing passed 64 direction cases, 64 adjacent-package cases, 128 projected neighbor cases, all five homogeneous levels and four seeded mixed calendars.
 - The hero checker retained 559 source frames and validated 453 decoded unique frames, identical theme geometry, mobile/desktop variants and the accepted 132-second schedule.
 - No private aggregate contribution values or profile view counter were added. The anonymous calendar and public source snapshot remain the data inputs.
@@ -46,3 +46,7 @@ The Firefox issue improved in the tested environment. The Linux software-rendere
 ## Repeat the checks
 
 Use the commands in [Editing the profile](PROFILE-EDITING.md). For cross-engine checks, open **Actions → Profile browser checks → Run workflow** on `main`, then inspect the uploaded report and screenshots. This workflow uses read-only repository permissions and does not publish profile changes. Source/data publication remains in **Public profile artwork**.
+
+## PCB surface refinement
+
+[Surface cross-engine run](https://github.com/efebedelcigil/efebedelcigil/actions/runs/43697216876) passed the same 18 scenarios after the softer board palette, decorative trace mask and contact shadows were added. Three surface tests cover empty/dense calendars and exact active-date correspondence. The treatment uses shared radial gradients without new blur filters or animation; component models, sizes and specular lighting are unchanged.

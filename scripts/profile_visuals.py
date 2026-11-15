@@ -3,7 +3,7 @@ import contribution_geometry as mod
 from pcb_components import META,empty_lands
 def legend_sprite(level,cx,cy,k):
  if not level:
-  lands=empty_lands(mod.ChipGeometry(),0,0,0,'none','#c0c8bc','#897553')
+  lands=empty_lands(mod.ChipGeometry(),0,0,0,'none','#c0c8bc','#897553',legend=True)
   a,b,c,d=mod.META['projection']
   return f'<g data-legend-pads="true" transform="translate({cx} {cy}) scale({k}) matrix({a} {c} {b} {d} 0 0)">'+lands+'</g>'
  w,h=META['parts'][str(level)]['image'][2:]
