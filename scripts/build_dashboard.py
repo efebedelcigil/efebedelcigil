@@ -1,4 +1,4 @@
-from pcb_surface import surface_art
+from pcb_surface import surface_art,surface_regions,quiet_trace_paths,quiet_weight
 from contribution_routing import configure_sizes,physical_route,calendar_labels
 from profile_visuals import legend_sprite,click_cursor
 from labels import display_label
@@ -98,9 +98,10 @@ for theme in ('dark','light'):
  p.append(surface_defs)
  copper_routes,vias=tracks(geometry.width,geometry.height)
  trace_color='#a09b7d' if theme=='dark' else '#254732'
- p.append(f'<g data-board-traces="true" mask="url(#pcbTraceQuietMask)" fill="none" stroke="{trace_color}" stroke-width="1.1" opacity=".48">')
- for path in copper_routes:p.append('<path d="M'+' L'.join(f'{x},{y}' for x,y in path)+'"/>')
- for x,y in vias:p.append(f'<circle data-via="true" stroke="{metal}" opacity="1" cx="{x}" cy="{y}" r="1.8" fill="{panel}"/><circle cx="{x}" cy="{y}" r=".75" fill="{line}" stroke="none"/>')
+ p.append(f'<g data-board-traces="true" fill="none" stroke="{trace_color}" stroke-width="1.1" opacity=".48">')
+ regions=surface_regions(geometry,cells,public['days'])
+ p.append(quiet_trace_paths(copper_routes,regions))
+ for x,y in vias:p.append(f'<circle data-via="true" stroke="{metal}" opacity="{quiet_weight(x,y,regions):.3f}" cx="{x}" cy="{y}" r="1.8" fill="{panel}"/><circle cx="{x}" cy="{y}" r=".75" fill="{line}" stroke="none"/>')
  p.append('</g>')
  for week in range(weeks+1):p.append(f'<path data-grid="vertical" d="M{geometry.padding+week*step} {geometry.padding}v{7*pitch}" stroke="#deebe1" stroke-width=".85" stroke-dasharray="7 3" opacity=".56"/>')
  for row in range(8):p.append(f'<path data-grid="horizontal" d="M{geometry.padding} {geometry.padding+row*pitch}h{weeks*step}" stroke="#deebe1" stroke-width=".85" stroke-dasharray="7 3" opacity=".56"/>')
