@@ -1,3 +1,4 @@
+from pcb_surface import surface_art
 from contribution_routing import configure_sizes,physical_route,calendar_labels
 from profile_visuals import legend_sprite,click_cursor
 from labels import display_label
@@ -76,12 +77,12 @@ for theme in ('dark','light'):
   save('social-'+name,180,52,[f'<rect x="3" y="3" width="174" height="46" rx="12" fill="{panel}" stroke="{line}"/>',icon,txt(label,41,34,23),logo('Open link',148,18,muted,size=16),halo(3,3,174,46,blue,radius=12)])
  # Pseudo-isometric contribution board: date-to-cell mapping stays identical across themes.
  dates=sorted(public['days']);cells,weeks=cell_map(public['days']);geometry=BoardGeometry(weeks);configure_sizes(geometry,cells,public["days"]);chip=geometry.chip;cw,ch=chip.width,chip.height;step=geometry.step;pitch=geometry.row_pitch;palette=['none']+['#202b34']*4 if theme=='dark' else ['none']+['#2d3d4c']*4
- panel,line=('#285f53','#183f3b') if theme=='dark' else ('#396951','#203f31')
+ panel,line=('#315b47','#1c3c2e') if theme=='dark' else ('#50795e','#2c513b')
  copper='#efa571' if theme=='dark' else '#a9602f'
  metal='#b9c6bd' if theme=='dark' else '#d0d6c9'
  if theme=='light':muted='#53677d'
  period=datetime.date.fromisoformat(dates[0]).strftime('%b %Y')+' / '+datetime.date.fromisoformat(dates[-1]).strftime('%b %Y')
- p=[definitions(),f'<defs><linearGradient id="boardTop" x2="1" y2="1"><stop stop-color="{"#326f60" if theme=="dark" else "#477a5c"}"/><stop offset=".55" stop-color="{panel}"/><stop offset="1" stop-color="{"#204d44" if theme=="dark" else "#2c5641"}"/></linearGradient></defs>',centered(str(sum(public['day_counts'].values()))+' public contributions',1120,26,22,blue,600),centered(period,1120,51,17,muted)]
+ p=[definitions(),f'<defs><linearGradient id="boardTop" x2="1" y2="1"><stop stop-color="{"#3b6c55" if theme=="dark" else "#638e70"}"/><stop offset=".55" stop-color="{panel}"/><stop offset="1" stop-color="{"#264b39" if theme=="dark" else "#426b50"}"/></linearGradient></defs>',centered(str(sum(public['day_counts'].values()))+' public contributions',1120,26,22,blue,600),centered(period,1120,51,17,muted)]
  fr4='#80764e' if theme=='dark' else '#9a895b'
  p.append(f'<g transform="{geometry.transform}"><rect x="0" y="14" width="{geometry.width}" height="{geometry.height}" rx="18" fill="{line}"/><rect x="0" y="11" width="{geometry.width}" height="{geometry.height}" rx="18" fill="{fr4}"/><rect x="0" y="3" width="{geometry.width}" height="{geometry.height}" rx="18" fill="{line}"/>')
  edge_y=geometry.height;edge_x=geometry.width*.43;edge_w=geometry.width*.12
@@ -93,9 +94,11 @@ for theme in ('dark','light'):
  p.append(halo(0,0,geometry.width,geometry.height,copper,radius=18,weight=2.1,electric=False))
  # Silkscreen and copper stay in the clear perimeter, outside every day cell.
  for x,y in geometry.mounts():p.append(f'<circle data-mount="true" cx="{x}" cy="{y}" r="3.2" fill="{line}" stroke="{copper}" stroke-width="1"/><circle cx="{x}" cy="{y}" r="1.7" fill="{panel}"/>')
+ surface_defs,contact_shadows=surface_art(geometry,cells,public['days'],theme)
+ p.append(surface_defs)
  copper_routes,vias=tracks(geometry.width,geometry.height)
- trace_color='#b3a078' if theme=='dark' else '#0d3020'
- p.append(f'<g data-board-traces="true" fill="none" stroke="{trace_color}" stroke-width="1.25" opacity=".65">')
+ trace_color='#a09b7d' if theme=='dark' else '#254732'
+ p.append(f'<g data-board-traces="true" mask="url(#pcbTraceQuietMask)" fill="none" stroke="{trace_color}" stroke-width="1.1" opacity=".48">')
  for path in copper_routes:p.append('<path d="M'+' L'.join(f'{x},{y}' for x,y in path)+'"/>')
  for x,y in vias:p.append(f'<circle data-via="true" stroke="{metal}" opacity="1" cx="{x}" cy="{y}" r="1.8" fill="{panel}"/><circle cx="{x}" cy="{y}" r=".75" fill="{line}" stroke="none"/>')
  p.append('</g>')
@@ -106,6 +109,7 @@ for theme in ('dark','light'):
   mx=geometry.padding+week*step
   silk_boundary='#c2d6ca' if theme=='dark' else '#315c4b'
   p.append(f'<path data-month-boundary="true" d="M{mx} {geometry.padding-5}v5 M{mx} {geometry.padding+7*pitch}v5" fill="none" stroke="{silk_boundary}" stroke-width=".9" opacity=".65"/>')
+ p.append(contact_shadows)
  chip_start=len(p);empty_pads=[]
  for d in dates:
   cell=cells[d];level=public['days'][d];x,y=geometry.package_origin(cell,level)

@@ -38,6 +38,7 @@ Scheduled public data updates run every 15 minutes, subject to GitHub scheduling
 | Category/field icons | `assets/icon-map.json`, `assets/icons/` | Map the item label to an existing outline icon basename | Dashboard/toolkit builds |
 | Contribution dates and levels | Automatic `assets/public-profile.json` | Do not edit; `public_calendar.py` reads the anonymous GitHub calendar | Scheduled workflow |
 | Contribution PCB geometry | `scripts/contribution_geometry.py` | Projection, cell pitch, board fitting and centered origins | `build_dashboard.py` |
+| PCB surface contrast and contact shadows | `scripts/pcb_surface.py`, dashboard board palette/trace tokens | Package-derived soft trace mask and contact shadow; no extra specular lighting or blur filters | `build_dashboard.py`, surface tests |
 | Component sizing/current path | `scripts/contribution_routing.py` | Package clearance, type-consistent size, terminal selection, path and masking | `build_dashboard.py`, routing tests |
 | Component models | `scripts/render_pcb_components.py` | Blender model geometry/materials; eight 0°/90° variants | Blender + preparation, then dashboard |
 | Component image metadata | `scripts/prepare_pcb_components.py`, `scripts/refine_silhouettes.py` | Generated crop, contacts and opaque silhouette; do not hand-edit `layout.json` | Preparation after fresh renders |
@@ -151,6 +152,7 @@ python scripts/test_refresh_transport.py
 python scripts/test_public_activity.py
 python scripts/test_public_calendar.py
 python scripts/test_pcb_components.py
+python scripts/test_pcb_surface.py
 python scripts/test_contribution_routing.py
 python scripts/test_publish_public_assets.py
 python scripts/test_readme_live.py
