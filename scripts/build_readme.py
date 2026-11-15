@@ -6,7 +6,7 @@ R=Path(__file__).resolve().parents[1]
 A=R/'assets';profile=json.loads((A/'profile.json').read_text(encoding='utf-8'));data=json.loads((A/'public-profile.json').read_text(encoding='utf-8'))
 def picture(name,alt,width=1120,mobile=True,hero=False,target=None):
  sources=[]
- shared=name in halo_names()
+ shared=False
  def source(variant='',still=False):
   return f'assets/card-halos{"-still" if still else ""}.svg#{name}{variant}' if shared else f'assets/{name}{variant}{"-still" if still else ""}.svg'
  has_still=hero or shared

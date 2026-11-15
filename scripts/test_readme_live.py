@@ -11,7 +11,8 @@ class ReadmeLiveTests(unittest.TestCase):
    self.assertNotIn('profile-data',text)
    self.assertNotIn('#gh-dark-mode-only',text)
    refs=re.findall(r'(?:src|srcset)="([^"]+)"',text)
-   self.assertTrue(any('#contribution' in r for r in refs))
+   self.assertTrue(any('contribution.svg' in r or 'contribution-still.svg' in r for r in refs))
+   self.assertFalse(any('card-halos' in r for r in refs))
    self.assertEqual(text.count('<picture>'),text.count('<img '))
    self.assertNotRegex(text,r'<a href="[^"]*assets/')
    for ref in refs:
@@ -27,7 +28,7 @@ class ReadmeLiveTests(unittest.TestCase):
   for name in ['hero','contribution','portfolio']:
    root=E.parse(ROOT/'assets'/f'{name}.svg').getroot()
    self.assertTrue(any(e.tag.endswith('animate') for e in root.iter()),name)
-   self.assertIn(f'assets/{name}.svg?v=' if name=='hero' else '#'+name+'"',text)
+   self.assertIn(f'assets/{name}.svg?v=',text)
    self.assertIn('@media(prefers-color-scheme:dark)',root.find('{http://www.w3.org/2000/svg}style').text)
   self.assertIn('prefers-reduced-motion: reduce',text)
  def test_quiet_card_accents(self):
