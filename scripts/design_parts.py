@@ -25,7 +25,7 @@ def electric_arcs(path,color,count=6,span=.25,duration=8):
   result.append(f'<g data-border-current="true" fill="none" stroke="{color}" stroke-linecap="round" stroke-linejoin="round"><g opacity=".65"><animate attributeName="opacity" values=".15;.85;.3;1;.15" dur="{period}s" begin="{-i*.17}s" repeatCount="indefinite"/><g transform="translate(0 -4)"><path d="{shape}" stroke-width="4" opacity=".16"/><path d="{shape}" stroke-width="1.3"/></g><animateTransform attributeName="transform" type="scale" values="1 1;1 .6;1 1.2;1 1" dur="{period}s" begin="{-i*.17}s" repeatCount="indefinite"/></g><animateMotion path="{path}" dur="{duration}s" begin="{phase}s" rotate="auto" repeatCount="indefinite"/></g>')
  return ''.join(result)
 
-def electric_trace(path,color,weight=1.9,electric=True,extent=0):
+def electric_trace(path,color,weight=1.9,electric=False,extent=0):
  animation='<animate attributeName="stroke-dashoffset" from="0" to="-100" begin="0s" dur="8s" repeatCount="indefinite"/>'
  shape=f'd="{path}" pathLength="100" fill="none" stroke="{color}" stroke-linecap="round" stroke-linejoin="round"'
  result=f'<g data-halo="true">{animation}<path {shape} stroke-width="{weight+3}" stroke-dasharray="18 82" opacity=".12"/><path {shape} stroke-width="{weight+1}" stroke-dasharray="25 75" opacity=".22"/><path {shape} stroke-width="{weight}" stroke-dasharray="8 92" opacity=".95"/></g>'
@@ -33,7 +33,7 @@ def electric_trace(path,color,weight=1.9,electric=True,extent=0):
   result+=electric_arcs(path,color,count=max(4,min(9,round(extent/300)))) if extent>700 else electric_packet(path,color,size=1.35 if weight>=2.5 else 1)
  return result
 
-def halo(x,y,w,h,color,still=False,radius=10,weight=1.9,electric=True):
+def halo(x,y,w,h,color,still=False,radius=10,weight=1.9,electric=False):
  if still:return ''
  r=min(radius,w/2,h/2)
  path=f'M{x+w/2} {y}H{x+w-r}Q{x+w} {y} {x+w} {y+r}V{y+h-r}Q{x+w} {y+h} {x+w-r} {y+h}H{x+r}Q{x} {y+h} {x} {y+h-r}V{y+r}Q{x} {y} {x+r} {y}Z'
