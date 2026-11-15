@@ -14,9 +14,9 @@
 
 <p align="center"><picture><img src="../assets/heading-exploring.svg?v=20ac3e154d44" width="1120" alt="Interested in Exploring"></picture><br><picture><source media="(max-width: 600px)" srcset="../assets/exploring-mobile-still.svg?v=a9a836d0a8a0"><img src="../assets/exploring-still.svg?v=148b4e2cabd6" width="1120" alt="Interested in Exploring. Areas: DSP, PLC &amp; Automation, Renewable Energy, HVAC Systems, Data Center Design &amp; Operations. Tools and Methods: Raspberry Pi, MQTT, OpenSCAD"></picture></p>
 
-<p align="center"><picture><img src="../assets/heading-contribution.svg?v=16a992a3457a" width="1120" alt="Contribution Circuit"></picture><br><picture><img src="../assets/contribution-still.svg?v=0330f68e88e2" width="1120" alt="Public Contribution Circuit. Live Data Refreshed Periodically."></picture></p>
+<p align="center"><picture><img src="../assets/heading-contribution.svg?v=16a992a3457a" width="1120" alt="Contribution Circuit"></picture><br><picture><img src="../assets/contribution-still.svg?v=6f9fe272aed4" width="1120" alt="Public Contribution Circuit. Live Data Refreshed Periodically."></picture></p>
 
-<p align="center"><picture><img src="../assets/activity.svg?v=72c8392088ff" width="1120" alt="Public Activity: 573 Commits, 5 Issues, 23 Pull Requests, 1 Reviews, 1 Repositories"></picture></p>
+<p align="center"><picture><img src="../assets/activity.svg?v=07c12ee24179" width="1120" alt="Public Activity: 575 Commits, 5 Issues, 25 Pull Requests, 1 Reviews, 1 Repositories"></picture></p>
 
 <p align="center"><picture><img src="../assets/heading-languages.svg?v=ee6532919594" width="1120" alt="Most Used Languages"></picture><br><picture><img src="../assets/profile-cards.svg?v=38364259d3c9" width="1120" alt="Public Project Language Distribution By Source Code Bytes."></picture></p>
 
