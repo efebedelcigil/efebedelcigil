@@ -14,9 +14,9 @@
 
 <p align="center"><picture><img src="assets/heading-exploring.svg?v=20ac3e154d44" width="1120" alt="Interested in Exploring"></picture><br><picture><source media="(max-width: 600px)" srcset="assets/exploring-mobile.svg?v=848e82bed4d8"><img src="assets/exploring.svg?v=f271661851da" width="1120" alt="Interested in Exploring. Areas: DSP, PLC &amp; Automation, Renewable Energy, HVAC Systems, Data Center Design &amp; Operations. Tools and Methods: Raspberry Pi, MQTT, OpenSCAD"></picture></p>
 
-<p align="center"><picture><img src="assets/heading-contribution.svg?v=16a992a3457a" width="1120" alt="Contribution Circuit"></picture><br><picture><img src="assets/contribution.svg?v=c0f957240eb8" width="1120" alt="Public Contribution Circuit. Live Data Refreshed Periodically."></picture></p>
+<p align="center"><picture><img src="assets/heading-contribution.svg?v=16a992a3457a" width="1120" alt="Contribution Circuit"></picture><br><picture><img src="assets/contribution.svg?v=ff1369ceed20" width="1120" alt="Public Contribution Circuit. Live Data Refreshed Periodically."></picture></p>
 
-<p align="center"><picture><img src="assets/activity.svg?v=c9af8030bf41" width="1120" alt="Public Activity: 578 Commits, 5 Issues, 28 Pull Requests, 1 Reviews, 1 Repositories"></picture></p>
+<p align="center"><picture><img src="assets/activity.svg?v=1fd208e23ece" width="1120" alt="Public Activity: 578 Commits, 6 Issues, 28 Pull Requests, 1 Reviews, 1 Repositories"></picture></p>
 
 <p align="center"><picture><img src="assets/heading-languages.svg?v=ee6532919594" width="1120" alt="Most Used Languages"></picture><br><picture><img src="assets/profile-cards.svg?v=38364259d3c9" width="1120" alt="Public Project Language Distribution By Source Code Bytes."></picture></p>
 
