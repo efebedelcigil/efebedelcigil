@@ -1,5 +1,5 @@
 {
-  "fetched": "2026-11-20",
+  "fetched": "2026-11-21",
   "source": "Public calendar, public repository metadata and languages; contribution types filtered by public repository.",
   "days": {
     "2025-11-16": 0,
@@ -371,7 +371,8 @@
     "2026-10-24": 0,
     "2026-10-31": 0,
     "2026-11-07": 0,
-    "2026-11-14": 0
+    "2026-11-14": 0,
+    "2026-11-21": 0
   },
   "day_counts": {
     "2025-11-16": 0,
@@ -743,9 +744,10 @@
     "2026-10-24": 0,
     "2026-10-31": 0,
     "2026-11-07": 0,
-    "2026-11-14": 0
+    "2026-11-14": 0,
+    "2026-11-21": 0
   },
-  "calendar_fetched": "2026-11-20T23:00:42.160159+00:00",
+  "calendar_fetched": "2026-11-21T04:00:13.630171+00:00",
   "repos": [
     {
       "name": "assembly-full-adder",
